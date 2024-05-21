@@ -14,7 +14,7 @@ export default function Home() {
         </p>
         <Button size="lg" asChild className="button w-full sm:w-fit">
           <Link href="/">
-            Get Info Now
+            Get more Info Now
           </Link>
         </Button>
        </div>

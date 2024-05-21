@@ -60,7 +60,7 @@ export async function POST(req: Request) {
     const user = {
       clerkId: id,
       email: email_addresses[0].email_address,
-      username: username!,
+      username: username! ,
       firstName: first_name || '', // Provide default value if null
       lastName: last_name || '', // Provide default value if null
       photo: image_url,

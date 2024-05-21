@@ -9,6 +9,6 @@ const UserSchema = new Schema({
   photo: { type: String, required: true },
 })
 
-const User = models.User || model('User', UserSchema);
+const User = models?.User || model('User', UserSchema);
 
 export default User;
