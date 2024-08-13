@@ -17,6 +17,8 @@ const UpdateCompany = async ({ params: { id }}: UpdateCompanyProps) => {
     const userId = sessionClaims?.userId as string;
 
     const company = await getCompanyById(id)
+    const initialCategoryIds = company.categories.map((cat: any) => cat._id)
+    const initialFundingTypeIds = company.fundingTypes.map((ft: any) => ft._id)
 
   return (
     <><section className='bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10'>
@@ -28,7 +30,9 @@ const UpdateCompany = async ({ params: { id }}: UpdateCompanyProps) => {
        userId={userId} 
        type="Update" 
        company={company} 
-       companyId={company._id} 
+       companyId={company._id}
+       initialCategoryIds={initialCategoryIds}
+       initialFundingTypeIds={initialFundingTypeIds}
        />    
     </div>
     </>
