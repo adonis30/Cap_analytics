@@ -1,4 +1,4 @@
-import {
+{/*import {
   Select,
   SelectContent,
   SelectItem,
@@ -46,6 +46,7 @@ const Dropdown = ({ value, onChangeHandler }: DropdownProps) => {
 
     getCategories();
   }, [])
+  //am not using this at the moment
 
   return (
     <Select onValueChange={onChangeHandler} defaultValue={value ? [value] : undefined}>
@@ -79,4 +80,4 @@ const Dropdown = ({ value, onChangeHandler }: DropdownProps) => {
   )
 }
 
-export default Dropdown
+export default Dropdown */}
