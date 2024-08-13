@@ -32,7 +32,6 @@ export const createCompany = async ({ company, userId, path }: CreateCompanyPara
       fundingTypes: company.fundingTypeIds
     });
 
-    // Update categories to include this company
     await Category.updateMany(
       { _id: { $in: categoryIds } },
       { $push: { companies: newCompany._id } }
@@ -84,7 +83,6 @@ export async function updateCompany({ userId, company, path }: UpdateCompanyPara
   }
 }
 
-// GET RELATED COMPANY: COMPANY WITH SAME CATEGORY
 export async function getRelatedCompaniesByCategory({
   categoryId,
   companyId,
@@ -95,7 +93,13 @@ export async function getRelatedCompaniesByCategory({
     await connectToDatabase()
 
     const skipAmount = (Number(page) - 1) * limit
-    const conditions = { $and: [{ category: categoryId }, { _id: { $ne: companyId } }] }
+    
+    const currentCompany = await Company.findById(companyId).select('categories');
+
+    const conditions = { 
+      categories: { $in: currentCompany.categories }, 
+      _id: { $ne: companyId } 
+    }
 
     const companiesQuery = Company.find(conditions)
       .sort({ createdAt: 'desc' })
@@ -103,9 +107,12 @@ export async function getRelatedCompaniesByCategory({
       .limit(limit)
 
     const companies = await populateCompany(companiesQuery)
-    const eventsCount = await Company.countDocuments(conditions)
+    const companiesCount = await Company.countDocuments(conditions)
 
-    return { data: JSON.parse(JSON.stringify(companies)), totalPages: Math.ceil(eventsCount / limit) }
+    return { 
+      data: JSON.parse(JSON.stringify(companies)), 
+      totalPages: Math.ceil(companiesCount / limit) 
+    }
   } catch (error) {
     handleError(error)
   }
