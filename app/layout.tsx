@@ -18,6 +18,19 @@ export const metadata: Metadata = {
   }
 };
 
+if (typeof window !== 'undefined') {
+  (['log', 'warn', 'error'] as const).forEach((method) => {
+    const original = console[method];
+    console[method] = function(...args: any[]) {
+      original.apply(console, args);
+      const logOutput = document.getElementById('log-output');
+      if (logOutput) {
+        logOutput.innerHTML += `<p>${method}: ${args.join(' ')}</p>`;
+      }
+    };
+  });
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{

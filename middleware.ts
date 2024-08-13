@@ -12,6 +12,7 @@ const isProtectedRoute = createRouteMatcher([
 const isPublicRoute = createRouteMatcher([
   '/api/webhooks/clerk',
   '/',
+  '/api/getUser',
   '/api/uploadthing',
 ]);
 

@@ -1,11 +1,39 @@
-import mongoose, {Mongoose} from 'mongoose';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-let cached = (global as any).mongoose || { conn: null, promise: null };
+if (!MONGODB_URI) {
+  throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
+}
+
+// Ensure that the cached object is correctly typed
+interface CachedMongoose {
+  conn: mongoose.Mongoose | null;
+  promise: Promise<mongoose.Mongoose> | null;
+}
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      mongoose: CachedMongoose;
+    }
+  }
+}
+
+const globalAny: any = global; // TypeScript workaround for global object
+let cached = globalAny.mongoose;
+
+if (!cached) {
+  cached = globalAny.mongoose = { conn: null, promise: null };
+}
 
 export const connectToDatabase = async () => {
-  if (cached.conn) return cached.conn;
+  if (cached.conn) {
+    return cached.conn;
+  }
 
   if (!MONGODB_URI) {
     throw new Error('MONGODB_URI is missing');
@@ -13,7 +41,7 @@ export const connectToDatabase = async () => {
 
   try {
     // Add logging statement to indicate that the connection process has started
-    console.log('Connecting to MongoDB...');
+    //console.log('Connecting to MongoDB...');
     
     // Attempt to connect to the MongoDB database
     cached.promise = cached.promise || mongoose.connect(MONGODB_URI, {
@@ -25,15 +53,16 @@ export const connectToDatabase = async () => {
     // Await the completion of the connection promise
     cached.conn = await cached.promise;
 
-    // Add logging statement to indicate that the connection was successful
-    console.log('Connected to MongoDB successfully.');
+    // Log success message if connection is successful
+    //console.log('MongoDB connection successful!');
+   
   } catch (error) {
-    // If an error occurs during the connection attempt, catch it here
-    console.error('Failed to connect to MongoDB:', error);
-    // Re-throw the error to be caught by the caller
     throw error;
   }
   
   // Return the Mongoose connection
   return cached.conn;
-}
+};
+
+// Invoke the function to connect to the database
+connectToDatabase().catch(err => console.error(err));

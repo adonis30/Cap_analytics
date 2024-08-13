@@ -4,8 +4,8 @@ export const headerLinks = [
       route: '/',
     },
     {
-      label: 'Businesses',
-      route: '/businesses',
+      label: 'companies',
+      route: '/companies',
     },
     {
       label: 'Investors',
@@ -23,25 +23,27 @@ export const headerLinks = [
         label: 'Reports',
         route: '/reports',
       },
-      {
-        label: 'Events',
-        route: '/events',
-      },
+      
       {
         label: 'About',
         route: '/about',
       },
   ]
   
-  export const eventDefaultValues = {
-    title: '',
+  export const companiesDefaultValues = {
+    organizationName: '',
+    industries:'',
     description: '',
-    location: '',
+    locationHq: '',
     imageUrl: '',
-    startDateTime: new Date(),
-    endDateTime: new Date(),
+    onwers:'',
+    rankCompany:'',
+    operatingStatus:'',
+    fundedDate:new Date(),
+    companyType: '',
     categoryId: '',
-    price: '',
-    isFree: false,
+    contactNumber: '',
+    contactEmail:'',
+    numberOfSubOrgs:'',
     url: '',
   }
