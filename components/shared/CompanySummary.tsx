@@ -128,7 +128,7 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
 const DetailSection: React.FC<{ title: string; content: React.ReactNode }> = ({ title, content }) => (
   <div>
     <h4 className="text-sm font-medium text-gray-500 mb-1">{title}</h4>
-    <p className="text-base text-gray-900">{content}</p>
+    <div className="text-base text-gray-900">{content}</div>
   </div>
 );
 
