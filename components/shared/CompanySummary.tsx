@@ -15,6 +15,7 @@ interface CompanySummaryProps {
     url: string;
     fundingTypes: Array<{ name: string }> | string[];
     categoryNames?: string[];
+    fundedDate?: string | number | Date;
   };
 }
 
@@ -39,7 +40,7 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
           <div className="space-y-3">
             <InfoItem icon={MapPin} label="Location" value={company.location || 'Not specified'} />
             <InfoItem icon={Users} label="Employees" value={company.employeeCount || 'Not available'} />
-            <InfoItem icon={Building2} label="Categories" value={company.categoryNames?.join(', ') || 'Not specified'} />
+            <InfoItem icon={Building2} label="Categories" value={company.categories?.map(cat => cat.name).join(', ') || 'Not specified'} />
             <InfoItem 
               icon={Globe} 
               label="Website" 
@@ -78,60 +79,57 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
         </div>
       </div>
 
-      <div className="bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1),0_2px_4px_-1px_rgba(0,0,0,0.06)] rounded-lg p-6">
-        <h3 className="text-2xl font-bold text-gray-800 mb-4">Details</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h4 className="font-semibold text-gray-700 mb-2">Industries</h4>
-            <div className="flex flex-wrap gap-2">
-              {['Banking', 'Credit Cards', 'Financial Services', 'Wealth Management'].map((industry, index) => (
-                <span key={index} className="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded">
-                  {industry}
-                </span>
-              ))}
-            </div>
-
-            <h4 className="font-semibold text-gray-700 mt-4 mb-2">Headquarters Regions</h4>
-            <p className="text-gray-600">Greater New York Area, East Coast, Northeastern US</p>
-
-            <h4 className="font-semibold text-gray-700 mt-4 mb-2">Founders</h4>
-            <p className="text-gray-600">Harte Thompson, Rohit Mathur, Sanford Weill</p>
-
-            <h4 className="font-semibold text-gray-700 mt-4 mb-2">Last Funding Type</h4>
-            <p className="text-gray-600">Post-IPO Equity</p>
-
-            <h4 className="font-semibold text-gray-700 mt-4 mb-2">Legal Name</h4>
-            <p className="text-gray-600">Penta Parent Holdings, LP</p>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-gray-700 mb-2">Diversity Spotlight</h4>
-            <span className="bg-purple-100 text-purple-800 text-sm font-medium px-2.5 py-0.5 rounded">
-              Women Led
-            </span>
-
-            <h4 className="font-semibold text-gray-700 mt-4 mb-2">Founded Date</h4>
-            <p className="text-gray-600">Jun 16, 1812</p>
-
-            <h4 className="font-semibold text-gray-700 mt-4 mb-2">Operating Status</h4>
-            <p className="text-gray-600">Active</p>
-
-            <h4 className="font-semibold text-gray-700 mt-4 mb-2">Also Known As</h4>
-            <p className="text-gray-600">Citigroup.com</p>
-
-            <h4 className="font-semibold text-gray-700 mt-4 mb-2">Related Hubs</h4>
-            <p className="text-gray-600">Citi Alumni Founded Companies, Citi Portfolio Companies</p>
-
-            <h4 className="font-semibold text-gray-700 mt-4 mb-2">Stock Symbol</h4>
-            <p className="text-gray-600">NYSE:C</p>
-
-            <h4 className="font-semibold text-gray-700 mt-4 mb-2">Company Type</h4>
-            <p className="text-gray-600">For Profit</p>
+      <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
+          <h3 className="text-xl font-semibold text-gray-800">Company Details</h3>
+        </div>
+        <div className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <DetailSection title="Industries" content={
+              company.categories && company.categories.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {company.categories.map((category, index) => (
+                    <span key={index} className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                      {category.name}
+                    </span>
+                  ))}
+                </div>
+              ) : 'No industries specified'
+            } />
+            <DetailSection title="Headquarters" content={company.location || 'Not specified'} />
+            <DetailSection title="Founders" content="Harte Thompson, Rohit Mathur, Sanford Weill" />
+            <DetailSection title="Last Funding Type" content="Post-IPO Equity" />
+            <DetailSection title="Legal Name" content={company.organizationName || 'Not available'} />
+            <DetailSection title="Diversity Spotlight" content={
+              <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
+                Women Led
+              </span>
+            } />
+            <DetailSection title="Founded Date" content={
+              company.fundedDate 
+                ? new Date(company.fundedDate).toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })
+                : 'Not available'
+            } />
+            <DetailSection title="Operating Status" content={company.operatingStatus || 'Not available'} />
+            <DetailSection title="Also Known As" content={company.organizationName || 'Not available'} />
+            <DetailSection title="Stock Symbol" content="NYSE:C" />
+            <DetailSection title="Company Type" content="For Profit" />
           </div>
         </div>
       </div>
     </div>
   );
 };
+
+const DetailSection: React.FC<{ title: string; content: React.ReactNode }> = ({ title, content }) => (
+  <div>
+    <h4 className="text-sm font-medium text-gray-500 mb-1">{title}</h4>
+    <p className="text-base text-gray-900">{content}</p>
+  </div>
+);
 
 export default CompanySummary;

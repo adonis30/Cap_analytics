@@ -293,7 +293,7 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
                   name="imageUrl"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Logo</FormLabel>
+                      <FormLabel>Company Logo</FormLabel>
                       <FormControl>
                         <FileUploader 
                           onFieldChange={field.onChange}
@@ -329,7 +329,7 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
                   name="categoryIds"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Categories</FormLabel>
+                      <FormLabel>Categories or industry type</FormLabel>
                       <FormControl>
                         <MultiSelect
                           defaultValue={field.value}
@@ -348,7 +348,7 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
                   name="industries"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Industries</FormLabel>
+                      <FormLabel>Company type</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter industries (min 3 characters)" {...field} />
                       </FormControl>
@@ -361,7 +361,7 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
                   name="location"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Location</FormLabel>
+                      <FormLabel>HQ Location</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter location" {...field} />
                       </FormControl>
@@ -374,7 +374,7 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
                   name="owners"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Owners</FormLabel>
+                      <FormLabel>Owned By</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter owners" {...field} />
                       </FormControl>
@@ -400,7 +400,7 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
                   name="url"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>URL</FormLabel>
+                      <FormLabel>Company Website</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter valid URL" {...field} />
                       </FormControl>
@@ -500,7 +500,7 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
                   name="contactNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Contact Number</FormLabel>
+                      <FormLabel> Company Contact Number</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter contact number" {...field} />
                       </FormControl>
@@ -513,7 +513,7 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
                   name="contactEmail"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Contact Email</FormLabel>
+                      <FormLabel>Comapany Contact Email</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter contact email" {...field} />
                       </FormControl>
@@ -526,7 +526,7 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
                   name="numberOfSubOrgs"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Number of Sub-Orgs</FormLabel>
+                      <FormLabel>Number of Sub Organization</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter number of sub-orgs" {...field} />
                       </FormControl>

@@ -1,10 +1,13 @@
+'use client';
+
 import { ICompany } from '@/lib/database/models/company.model';
 import { formatDateTime } from '@/lib/utils';
-import { auth } from '@clerk/nextjs/server';
+import { useAuth } from '@clerk/nextjs';
 import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
 import { DeleteConfirmation } from './DeleteConfirmation';
+import { Building2, Calendar, MapPin, Globe } from 'lucide-react';
 
 type CardProps = {
   company: ICompany;
@@ -13,52 +16,79 @@ type CardProps = {
 };
 
 const Card = ({ company, hasOrderLink, hidePrice }: CardProps) => {
-  const { sessionClaims } = auth();
-  const userId = sessionClaims?.userId as string;
+  const { userId } = useAuth();
   const isCompanyCreator = userId === company.companyCreator?._id?.toString();
 
   return (
-    <div className='group relative flex min-h-[380px] w-full max-w-[400px] flex-col overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg md:min-h-[430px]'>
-      <Link 
-        href={`/companies/${company._id}`}
-        style={{ backgroundImage: `url(${company.imageUrl})` }}
-        className='flex-center flex-grow bg-gray-50 bg-cover bg-center text-gray-500'
-      />
+    <div className='group relative flex flex-col overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-lg w-full max-w-[300px]'>
+      <div className='relative aspect-[16/9] w-full overflow-hidden'>
+        <Image 
+          src={company.imageUrl || '/assets/images/default-company.jpg'} 
+          alt={company.organizationName} 
+          fill
+          style={{ objectFit: 'cover' }}
+          className='transition-transform duration-300 group-hover:scale-105'
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = '/assets/images/default-company.jpg';
+          }}
+        />
+        <Link 
+          href={`/companies/${company._id}`}
+          className='absolute inset-0 z-10'
+        >
+          <span className="sr-only">View company details</span>
+        </Link>
+        {company.rankCompany && (
+          <span className='absolute top-2 left-2 z-20 rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white'>
+            Ranking: {company.rankCompany}
+          </span>
+        )}
+      </div>
+      
       {isCompanyCreator && !hidePrice && (
-        <div className='absolute right-2 top-2 flex flex-col gap-4 rounded-xl bg-white p-3 shadow-sm transition-all'>
-          <Link href={`/companies/${company._id}/update`}>
-            <Image src="/assets/icons/edit.svg" alt="edit" width={20} height={20} />
+        <div className='absolute right-2 top-2 z-30 flex gap-2'>
+          <Link href={`/companies/${company._id}/update`} className='rounded-full bg-white p-2 shadow-md hover:bg-gray-100'>
+            <Image src="/assets/icons/edit.svg" alt="edit" width={16} height={16} />
           </Link>
           <DeleteConfirmation companyId={company._id} />
         </div>
       )}
+      
+      <div className='flex flex-col gap-3 p-5'>
+        <h3 className='text-xl font-semibold text-gray-800 line-clamp-2'>
+          {company.organizationName}
+        </h3>
+        
+        {company.category && (
+          <span className='text-sm font-medium text-blue-600'>
+            {company.category.name}
+          </span>
+        )}
+        
+        <div className='flex flex-col gap-2 text-sm text-gray-600'>
+          <div className='flex items-center gap-2'>
+            <Calendar className='h-4 w-4 flex-shrink-0' />
+            <span className='truncate'>{company.fundedDate ? formatDateTime(company.fundedDate).dateOnly : 'Date not available'}</span>
+          </div>
+          <div className='flex items-center gap-2'>
+            <MapPin className='h-4 w-4 flex-shrink-0' />
+            <span className='truncate'>{company.location || 'Location not available'}</span>
+          </div>
+          <div className='flex items-center gap-2'>
+            <Globe className='h-4 w-4 flex-shrink-0' />
+            <a href={company.url} target="_blank" rel="noopener noreferrer" className='text-blue-600 hover:underline truncate'>
+              {company.url || 'Website not available'}
+            </a>
+          </div>
+        </div>
+      </div>
+      
       <Link
         href={`/companies/${company._id}`}
-        className='flex min-h-[230px] flex-col gap-3 p-5 md:gap-4'
+        className='mt-auto block bg-gray-100 p-4 text-center text-sm font-medium text-blue-600 hover:bg-gray-200'
       >
-        
-          <div className='flex gap-2'>
-            <span className='p-semibold-14 w-min rounded-full bg-green-100 px-4 py-1 text-green-60'>
-              {company.rankCompany}
-            </span>
-            {company.category && (
-              <p className='p-semibold-14 w-auto rounded-full bg-gray-500/10 px-4 py-1 text-green-500 line-clamp-1'>
-                {company.category.name}
-              </p>
-            )}
-          </div>
-        
-        <p className='p-medium-16 p-medium-18 text-grey-500'>
-          {company.fundedDate ? formatDateTime(company.fundedDate).dateOnly : 'Date not available'}
-        </p>
-        <p className='p-medium-16 md:p-medium-20 line-clamp-2 flex-1 text-black'>
-          {company.organizationName}
-        </p>
-        <div className='flex-between w-full'>
-          <p className='p-medium-14 md:p-medium-16 text-grey-600'>
-            {company.location} {company.url}
-          </p>
-        </div>
+        View Details
       </Link>
     </div>
   );

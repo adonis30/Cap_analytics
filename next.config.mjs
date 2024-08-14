@@ -10,8 +10,8 @@ const nextConfig = {
                 port: '',
                 pathname: '/**',
             },
-        
         ],
+        domains: ['example.com'],
     },
 };
 
