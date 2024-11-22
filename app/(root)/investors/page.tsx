@@ -23,13 +23,13 @@ interface FundingType {
 // Define the investors data structure
 interface Investors {
   _id: string;
-  name: string;
-  email: string;
-  phoneNumber: string;
-  totalAmountFunded: number;
-  highestAmountFunded: number;
-  fundingTypes: FundingType[];
-  fundedCompaniesIds: string[]; // Funded companies as an array of string IDs
+  name?: string;
+  email?: string;
+  phoneNumber?: string;
+  totalAmountFunded?: number;
+  highestAmountFunded?: number;
+  fundingTypes?: FundingType[];
+  fundedCompaniesIds?: string[]; // Funded companies as an array of string IDs
 }
 
 // Define the props for the Investors component
@@ -53,12 +53,10 @@ const fetchData = async (query: string, category: string): Promise<InvestorsProp
     };
 
     const result = await getAllInvestors(params);
-    console.log("API result:", result); // Add this line
-    console.log("Companies data:", JSON.stringify(result, null, 2));
+    
     if (!result) {
       throw new Error('No data returned');
     }
-    console.log("result is :",result);
     return {
       
       data: result.data as Investors[],
@@ -91,7 +89,7 @@ const Investors: React.FC<InvestorsProps> = () => {
       // Fetch investors data
       const data = await fetchData('', '');
       setResult(data);
-      console.log(data);
+      
       // Fetch company data to map company IDs to names
       const companiesData = await fetchCompanies();
       const companiesMapping: { [key: string]: string } = {};
@@ -124,7 +122,7 @@ const Investors: React.FC<InvestorsProps> = () => {
       type: 'string',
       renderCell: (params) => (
         <div className='line-clamp-1'>
-          {params.row.fundedCompaniesIds.map(id => companiesMap[id] || id).join(', ')}
+          {params.row.fundedCompaniesIds?.map(id => companiesMap[id] || id).join(', ')}
         </div>
       ),
     },
@@ -142,11 +140,11 @@ const Investors: React.FC<InvestorsProps> = () => {
   ];
 
   const handleRowClick = (params: { id: GridRowId }) => {
-    console.log(params.id);
+  
     const investorId = String(params.id); // Convert the ID to string
-    console.log(investorId);
+    
     router.push(`/investors/${investorId}`); // Navigate to the investor details page
-    console.log(`/investors/${investorId}`);
+   
   };
 
   return (
