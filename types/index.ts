@@ -207,12 +207,12 @@ export type GetAllInvestorsParams = {
 // ====== INVESTOR PARAMS
 export type Investor = {
   imageUrl: string | undefined;
-  description: ReactNode;
+  description?: string;
   _id: string;
   type: "Individual" | "Institution";
   name: string;
   email: string;
-  phoneNumber: string;
+  phoneNumber?: string;
   fundedCompaniesIds?: string[];
   fundingTypes?: string[];
   totalAmountFunded: number;
