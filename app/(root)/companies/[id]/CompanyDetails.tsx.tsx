@@ -12,6 +12,7 @@ import CompanyInvestments from "@/components/shared/CompanInvestments";
 import CompanyPeople from "@/components/shared/CompanyPeople";
 import CompanyTechnology from "@/components/shared/CompanyTechnology";
 import CompanyNews from "@/components/shared/CompanyNews";
+import InvestorNews from '@/components/shared/InvestorNews';
 
 export interface CompanyDetailsProps {
   company: any;
@@ -77,7 +78,7 @@ export default function CompanyDetails({ company, relatedCompanies, searchParams
     { value: "investments", label: "Investments", content: <CompanyInvestments company={company} /> },
     { value: "people", label: "People", content: <CompanyPeople company={company} /> },
     { value: "technology", label: "Technology", content: <CompanyTechnology company={company} /> },
-    { value: "news", label: "News And Events", content: <CompanyNews company={company} /> },
+    { value: "news", label: "News And Events", content: <InvestorNews investor={company} /> },
   ];
 
   return (

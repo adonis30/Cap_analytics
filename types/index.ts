@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 // ====== USER PARAMS
 export type CreateUserParams = {
   clerkId: string;
@@ -41,6 +43,24 @@ export type CreateCompanyParams = {
   path: string;
 };
 
+
+
+
+
+// Individual investor props extending base investor fields
+export type CreateIndividualInvestorProps = BaseInvestorProps & {
+  type: 'Individual'; // Must be 'Individual' for this form
+  individualDetails: {
+    firstName: string;  // Required firstName
+    lastName: string;   // Required lastName
+    position?: string;  // Optional position field
+    linkedInUrl?: string;  // Optional LinkedIn URL
+    imageUrl: string;  // Required profile image URL
+    bio?: string;
+    portfolio?: string;  // Optional short biography
+  };
+};
+
 export type GetRelatedCompaniesByCategoryParams = {
   categoryId: string;
   companyId: string;
@@ -79,6 +99,92 @@ export type UpdateCompanyParams = {
   path: string;
 };
 
+export type UpdateInstitutionInvestorProps = {
+  _id: string; // ID of the investor to update
+  type: 'Institution';
+  name?: string;
+  email?: string;
+  phoneNumber?: string;
+  totalAmountFunded?: number;
+  highestAmountFunded?: number;
+  fundedCompaniesIds?: string[]; // Optional array of funded company IDs
+  fundingTypes?: string[]; // Optional array of funding type IDs
+  institutionDetails?: {
+    organizationName?: string;
+    description?: string;
+    website?: string;
+    contactNumber?: string;
+    address?: string;
+    categories?: string[]; // Optional array of category IDs
+    contactEmail?: string;
+    location?: string;
+    imageUrl?: string; // Optional profile image URL
+    portfolio?: string; // Optional portfolio URL
+  };
+};
+
+export type UpdateIndividualInvestorProps = {
+  _id: string; // ID of the investor to update
+  type: 'Individual';
+  name?: string;
+  email?: string;
+  phoneNumber?: string;
+  totalAmountFunded?: number;
+  highestAmountFunded?: number;
+  fundedCompaniesIds?: string[]; // Optional array of funded company IDs
+  fundingTypes?: string[]; // Optional array of funding type IDs
+  firstName?: string;
+  lastName?: string;
+  position?: string; // Optional position field
+  linkedInUrl?: string; // Optional LinkedIn URL
+  imageUrl?: string; // Optional profile image URL
+  bio?: string; // Optional short biography
+};
+// Shared base investor fields
+export type BaseInvestorProps = {
+  type: "Individual" | "Institution";
+  name: string;
+  email: string;
+  phoneNumber: string;
+  totalAmountFunded: number;
+  highestAmountFunded: number;
+  fundingTypes?: string[]; // Array of funding type IDs
+  fundedCompaniesIds?: string[]; // Array of funded company IDs
+};
+
+export type IndividualInvestorProps = BaseInvestorProps & {
+  userId: string;
+  individualDetails: {
+    firstName: string;
+    lastName: string;
+    position?: string;
+    linkedInUrl?: string;
+    portfolio?: string;
+    imageUrl?: string;
+    bio?: string;
+  };
+};
+export type InstitutionInvestorProps = BaseInvestorProps & {
+  institutionDetails: {
+    organizationName: string;
+    description?: string;
+    website?: string;
+    contactNumber?: string;
+    address?: string;
+    categories?: string[];  // Array of category IDs
+    contactEmail?: string;
+    location?: string;
+    imageUrl?: string;
+  };
+};
+
+export type GetRelatedInvestorsByCategoryParams = {
+  categoryId: string;
+  investorId: string;
+  limit?: number;
+  page: number | string;
+};
+
 export type DeleteCompanyParams = {
   companyId: string;
   path: string;
@@ -89,6 +195,47 @@ export type GetAllCompanyParams = {
   category: string;
   limit: number;
   page: number;
+};
+
+export type GetAllInvestorsParams = {
+  query: string;
+  category: string;
+  limit: number;
+  page: number;
+}
+
+// ====== INVESTOR PARAMS
+export type Investor = {
+  imageUrl: string | undefined;
+  description: ReactNode;
+  _id: string;
+  type: "Individual" | "Institution";
+  name: string;
+  email: string;
+  phoneNumber: string;
+  fundedCompaniesIds?: string[];
+  fundingTypes?: string[];
+  totalAmountFunded: number;
+  highestAmountFunded: number;
+  individualDetails?: {
+    firstName: string;
+    lastName: string;
+    position?: string;
+    linkedInUrl?: string;
+    imageUrl?: string;
+    bio?: string;
+  };
+  institutionDetails?: {
+    organizationName: string;
+    description?: string;
+    website?: string;
+    contactNumber?: string;
+    address?: string;
+    categories?: string[];
+    contactEmail?: string;
+    location?: string;
+    imageUrl?: string;
+  };
 };
 
 // ====== EVENT PARAMS
@@ -135,6 +282,7 @@ export type GetRelatedEventsByCategoryParams = {
   page: number | string;
 };
 
+
 export type Event = {
   _id: string;
   title: string;
@@ -144,7 +292,6 @@ export type Event = {
   imageUrl: string;
   location: string;
   startDateTime: Date;
-  endDateTime: Date;
   url: string;
   organizer: {
     _id: string;

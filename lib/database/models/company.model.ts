@@ -1,5 +1,6 @@
 import { Document, Schema, model, models } from "mongoose";
 
+// Company Interface
 export interface ICompany extends Document {
   _id: string;
   organizationName: string;
@@ -19,16 +20,21 @@ export interface ICompany extends Document {
   people: string[]; // Array of people IDs
   fundedBy: string[]; // Array of fundedBy IDs
   fundingTypes: string[]; // Array of fundingTypes IDs
-  companyCreator?: { 
-    _id: Schema.Types.ObjectId | string, 
-    firstName?: string, 
-    lastName?: string 
+  companyCreator?: {
+    _id: Schema.Types.ObjectId | string,
+    firstName?: string,
+    lastName?: string
   };
   category?: {
     name: string;
   };
+  boardMembers: {
+    member: string; // BoardMember ID
+    position: string; // Position in the company
+  }[];
 }
 
+// Company Schema
 const CompanySchema = new Schema({
   organizationName: { type: String, required: true },
   description: { type: String },
@@ -49,6 +55,10 @@ const CompanySchema = new Schema({
   fundedBy: [{ type: Schema.Types.ObjectId, ref: 'FundingSource' }],
   fundingTypes: [{ type: Schema.Types.ObjectId, ref: 'FundingType' }],
   companyCreator: { type: Schema.Types.ObjectId, ref: 'User' },
+  boardMembers: [{
+    member: { type: Schema.Types.ObjectId, ref: 'BoardMember', required: true },
+    position: { type: String, required: true },
+  }], // Array of board members with their position in this company
 });
 
 const Company = models.Company || model('Company', CompanySchema);

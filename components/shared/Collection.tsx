@@ -10,7 +10,7 @@ type CollectionProps = {
   limit: number;
   totalPages?: number;
   urlParamName?: string;
-  collectionType?: 'Companies_Created' | 'My_Companies' | 'All_Companies';
+  collectionType?: 'Companies_Created' | 'My_Companies' | 'All_Companies' | undefined;
 };
 
 const Collection = ({

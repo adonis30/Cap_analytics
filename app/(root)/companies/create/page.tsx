@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
 import CompaniesForm from '@/components/shared/CompaniesForm';
 import { getAllCategories } from '@/lib/actions/category.actions';
 import { useEffect, useState } from 'react';
-import { useUserId } from '@/lib/actions/getUser.actions';
 import { getAllFundingTypes } from '@/lib/actions/fundingType.actions';
+import { getUserId } from '@/lib/actions/getUser.actions';
 
 const CreateCompany = () => {
-  const userId = useUserId();
+  const [userId, setUserId] = useState<string | null>(null);  // Initialize userId state
   const [categories, setCategories] = useState<{ _id: string, name: string }[]>([]);
   const [fundingTypes, setFundingTypes] = useState<{ _id: string, name: string }[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,12 +27,19 @@ const CreateCompany = () => {
     }
   };
 
+  // Fetch userId and data when the component mounts
   useEffect(() => {
-    fetchData();
-  }, []);
+    const fetchUserIdAndData = async () => {
+      const fetchedUserId = await getUserId();
+      setUserId(fetchedUserId);
+      await fetchData();
+    };
 
-  if (isLoading || userId === undefined) {
-    return <div>Loading...</div>;
+    fetchUserIdAndData();
+  }, []); // Empty dependency array to run once when the component mounts
+
+  if (isLoading || userId === null) {
+    return <div>Loading...</div>; // Loading state while fetching data
   }
 
   return (
@@ -43,7 +50,7 @@ const CreateCompany = () => {
 
       <div className='wrapper my-8'>
         <CompaniesForm 
-          userId={userId || ''}
+          userId={userId}
           type="Create"
           initialCategoryIds={categories.map(category => category._id)}
           initialFundingTypeIds={fundingTypes.map(type => type._id)}

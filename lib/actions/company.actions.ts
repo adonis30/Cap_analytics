@@ -126,7 +126,7 @@ export async function getCompanyById(companyId: string) {
       .populate('categories')
       .populate('fundingTypes')
       .lean();
-    
+      
     if (!company) throw new Error('Company not found');
     
     return JSON.parse(JSON.stringify(company));
