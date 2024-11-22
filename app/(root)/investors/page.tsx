@@ -12,7 +12,7 @@ import { getAllCompanies } from '@/lib/actions/company.actions';
 import { Collections } from '@/components/shared/Collections';
 import { useRouter } from 'next/navigation';
 import InvestorNews from '@/components/shared/InvestorNews';
-import NewsList from '@/components/shared/NewsList'
+import NewsList from '@/components/shared/NewsList';
 
 // Define the funding type
 interface FundingType {
@@ -201,20 +201,15 @@ const Investors: React.FC<InvestorsProps> = () => {
             </div>
           </div>
 
-         
-           {/* Right Card Section */}
+          {/* Right Card Section */}
           <div className="w-1/5 p-4">
-          <div className={`bg-white shadow-lg rounded-lg p-6 transition-transform transform hover:scale-105`}>
-         <h2 className="font-bold text-lg mb-4">Latest News</h2>
-        <div className="flex flex-row">
-        <NewsList limit={2}/>
-
-    </div>
-  </div>
-</div>
-
-
-
+            <div className="bg-white shadow rounded-lg p-4">
+              <h2 className="font-bold">Latest News</h2>
+              <div className="flex flex-col">
+                <NewsList />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
