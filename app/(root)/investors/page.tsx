@@ -20,30 +20,20 @@ interface FundingType {
   name: string;
 }
 
-// Define the investors data structure
-interface Investors {
-  _id: string;
-  name?: string;
-  email?: string;
-  phoneNumber?: string;
-  totalAmountFunded?: number;
-  highestAmountFunded?: number;
-  fundingTypes?: FundingType[];
-  fundedCompaniesIds?: string[]; // Funded companies as an array of string IDs
-}
+
 
 // Define the props for the Investors component
-interface InvestorsProps {
-  data: Investors[];
+interface InvestorsData {
+  data: Investor[];
 }
 
 // Default fallback data if no investors are fetched
-const fallbackData: InvestorsProps = {
+const fallbackData: InvestorsData = {
   data: [],
 };
 
 // Function to fetch investor data
-const fetchData = async (query: string, category: string): Promise<InvestorsProps> => {
+const fetchData = async (query: string, category: string): Promise<InvestorsData> => {
   try {
     const params: GetAllInvestorsParams = {
       query,
@@ -59,7 +49,7 @@ const fetchData = async (query: string, category: string): Promise<InvestorsProp
     }
     return {
       
-      data: result.data as Investors[],
+      data: result.data as Investor[],
       
     };
   } catch (error) {
@@ -69,7 +59,7 @@ const fetchData = async (query: string, category: string): Promise<InvestorsProp
 };
 
 // The Investors component
-const Investors: React.FC<InvestorsProps> = () => {
+const Investors: React.FC<InvestorsData> = () => {
   const router = useRouter(); // Initialize the router for navigation
   const [paginationModel, setPaginationModel] = React.useState<GridPaginationModel>({
     pageSize: 10,
@@ -77,7 +67,7 @@ const Investors: React.FC<InvestorsProps> = () => {
   });
 
   const [isLoading, setIsLoading] = useState(true);
-  const [result, setResult] = useState<InvestorsProps>(fallbackData);
+  const [result, setResult] = useState<InvestorsData>(fallbackData);
   const [companies, setCompanies] = useState([]); // State for companies data
   const [companiesMap, setCompaniesMap] = useState<{ [key: string]: string }>({});
 
@@ -108,7 +98,7 @@ const Investors: React.FC<InvestorsProps> = () => {
   }, []);
 
   // Define the DataGrid columns
-  const columns: GridColDef<Investors>[] = [
+  const columns: GridColDef<Investor>[] = [
     { field: 'name', headerName: 'Name', width: 200, type: 'string' },
     { field: 'email', headerName: 'Email', width: 250, type: 'string' },
     { field: 'phoneNumber', headerName: 'Phone Number', width: 150, type: 'string' },
