@@ -34,7 +34,7 @@ interface Investors {
 
 // Define the props for the Investors component
 interface InvestorsProps {
-  data?: Investors[];
+  data: Investors[];
 }
 
 // Default fallback data if no investors are fetched
