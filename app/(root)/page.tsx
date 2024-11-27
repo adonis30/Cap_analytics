@@ -23,7 +23,7 @@ export default async function Home() {
         We're a financial institution that pools together funds from various investors to invest in a diversified portfolio of assets such as stocks, bonds, real estate, and other securities. These firms typically provide professional management services and expertise to help investors achieve their financial goals.
         </p>
         <Button size="lg" asChild className="button w-full sm:w-fit">
-          <Link href="/">
+          <Link href="/about">
             Get more Info Now
           </Link>
         </Button>
@@ -38,7 +38,7 @@ export default async function Home() {
       </div>
       </section> 
       <section id="events" className="wrapper my-8 flex flex-col gap-8 md:gap-12">
-      <h2 className="h2-bold"> Trusted by <br/> Many Investors and Companies</h2>
+      <h2 className="h2-bold"> Trusted by <br/> Many Investors and Businesses</h2>
       <div className="flex w-full flex-col gap-5 md:flex-row">
        Search
        CategoryFilter
@@ -46,7 +46,7 @@ export default async function Home() {
 
       <Collection 
        data={companies?.data}
-       emptyTitle="No Companies Found"
+       emptyTitle="No Businesses Found"
        emptyStateSubtext="Come Back Later"
        collectionType="All_Companies"
       limit={6}

@@ -4,17 +4,14 @@ export const headerLinks = [
       route: '/',
     },
     {
-      label: 'companies',
+      label: 'Businesses',
       route: '/companies',
     },
     {
       label: 'Investors',
       route: '/investors',
     },
-    {
-     label: 'People',
-     route: '/people',
-    },
+    
     {
         label: 'Deals',
         route: '/deals',
@@ -24,12 +21,12 @@ export const headerLinks = [
         route: '/blog',
       },
       {
-        label: 'Reports',
+        label: 'Reports and Analytics',
         route: '/reports',
       },
       
       {
-        label: 'About',
+        label: 'Contact Us',
         route: '/about',
       },
   ]
