@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
+import axios from 'axios';
 
 // Explicitly define styles
 const useStyles = makeStyles(() => ({
@@ -36,15 +37,15 @@ interface NewsArticle {
 }
 
 interface InvestorNewsProps {
-  investor: string; // Adjust the type as necessary
-  limit?: number; // Optional prop to limit the number of articles
-  containerClassName?: string; // Optional container styles
-  articleClassName?: string; // Optional article styles
+  investor: string;
+  limit?: number;
+  containerClassName?: string;
+  articleClassName?: string;
 }
 
 export default function InvestorNews({
   investor,
-  limit = 6, // Default to 6 if no limit is passed
+  limit = 6,
   containerClassName,
   articleClassName,
 }: InvestorNewsProps) {
@@ -62,15 +63,15 @@ export default function InvestorNews({
         setLoading(true);
         setError(null);
 
-        const response = await fetch(
+        const response = await axios.get(
           `https://newsapi.org/v2/top-headlines?category=business&apiKey=852ef605e8ef45b19821c29549e78674`
         );
-        if (!response.ok) {
-          throw new Error('Failed to fetch news');
+
+        if (!response.data.articles || response.data.articles.length === 0) {
+          setError("No news articles available.");
         }
 
-        const data = await response.json();
-        setNews(data.articles || []);
+        setNews(response.data.articles || []);
       } catch (err: any) {
         setError(err.message || 'An error occurred');
       } finally {
@@ -89,15 +90,14 @@ export default function InvestorNews({
     return <p className="text-red-500">Error: {error}</p>;
   }
 
-  // Limit the number of displayed news articles to the specified limit
   const limitedNews = news.slice(0, limit);
 
   return (
-    <div className={`mt-4 ${containerClassName}`}> {/* Use dynamic className for container */}
+    <div className={`mt-4 ${containerClassName}`}>
       {limitedNews.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> {/* Create rows with a max of 3 columns */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {limitedNews.map((article: NewsArticle, index: number) => (
-            <Card key={index} className={`${classes.root} ${articleClassName}`}> {/* Use dynamic articleClassName */}
+            <Card key={index} className={`${classes.root} ${articleClassName}`}>
               <CardActionArea>
                 <CardMedia
                   className={classes.media}
