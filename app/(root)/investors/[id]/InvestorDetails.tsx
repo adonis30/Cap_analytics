@@ -73,7 +73,7 @@ export interface InvestorDetailsProps {
         <div className="absolute top-0 left-0 h-full w-[150px] flex items-center justify-center z-20 overflow-hidden rounded-3xl">
           <div className="w-full h-full bg-white transition-transform duration-300 transform scale-100 hover:scale-110 shadow-lg">
             <Image 
-              src={investor.institutionDetails.imageUrl}
+              src={investor?.institutionDetails?.imageUrl}
               alt="investor image"
               fill
               className="object-contain object-center rounded-3xl mr-4 pr-2"
