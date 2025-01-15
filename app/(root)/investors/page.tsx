@@ -85,10 +85,17 @@ const Investors: React.FC = () => {
   }, []);
 
   const columns: GridColDef<Investor>[] = [
+<<<<<<< HEAD
     { field: 'name', headerName: 'Organization/Person name ', width: 200, type: 'string' },
    /** { field: 'email', headerName: 'Email', width: 250, type: 'string' },
     { field: 'phoneNumber', headerName: 'Phone Number', width: 150, type: 'string' }**/
     { field: 'type', headerName: 'inverstor Type', width: 150, type: 'string' },
+=======
+    { field: 'name', headerName: 'Name', width: 200, type: 'string' },
+    { field: 'email', headerName: 'Email', width: 250, type: 'string' },
+    { field: 'phoneNumber', headerName: 'Phone Number', width: 150, type: 'string' },
+    { field: 'type', headerName: 'Type', width: 150, type: 'string' },
+>>>>>>> ede13b35deb730fba2f93ad0e48fded8cf0fa73e
     { field: 'totalAmountFunded', headerName: 'Total Amount Funded', width: 200, type: 'number' },
     { field: 'highestAmountFunded', headerName: 'Highest Amount Funded', width: 200, type: 'number' },
     {
@@ -131,18 +138,29 @@ const Investors: React.FC = () => {
             Browse our Investor database
           </p>
         </div>
+<<<<<<< HEAD
       
         <div className="mt-12 flex">
            {/** 
+=======
+
+        <div className="mt-12 flex">
+>>>>>>> ede13b35deb730fba2f93ad0e48fded8cf0fa73e
           <div className="w-1/5 p-4">
             <div className="bg-white shadow rounded-lg p-4">
               <h2 className="font-bold">Latest Companies</h2>
               <Collections />
             </div>
           </div>
+<<<<<<< HEAD
        **/}
           
             <div className="mt-12 bg-white shadow overflow-hidden sm:rounded-lg">
+=======
+
+          <div className="w-[60%]">
+            <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+>>>>>>> ede13b35deb730fba2f93ad0e48fded8cf0fa73e
               {isLoading ? (
                 <div className="flex justify-center items-center h-64">
                   <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
@@ -153,8 +171,12 @@ const Investors: React.FC = () => {
                   <p className="text-xl font-medium">No Investors found</p>
                 </div>
               ) : (
+<<<<<<< HEAD
                 <Box sx={{ height: 500, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   <Box sx={{ width: '90%' }}>
+=======
+                <Box sx={{ height: 500, width: '100%' }}>
+>>>>>>> ede13b35deb730fba2f93ad0e48fded8cf0fa73e
                   <DataGrid
                     rows={result.data}
                     columns={columns}
@@ -164,6 +186,7 @@ const Investors: React.FC = () => {
                     pagination
                     checkboxSelection
                     onRowClick={(params) => handleRowClick(params)}
+<<<<<<< HEAD
                     sx={{
                     '& .MuiDataGrid-root': {
                       border: 'none',
@@ -184,21 +207,34 @@ const Investors: React.FC = () => {
                     }}
                   />
                   </Box>
+=======
+                  />
+>>>>>>> ede13b35deb730fba2f93ad0e48fded8cf0fa73e
                 </Box>
               )}
             </div>
           </div>
+<<<<<<< HEAD
           {/** 
+=======
+
+>>>>>>> ede13b35deb730fba2f93ad0e48fded8cf0fa73e
           <div className="w-1/5 p-4">
             <div className="bg-white shadow rounded-lg p-4">
               <h2 className="font-bold">Latest News</h2>
               <NewsList />
             </div>
           </div>
+<<<<<<< HEAD
           */}
         </div>
       </div>
     
+=======
+        </div>
+      </div>
+    </div>
+>>>>>>> ede13b35deb730fba2f93ad0e48fded8cf0fa73e
   );
 };
 

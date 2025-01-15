@@ -11,7 +11,11 @@ const nextConfig = {
                 pathname: '/**',
             },
         ],
+<<<<<<< HEAD
        
+=======
+        domains: ['example.com'],
+>>>>>>> ede13b35deb730fba2f93ad0e48fded8cf0fa73e
     },
 };
 
