@@ -39,9 +39,8 @@ export default function NewsList({ limit = 6 }: NewsListProps) {
         setError(null);
 
         // Axios request
-        const response = await axios.get(
-          `https://newsapi.org/v2/top-headlines?category=business&apiKey=852ef605e8ef45b19821c29549e78674`
-        );
+        const response = await axios.get('/api/news');
+
         
         setNews(response.data.articles || []);
       } catch (err: any) {
