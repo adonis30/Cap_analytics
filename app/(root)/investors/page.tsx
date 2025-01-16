@@ -1,17 +1,14 @@
-'use client'; // Ensure this is a client component
+'use client';
 
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { DataGrid, GridRowId } from '@mui/x-data-grid';
 import { GridColDef, GridPaginationModel } from '@mui/x-data-grid-pro';
 import { Box } from '@mui/material';
 import { GetAllInvestorsParams, Investor } from '@/types';
-import { Loader2, Building2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
 import { fetchCompanies, getAllInvestors } from '@/lib/actions/investor.actions';
 import { getAllCompanies } from '@/lib/actions/company.actions';
-import { Collections } from '@/components/shared/Collections';
 import { useRouter } from 'next/navigation';
-import NewsList from '@/components/shared/NewsList';
+import { Loader2, Building2 } from 'lucide-react';
 
 interface FundingType {
   _id: string;
@@ -37,9 +34,7 @@ const fetchData = async (query: string, category: string): Promise<InvestorsData
 
     const result = await getAllInvestors(params);
 
-    if (!result) {
-      throw new Error('No data returned');
-    }
+    if (!result) throw new Error('No data returned');
 
     return {
       data: result.data as Investor[],
@@ -58,7 +53,6 @@ const Investors: React.FC = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [result, setResult] = useState<InvestorsData>(fallbackData);
-  const [companies, setCompanies] = useState([]);
   const [companiesMap, setCompaniesMap] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
@@ -75,9 +69,6 @@ const Investors: React.FC = () => {
       });
       setCompaniesMap(companiesMapping);
 
-      const companyResults = await getAllCompanies({ query: '', category: '', limit: 6, page: 1 });
-      setCompanies(companyResults?.data ?? []);
-
       setIsLoading(false);
     };
 
@@ -85,39 +76,28 @@ const Investors: React.FC = () => {
   }, []);
 
   const columns: GridColDef<Investor>[] = [
-<<<<<<< HEAD
-    { field: 'name', headerName: 'Organization/Person name ', width: 200, type: 'string' },
-   /** { field: 'email', headerName: 'Email', width: 250, type: 'string' },
-    { field: 'phoneNumber', headerName: 'Phone Number', width: 150, type: 'string' }**/
-    { field: 'type', headerName: 'inverstor Type', width: 150, type: 'string' },
-=======
-    { field: 'name', headerName: 'Name', width: 200, type: 'string' },
-    { field: 'email', headerName: 'Email', width: 250, type: 'string' },
-    { field: 'phoneNumber', headerName: 'Phone Number', width: 150, type: 'string' },
-    { field: 'type', headerName: 'Type', width: 150, type: 'string' },
->>>>>>> ede13b35deb730fba2f93ad0e48fded8cf0fa73e
+    { field: 'name', headerName: 'Organization/Person Name', width: 200 },
+    { field: 'type', headerName: 'Type', width: 150 },
     { field: 'totalAmountFunded', headerName: 'Total Amount Funded', width: 200, type: 'number' },
     { field: 'highestAmountFunded', headerName: 'Highest Amount Funded', width: 200, type: 'number' },
     {
       field: 'fundedCompanies',
       headerName: 'Funded Companies',
       width: 300,
-      type: 'string',
       renderCell: (params) => (
-        <div className="line-clamp-1">
+        <span className="line-clamp-1">
           {params.row.fundedCompaniesIds?.map((id) => companiesMap[id] || id).join(', ')}
-        </div>
+        </span>
       ),
     },
     {
       field: 'fundingTypes',
       headerName: 'Funding Types',
       width: 250,
-      type: 'string',
       renderCell: (params) => (
-        <div className="line-clamp-1">
+        <span className="line-clamp-1">
           {params.value.map((type: FundingType) => type.name).join(', ')}
-        </div>
+        </span>
       ),
     },
   ];
@@ -129,112 +109,52 @@ const Investors: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-full mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
             Institutions and Individual Investors
           </h1>
-          <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
-            Browse our Investor database
+          <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-600">
+            Browse our comprehensive investor database
           </p>
         </div>
-<<<<<<< HEAD
-      
-        <div className="mt-12 flex">
-           {/** 
-=======
 
-        <div className="mt-12 flex">
->>>>>>> ede13b35deb730fba2f93ad0e48fded8cf0fa73e
-          <div className="w-1/5 p-4">
-            <div className="bg-white shadow rounded-lg p-4">
-              <h2 className="font-bold">Latest Companies</h2>
-              <Collections />
+        <div className="mt-12">
+          {isLoading ? (
+            <div className="flex justify-center items-center h-64">
+              <Loader2 className="h-10 w-10 animate-spin text-gray-500" />
             </div>
-          </div>
-<<<<<<< HEAD
-       **/}
-          
-            <div className="mt-12 bg-white shadow overflow-hidden sm:rounded-lg">
-=======
-
-          <div className="w-[60%]">
-            <div className="bg-white shadow overflow-hidden sm:rounded-lg">
->>>>>>> ede13b35deb730fba2f93ad0e48fded8cf0fa73e
-              {isLoading ? (
-                <div className="flex justify-center items-center h-64">
-                  <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
-                </div>
-              ) : !result?.data?.length ? (
-                <div className="flex flex-col justify-center items-center h-64 text-gray-500">
-                  <Building2 className="h-12 w-12 mb-4" />
-                  <p className="text-xl font-medium">No Investors found</p>
-                </div>
-              ) : (
-<<<<<<< HEAD
-                <Box sx={{ height: 500, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <Box sx={{ width: '90%' }}>
-=======
-                <Box sx={{ height: 500, width: '100%' }}>
->>>>>>> ede13b35deb730fba2f93ad0e48fded8cf0fa73e
-                  <DataGrid
-                    rows={result.data}
-                    columns={columns}
-                    getRowId={(row) => row._id}
-                    paginationModel={paginationModel}
-                    onPaginationModelChange={setPaginationModel}
-                    pagination
-                    checkboxSelection
-                    onRowClick={(params) => handleRowClick(params)}
-<<<<<<< HEAD
-                    sx={{
-                    '& .MuiDataGrid-root': {
-                      border: 'none',
-                    },
-                    '& .MuiDataGrid-cell': {
-                      borderBottom: 'none',
-                    },
-                    '& .MuiDataGrid-columnHeaders': {
-                      backgroundColor: '#f5f5f5',
-                      borderBottom: 'none',
-                    },
-                    '& .MuiDataGrid-columnHeaderTitle': {
-                      fontWeight: 'bold',
-                    },
-                    '& .MuiDataGrid-footerContainer': {
-                      borderTop: 'none',
-                    },
-                    }}
-                  />
-                  </Box>
-=======
-                  />
->>>>>>> ede13b35deb730fba2f93ad0e48fded8cf0fa73e
-                </Box>
-              )}
+          ) : result.data.length === 0 ? (
+            <div className="flex flex-col justify-center items-center h-64 text-gray-500">
+              <Building2 className="h-12 w-12 mb-4" />
+              <p className="text-lg font-medium">No investors found</p>
             </div>
-          </div>
-<<<<<<< HEAD
-          {/** 
-=======
-
->>>>>>> ede13b35deb730fba2f93ad0e48fded8cf0fa73e
-          <div className="w-1/5 p-4">
-            <div className="bg-white shadow rounded-lg p-4">
-              <h2 className="font-bold">Latest News</h2>
-              <NewsList />
-            </div>
-          </div>
-<<<<<<< HEAD
-          */}
-        </div>
-      </div>
-    
-=======
+          ) : (
+            <Box className="bg-white shadow-lg rounded-lg overflow-hidden">
+              <DataGrid
+                rows={result.data}
+                columns={columns}
+                getRowId={(row) => row._id}
+                paginationModel={paginationModel}
+                onPaginationModelChange={setPaginationModel}
+                pagination
+                onRowClick={handleRowClick}
+                sx={{
+                  '& .MuiDataGrid-cell': { borderBottom: 'none' },
+                  '& .MuiDataGrid-columnHeaders': {
+                    backgroundColor: '#f8fafc',
+                    borderBottom: 'none',
+                  },
+                  '& .MuiDataGrid-columnHeaderTitle': { fontWeight: 600 },
+                  '& .MuiDataGrid-footerContainer': { borderTop: 'none' },
+                  '& .MuiDataGrid-row': { cursor: 'pointer' },
+                }}
+              />
+            </Box>
+          )}
         </div>
       </div>
     </div>
->>>>>>> ede13b35deb730fba2f93ad0e48fded8cf0fa73e
   );
 };
 
