@@ -14,6 +14,11 @@ interface FundingType {
   _id: string;
   name: string;
 }
+interface FundingInstruments {
+  _id: string;
+  name: string;
+}
+
 
 interface InvestorsData {
   data: Investor[];
@@ -79,12 +84,12 @@ const Investors: React.FC = () => {
     { field: 'name', headerName: 'Investor Name', width: 200 },
     { field: 'type', headerName: 'Investor Type', width: 150 },
     {
-      field: 'fundingTypes',
+      field: 'fundingInstruments',
       headerName: 'Funding instruments',
       width: 250,
       renderCell: (params) => (
         <span className="line-clamp-1">
-          {params.value.map((type: FundingType) => type.name).join(', ')}
+         { /**{params.value.map((type: FundingInstruments) => type.name).join(', ')}*/}
         </span>
       ),
     },
