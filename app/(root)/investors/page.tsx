@@ -99,18 +99,6 @@ const Investors: React.FC = () => {
       ),
     },
     
-    { field: 'totalAmountFunded', headerName: 'Total Amount Funded', width: 200, type: 'number' },
-    { field: 'highestAmountFunded', headerName: 'Highest Amount Funded', width: 200, type: 'number' },
-    {
-      field: 'fundedCompanies',
-      headerName: 'Funded Companies',
-      width: 300,
-      renderCell: (params) => (
-        <span className="line-clamp-1">
-          {params.row.fundedCompaniesIds?.map((id) => companiesMap[id] || id).join(', ')}
-        </span>
-      ),
-    },
    
   ];
 
