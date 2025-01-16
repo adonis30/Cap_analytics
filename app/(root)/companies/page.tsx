@@ -28,8 +28,7 @@ const fetchData = async (query: string, category: string): Promise<CompaniesData
     };
 
     const result = await getAllCompanies(params);
-    console.log("API result:", result); // Add this line
-    console.log("Companies data:", JSON.stringify(result, null, 2));
+    
 
     if (!result) {
       throw new Error('No data returned');

@@ -46,11 +46,16 @@ export interface InvestorDetailsProps {
 
   // Define tabs
   const tabs = [
-    { value: "summary", label: "Summary", content: <InvestorSummary investor={investor} /> },
+    { value: "summary", label: "Profile", content: <InvestorSummary investor={investor} /> },
     { 
       value: "investments", 
       label: "Investments", 
       content: <InvestorInvestments investments={investor?.fundedCompaniesIds || []} /> // Pass relevant data
+    },
+    { 
+      value: "people", 
+      label: "People", 
+      content: <InvestorNews investor={investor} />
     },
     { 
       value: "news", 

@@ -61,7 +61,7 @@ export function DataTable<TData extends { _id: string }, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  console.log("Data received by DataTable:", JSON.stringify(data, null, 2));
+  
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);

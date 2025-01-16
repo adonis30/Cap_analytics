@@ -76,8 +76,29 @@ const Investors: React.FC = () => {
   }, []);
 
   const columns: GridColDef<Investor>[] = [
-    { field: 'name', headerName: 'Organization/Person Name', width: 200 },
-    { field: 'type', headerName: 'Type', width: 150 },
+    { field: 'name', headerName: 'Investor Name', width: 200 },
+    { field: 'type', headerName: 'Investor Type', width: 150 },
+    {
+      field: 'fundingTypes',
+      headerName: 'Funding instruments',
+      width: 250,
+      renderCell: (params) => (
+        <span className="line-clamp-1">
+          {params.value.map((type: FundingType) => type.name).join(', ')}
+        </span>
+      ),
+    },
+    {
+      field: 'fundingTypes',
+      headerName: 'Funding rounds',
+      width: 250,
+      renderCell: (params) => (
+        <span className="line-clamp-1">
+          {params.value.map((type: FundingType) => type.name).join(', ')}
+        </span>
+      ),
+    },
+    
     { field: 'totalAmountFunded', headerName: 'Total Amount Funded', width: 200, type: 'number' },
     { field: 'highestAmountFunded', headerName: 'Highest Amount Funded', width: 200, type: 'number' },
     {
@@ -90,16 +111,7 @@ const Investors: React.FC = () => {
         </span>
       ),
     },
-    {
-      field: 'fundingTypes',
-      headerName: 'Funding Types',
-      width: 250,
-      renderCell: (params) => (
-        <span className="line-clamp-1">
-          {params.value.map((type: FundingType) => type.name).join(', ')}
-        </span>
-      ),
-    },
+   
   ];
 
   const handleRowClick = (params: { id: GridRowId }) => {
