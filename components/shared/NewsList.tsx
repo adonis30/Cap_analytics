@@ -7,6 +7,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 interface NewsArticle {
   title: string;
@@ -36,16 +37,13 @@ export default function NewsList({ limit = 6 }: NewsListProps) {
       try {
         setLoading(true);
         setError(null);
-        
-        const response = await fetch(
+
+        // Axios request
+        const response = await axios.get(
           `https://newsapi.org/v2/top-headlines?category=business&apiKey=852ef605e8ef45b19821c29549e78674`
         );
-        if (!response.ok) {
-          throw new Error('Failed to fetch news');
-        }
-
-        const data = await response.json();
-        setNews(data.articles || []);
+        
+        setNews(response.data.articles || []);
       } catch (err: any) {
         setError(err.message || 'An error occurred');
       } finally {
