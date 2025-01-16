@@ -64,7 +64,7 @@ const Investors: React.FC = () => {
 
       const companiesData = await fetchCompanies();
       const companiesMapping: { [key: string]: string } = {};
-      companiesData.forEach((company) => {
+      companiesData.forEach((company: { value: string; label: string }) => {
         companiesMapping[company.value] = company.label;
       });
       setCompaniesMap(companiesMapping);
