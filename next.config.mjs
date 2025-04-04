@@ -7,11 +7,21 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'utfs.io',
-                port: '',
                 pathname: '/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'ik.imagekit.io',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'placehold.co',
+                pathname: '/**',
+            },
+            
         ],
-domains: ['example.com'],
+        domains: ['example.com', 'anotherdomain.com'],
     },
 };
 
