@@ -108,7 +108,7 @@ export const getInvestorById = async (investorId: string) => {
     await connectToDatabase();
 
     // First, try to find the investor in IndividualInvestor
-    const individualInvestor = await IndividualInvestor.findById(investorId)
+    const individualInvestor = await Investor.findById(investorId)
       .populate('fundingTypes')
       .lean();
 
@@ -136,7 +136,7 @@ export const getAllInvestors = async (params: GetAllInvestorsParams) => {
   try {
     await connectToDatabase();
 
-    const individualInvestors = await IndividualInvestor.find()
+    const individualInvestors = await Investor.find()
       .sort({ _id: 'desc' })
       .skip((params.page - 1) * params.limit)
       .limit(params.limit)
@@ -155,7 +155,7 @@ export const getAllInvestors = async (params: GetAllInvestorsParams) => {
     return {
       data: JSON.parse(JSON.stringify(combinedInvestors)),
       totalPages: Math.ceil(
-        (await IndividualInvestor.countDocuments() + await InstitutionInvestor.countDocuments()) / params.limit
+        (await Investor.countDocuments() + await InstitutionInvestor.countDocuments()) / params.limit
       ),
     };
   } catch (error) {
