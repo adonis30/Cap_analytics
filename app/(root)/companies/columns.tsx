@@ -64,7 +64,6 @@ const createColumnsFromType = <T,>(fields: (keyof T)[]): ColumnDef<T>[] => {
 const organizationFields: (keyof Company)[] = [
   "organizationName",
   "description",
-  "location",
 ];
 
 const cellClassName = "px-4 py-3"; // Add consistent padding to all cells
