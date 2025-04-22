@@ -125,7 +125,7 @@ export const columns: ColumnDef<Company>[] = [
     accessorKey: "categories",
     header: ({ column }) => (
       <div className={cellClassName}>
-        Categories
+       Sector / industry 
       </div>
     ),
     cell: ({ row }) => {
