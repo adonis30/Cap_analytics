@@ -113,6 +113,7 @@ export function DataTable<TData extends { _id: string }, TValue>({
             className="max-w-sm"
           />
         </div>
+        {/**
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -136,7 +137,7 @@ export function DataTable<TData extends { _id: string }, TValue>({
                 );
               })}
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu> */}
       </div>
       <div className="rounded-md border">
         <Table>
