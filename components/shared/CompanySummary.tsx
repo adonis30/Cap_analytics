@@ -97,12 +97,12 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
               ) : 'No industries specified'
             } />
             <DetailSection title="Headquarters" content={company.location || 'Not specified'} />
-            <DetailSection title="Founders" content="Harte Thompson, Rohit Mathur, Sanford Weill" />
-            <DetailSection title="Last Funding Type" content="Post-IPO Equity" />
+            <DetailSection title="Founders" content="N/A" />
+            <DetailSection title="Last Funding Type" content="N/A" />
             <DetailSection title="Legal Name" content={company.organizationName || 'Not available'} />
             <DetailSection title="Diversity Spotlight" content={
               <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                Women Led
+               N/A
               </span>
             } />
             <DetailSection title="Founded Date" content={
@@ -116,7 +116,7 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
             } />
             <DetailSection title="Operating Status" content={company.operatingStatus || 'Not available'} />
             <DetailSection title="Also Known As" content={company.organizationName || 'Not available'} />
-            <DetailSection title="Stock Symbol" content="NYSE:C" />
+            <DetailSection title="Stock Symbol" content="N/A" />
             <DetailSection title="Company Type" content="For Profit" />
           </div>
         </div>
