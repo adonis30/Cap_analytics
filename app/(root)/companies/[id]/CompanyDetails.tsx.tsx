@@ -60,7 +60,7 @@ export default function CompanyDetails({ company, relatedCompanies, searchParams
             </CardHeader>
             <CardContent>
               <p>Annual Revenue: ${company.annualRevenue ?? 'N/A'}</p>
-              <p>Revenue Growth: {company.revenueGrowth ?? 'N/A'}%</p>
+              <p>Revenue Expenditure : {company.revenueExpenditure ?? 'N/A'}%</p>
             </CardContent>
           </Card>
           <Card>
@@ -68,8 +68,8 @@ export default function CompanyDetails({ company, relatedCompanies, searchParams
               <CardTitle>Funding</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>Total Funding: ${company.totalFunding ?? 'N/A'}</p>
-              <p>Last Funding Date: {company.lastFundingDate ?? 'N/A'}</p>
+              <p>Investment ASK: ${company.investmentAsk ?? 'N/A'}</p>
+              <p>Last SDG Focus : {company.sdgFocus ?? 'N/A'}</p>
             </CardContent>
           </Card>
         </div>
