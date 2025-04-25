@@ -74,7 +74,7 @@ export default function CompanyDetails({ company, relatedCompanies, searchParams
             <CardContent>
               <p>Annual Revenue: ${company.annualRevenue ?? 'N/A'}</p>
               <p>Revenue Expenditure : {company.annualExpenditure
- ?? 'N/A'}%</p>
+ ?? 'N/A'}</p>
             </CardContent>
           </Card>
           <Card>
