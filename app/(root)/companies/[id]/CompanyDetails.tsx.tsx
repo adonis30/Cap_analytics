@@ -73,7 +73,8 @@ export default function CompanyDetails({ company, relatedCompanies, searchParams
             </CardHeader>
             <CardContent>
               <p>Annual Revenue: ${company.annualRevenue ?? 'N/A'}</p>
-              <p>Revenue Expenditure : {company.revenueExpenditure ?? 'N/A'}%</p>
+              <p>Revenue Expenditure : {company.annualExpenditure
+ ?? 'N/A'}%</p>
             </CardContent>
           </Card>
           <Card>
@@ -82,7 +83,7 @@ export default function CompanyDetails({ company, relatedCompanies, searchParams
             </CardHeader>
             <CardContent>
               <p>Investment ASK: ${company.investmentAsk ?? 'N/A'}</p>
-              <p>Last SDG Focus : {sdgFocusName}</p>
+              <p>Last SDG Focus : {company.sdgFocus ?? 'N/A'}</p>
             </CardContent>
           </Card>
         </div>
