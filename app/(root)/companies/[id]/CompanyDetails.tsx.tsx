@@ -47,6 +47,19 @@ export default function CompanyDetails({ company, relatedCompanies, searchParams
     }
   }
 
+  let sdgFocusIds: string[] = []
+  let sdgFocusName: string = 'N/A'
+
+  if(Array.isArray(company.sdgFocus)) {
+    if(typeof company.sdgFocus[0] === 'string') {
+      sdgFocusIds = company.sdgFocus;
+      sdgFocusName = 'SDG focus not found';
+    } else {
+      sdgFocusIds = company.sdgFocus.map((sd: { _id: any; }) => sd._id);
+      sdgFocusName = company.sdgFocus.map((sd: { name: any; }) => sd.name).json(', ');
+    }
+  }
+
   const tabs = [
     { value: "summary", label: "Summary", content: <CompanySummary company={company} /> },
     { 
@@ -69,7 +82,7 @@ export default function CompanyDetails({ company, relatedCompanies, searchParams
             </CardHeader>
             <CardContent>
               <p>Investment ASK: ${company.investmentAsk ?? 'N/A'}</p>
-              <p>Last SDG Focus : {company.sdgFocus ?? 'N/A'}</p>
+              <p>Last SDG Focus : {sdgFocusName}</p>
             </CardContent>
           </Card>
         </div>
