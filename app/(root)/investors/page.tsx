@@ -89,6 +89,8 @@ const Investors: React.FC = () => {
         </span>
       ),
     },
+    { field: 'investorCategory',  headerName: 'Investor Category', width: 200},
+    { field: 'ticketSize', headerName: 'Ticket Size', width: 200},
   ];
 
   const handleRowClick = (params: { id: any }) => {
