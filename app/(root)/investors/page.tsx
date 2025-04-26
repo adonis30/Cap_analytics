@@ -119,56 +119,56 @@ const Investors: React.FC = () => {
           </div>
         ) : (
           <Box className="bg-white shadow-lg rounded-lg overflow-hidden">
-            <DataGridPro
-              rows={result.data}
-              columns={columns}
-              getRowId={(row) => row._id}
-              paginationModel={paginationModel}
-              onPaginationModelChange={setPaginationModel}
-              pagination
-              onRowClick={handleRowClick}
-              showToolbar
-              slots={{}}
-              slotProps={{
-                filterPanel: {
-                  logicOperators: [GridLogicOperator.And],
-                  columnsSort: 'asc',
-                  filterFormProps: {
-                    logicOperatorInputProps: { variant: 'outlined', size: 'small' },
-                    columnInputProps: { variant: 'outlined', size: 'small', sx: { mt: 'auto' } },
-                    operatorInputProps: { variant: 'outlined', size: 'small', sx: { mt: 'auto' } },
-                    valueInputProps: {
-                      InputComponentProps: { variant: 'outlined', size: 'small' },
-                    },
-                    deleteIconProps: {
-                      sx: {
-                        '& .MuiSvgIcon-root': { color: '#d32f2f' },
-                      },
-                    },
-                  },
-                  sx: {
-                    '& .MuiDataGrid-filterForm': { p: 2 },
-                    '& .MuiDataGrid-filterForm:nth-child(even)': {
-                      backgroundColor: (theme: Theme) => theme.palette.mode === 'dark' ? '#444' : '#f5f5f5',
-                    },
-                    '& .MuiDataGrid-filterFormLogicOperatorInput': { mr: 2 },
-                    '& .MuiDataGrid-filterFormColumnInput': { mr: 2, width: 150 },
-                    '& .MuiDataGrid-filterFormOperatorInput': { mr: 2 },
-                    '& .MuiDataGrid-filterFormValueInput': { width: 200 },
-                  },
-                },
-              }}
-              sx={{
-                '& .MuiDataGrid-cell': { borderBottom: 'none' },
-                '& .MuiDataGrid-columnHeaders': {
-                  backgroundColor: '#f8fafc',
-                  borderBottom: 'none',
-                },
-                '& .MuiDataGrid-columnHeaderTitle': { fontWeight: 600 },
-                '& .MuiDataGrid-footerContainer': { borderTop: 'none' },
-                '& .MuiDataGrid-row': { cursor: 'pointer' },
-              }}
-            />
+            <DataGridPro<Investor>
+  rows={result.data}
+  columns={columns}
+  getRowId={(row) => row._id}
+  paginationModel={paginationModel}
+  onPaginationModelChange={setPaginationModel}
+  pagination
+  onRowClick={handleRowClick}
+  disableRowSelectionOnClick
+  slotProps={{
+    filterPanel: {
+      logicOperators: [GridLogicOperator.And],
+      columnsSort: 'asc',
+      filterFormProps: {
+        logicOperatorInputProps: { variant: 'outlined', size: 'small' },
+        columnInputProps: { variant: 'outlined', size: 'small', sx: { mt: 'auto' } },
+        operatorInputProps: { variant: 'outlined', size: 'small', sx: { mt: 'auto' } },
+        valueInputProps: {
+          InputComponentProps: { variant: 'outlined', size: 'small' },
+        },
+        deleteIconProps: {
+          sx: {
+            '& .MuiSvgIcon-root': { color: '#d32f2f' },
+          },
+        },
+      },
+      sx: {
+        '& .MuiDataGrid-filterForm': { p: 2 },
+        '& .MuiDataGrid-filterForm:nth-child(even)': {
+          backgroundColor: (theme: Theme) =>
+            theme.palette.mode === 'dark' ? '#444' : '#f5f5f5',
+        },
+        '& .MuiDataGrid-filterFormLogicOperatorInput': { mr: 2 },
+        '& .MuiDataGrid-filterFormColumnInput': { mr: 2, width: 150 },
+        '& .MuiDataGrid-filterFormOperatorInput': { mr: 2 },
+        '& .MuiDataGrid-filterFormValueInput': { width: 200 },
+      },
+    },
+  }}
+  sx={{
+    '& .MuiDataGrid-cell': { borderBottom: 'none' },
+    '& .MuiDataGrid-columnHeaders': {
+      backgroundColor: '#f8fafc',
+      borderBottom: 'none',
+    },
+    '& .MuiDataGrid-columnHeaderTitle': { fontWeight: 600 },
+    '& .MuiDataGrid-footerContainer': { borderTop: 'none' },
+    '& .MuiDataGrid-row': { cursor: 'pointer' },
+  }}
+/>
           </Box>
         )}
       </div>
