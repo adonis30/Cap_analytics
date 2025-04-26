@@ -73,16 +73,16 @@ const Investors: React.FC = () => {
     {
       field: 'fundingTypes',
       headerName: 'Funding Types',
-      width: 250,
+      width: 350,
       renderCell: (params) => (
         <span className="line-clamp-1">
           {params.value?.map((ft: FundingType) => ft.name).join(', ')}
         </span>
       ),
     },
-    { field: 'investorCategory',  headerName: 'Investor Category', width: 200},
-    { field: 'ticketSize', headerName: 'Ticket Size', width: 200},
-    { field: 'totalAmountFunded', headerName: 'Total Amount Funded so far', width: 200},
+    { field: 'investorCategory',  headerName: 'Investor Category', width: 250},
+    { field: 'ticketSize', headerName: 'Ticket Size', width: 250},
+     
   ];
 
   const handleRowClick = (params: { id: any }) => {
