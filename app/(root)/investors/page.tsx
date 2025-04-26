@@ -5,11 +5,11 @@ import { useRouter } from 'next/navigation';
 import { Box } from '@mui/material';
 import { Loader2, Building2 } from 'lucide-react';
 import {
-  DataGridPro,
+  DataGrid,
   GridColDef,
   GridPaginationModel,
   GridLogicOperator,
-} from '@mui/x-data-grid-pro';
+} from '@mui/x-data-grid';
 import type { Theme } from '@mui/material/styles';
 import { getAllInvestors, fetchCompanies } from '@/lib/actions/investor.actions';
 import { Investor, GetAllInvestorsParams } from '@/types';
@@ -119,7 +119,7 @@ const Investors: React.FC = () => {
           </div>
         ) : (
           <Box className="bg-white shadow-lg rounded-lg overflow-hidden">
-            <DataGridPro<Investor>
+            <DataGrid<Investor>
   rows={result.data}
   columns={columns}
   getRowId={(row) => row._id}
