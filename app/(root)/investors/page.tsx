@@ -69,16 +69,7 @@ const Investors: React.FC = () => {
   const columns: GridColDef<Investor>[] = [
     { field: 'name', headerName: 'Investor Name', width: 200 },
     { field: 'type', headerName: 'Investor Type', width: 150 },
-    {
-      field: 'fundingInstruments',
-      headerName: 'Funding Instruments',
-      width: 250,
-      renderCell: (params) => (
-        <span className="line-clamp-1">
-          {params.value?.map((fi: FundingInstrument) => fi.name).join(', ')}
-        </span>
-      ),
-    },
+     
     {
       field: 'fundingTypes',
       headerName: 'Funding Types',
