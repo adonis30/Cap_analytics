@@ -29,7 +29,7 @@ const populateInvestors = async (query: any) => {
     .populate({ path: 'companyCreator', model: User, select: '_id firstName lastName' })
     .populate({ path: 'categories', model: Category, select: '_id name' })
     .populate({ path: 'fundingTypes', model: FundingType, select: '_id name' })
-    .populate({ path: 'fundingInstruments', model: FundingInstrument, select: '_id name'})
+    .populate({ path: 'fundingInstruments', model: FundingInstruments, select: '_id name'})
     .populate({ path: 'fundingRounds', model: FundingRounds, select: '_id name'});
 };
 
