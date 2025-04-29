@@ -83,7 +83,7 @@ if (Array.isArray(company.sdgFocus)) {
             </CardHeader>
             <CardContent>
               <p>Investment ASK: ${company.investmentAsk ?? 'N/A'}</p>
-              <p>Last SDG Focus : {sdgFocusName}</p>
+              //<p>Last SDG Focus : {sdgFocusName}</p>
 
             </CardContent>
           </Card>
