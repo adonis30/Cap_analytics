@@ -9,8 +9,8 @@ const InvestorSchema = new Schema<BaseInvestorProps>({
   totalAmountFunded: { type: Number, required: true },
   highestAmountFunded: { type: Number, required: true },
   fundingTypes: [{ type: Schema.Types.ObjectId, ref: 'FundingType' }],
-  fundingRounds: [{ type: Schema.Types.ObjectId, ref: "FundingRound" }],
-  fundingInstruments: [{ type: Schema.Types.ObjectId, ref: "FundingInstrument" }],
+  fundingRounds: [{ type: Schema.Types.ObjectId, ref: "FundingRounds" }],
+  fundingInstruments: [{ type: Schema.Types.ObjectId, ref: "FundingInstruments" }],
   fundedCompaniesIds: [{ type: Schema.Types.ObjectId, ref: 'Company' }],
 });
 
