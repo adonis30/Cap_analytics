@@ -26,7 +26,7 @@ interface FundingInstrument {
 interface InvestorsData {
   data: Investor[];
 }
-
+console.log("data" data);
 const fallbackData: InvestorsData = { data: [] };
 
 const fetchData = async (query: string, category: string): Promise<InvestorsData> => {
@@ -89,7 +89,7 @@ const Investors: React.FC = () => {
     const investorId = String(params.id);
     router.push(`/investors/${investorId}`);
   };
-console.log("investor data", Investor) 
+ 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
