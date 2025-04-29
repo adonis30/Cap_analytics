@@ -26,7 +26,7 @@ interface FundingInstrument {
 interface InvestorsData {
   data: Investor[];
 }
-console.log("data", data);
+console.log("data", InvestorsData);
 const fallbackData: InvestorsData = { data: [] };
 
 const fetchData = async (query: string, category: string): Promise<InvestorsData> => {
