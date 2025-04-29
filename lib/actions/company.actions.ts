@@ -9,7 +9,7 @@ import Company from '../database/models/company.model';
 import Category from '../database/models/category.model';
 import { revalidatePath } from 'next/cache';
 import { isValidObjectId } from 'mongoose';
-import SdgFocus from '@/lib/database/models/sdgFocus.model';
+import SDGFocus from '../database/models/sdgfocus.model';
 import FundingType from '@/lib/database/models/fundingType.model';
 
 const populateCompany = async (query: any) => {
@@ -17,7 +17,7 @@ const populateCompany = async (query: any) => {
     .populate({ path: 'companyCreator', model: User, select: '_id firstName lastName' })
     .populate({ path: 'categories', model: Category, select: '_id name' })
     .populate({ path: 'fundingTypes', model: FundingType, select: '_id name' })
-    .populate({ path: 'sdgFocus', model: SdgFocus, select: '_id name' }); // ✅ added
+    .populate({ path: 'sdgFocus', model: SDGFocus, select: '_id name' }); // ✅ added
 };
 
 
