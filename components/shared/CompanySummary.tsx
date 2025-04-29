@@ -56,7 +56,7 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
           <div className="space-y-3">
             <InfoItem icon={MapPin} label="Location" value={company.location || 'Not specified'} />
             <InfoItem icon={Users} label="Employees" value={company.employeeCount || 'Not available'} />
-            <InfoItem icon={Building2} label="Categories" value={company.categories?.map(cat => cat.name).join(', ') || 'Not specified'} />
+            <InfoItem icon={Building2} label="Sector" value={company.categories?.map(cat => cat.name).join(', ') || 'Not specified'} />
             <InfoItem
               icon={Globe}
               label="Website"
@@ -88,11 +88,11 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
         <div className="mt-6">
           <h3 className="text-xl font-semibold text-gray-800 mb-3 flex items-center">
             <DollarSign className="w-6 h-6 mr-2 text-blue-500" />
-            Funding Types
+            Funding Instrument
           </h3>
           <ul className="list-disc list-inside space-y-1 text-gray-600">
-            {company.fundingTypes && company.fundingTypes.length > 0 ? (
-              company.fundingTypes.map((stage, index) => (
+            {company.fundingInstruments && company.fundingInstruments.length > 0 ? (
+              company.fundingInstruments.map((stage, index) => (
                 <li key={index} className="text-blue-600">
                   <span className="text-gray-600">
                     {typeof stage === 'string' ? stage : stage.name}
@@ -100,7 +100,7 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
                 </li>
               ))
             ) : (
-              <li>No funding types available</li>
+              <li>No funding instrument available</li>
             )}
           </ul>
         </div>
