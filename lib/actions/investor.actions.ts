@@ -145,7 +145,7 @@ export const getAllInvestors = async (params: GetAllInvestorsParams) => {
       .skip((params.page - 1) * params.limit)
       .limit(params.limit)
       .populate('fundingTypes', 'name')
-      .populate('fundingInstruments', 'name')
+    //  .populate('fundingInstruments', 'name')
       .lean();
 
     const institutionInvestors = await InstitutionInvestor.find()
@@ -153,7 +153,7 @@ export const getAllInvestors = async (params: GetAllInvestorsParams) => {
       .skip((params.page - 1) * params.limit)
       .limit(params.limit)
       .populate('fundingTypes', 'name')
-      .populate('fundingInstruments', 'name')
+    //  .populate('fundingInstruments', 'name')
       .lean();
 
     const combinedInvestors = [...individualInvestors, ...institutionInvestors];
