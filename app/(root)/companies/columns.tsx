@@ -90,27 +90,27 @@ export const columns: ColumnDef<Company>[] = [
     enableHiding: false,
   },
 
-  {
-    accessorKey: "organizationName",
-    header: ({ column }) => renderFilterableHeader("organizationName", column),
-    cell: ({ row }) => {
-      const org = row.original;
-      const value = row.getValue("organizationName");
-      return (
-        <div className="flex items-center gap-2">
-          <img
-            src={org.imageUrl}
-            alt={org.organizationName}
-            className="h-8 w-8 rounded-full"
-          />
-          <span className="whitespace-nowrap">{value}</span>
-        </div>
-      );
-    },
-    filterFn: "includesString",
-    enableSorting: true,
-    enableColumnFilter: true,
+ {
+  accessorKey: "organizationName",
+  header: ({ column }) => renderFilterableHeader("organizationName", column),
+  cell: ({ row }) => {
+    const org = row.original;
+    const value = row.getValue("organizationName") as string; // ✅ Cast to string
+    return (
+      <div className="flex items-center gap-2">
+        <img
+          src={org.imageUrl}
+          alt={org.organizationName}
+          className="h-8 w-8 rounded-full"
+        />
+        <span className="whitespace-nowrap">{value}</span>
+      </div>
+    );
   },
+  filterFn: "includesString",
+  enableSorting: true,
+  enableColumnFilter: true,
+}
 
   {
     accessorKey: "description",
