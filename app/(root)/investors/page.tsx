@@ -84,12 +84,12 @@ const Investors: React.FC = () => {
     { field: 'ticketSize', headerName: 'Ticket Size', width: 250},
      
   ];
- console.log("funding instruments",fundingInstruments);
+  
   const handleRowClick = (params: { id: any }) => {
     const investorId = String(params.id);
     router.push(`/investors/${investorId}`);
   };
-
+console.log("investor data", Investor) 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
