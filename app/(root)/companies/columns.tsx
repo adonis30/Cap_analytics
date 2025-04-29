@@ -44,17 +44,26 @@ const cellClassName = "px-2 py-3 text-sm";
 const createColumnsFromType = <T,>(fields: (keyof T)[]): ColumnDef<T>[] =>
   fields.map((field) => ({
     accessorKey: field as string,
-    header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        {formatHeader(String(field))}
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <ArrowUpDown className="h-4 w-4" />
-        </Button>
-      </div>
-    ),
+   header: ({ column }) => (
+  <div className="flex flex-col gap-1">
+    <div className="flex items-center gap-2">
+      {formatHeader(String(field))}
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        <ArrowUpDown className="h-4 w-4" />
+      </Button>
+    </div>
+    <Input
+      type="text"
+      placeholder="Filter"
+      value={(column.getFilterValue() ?? "") as string}
+      onChange={(e) => column.setFilterValue(e.target.value)}
+      className="h-7 px-2 text-xs"
+    />
+  </div>
+),
     cell: ({ row }) => {
       const value: any = row.getValue(field as string);
       if (field === "description") {
