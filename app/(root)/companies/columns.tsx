@@ -138,7 +138,7 @@ export const columns: ColumnDef<Company>[] = [
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          maxWidth: '200px',
+          maxWidth: '300px',
         }}>
           {sdgs?.length ? sdgs.map(s => s.name).join(", ") : "N/A"}
         </div>
