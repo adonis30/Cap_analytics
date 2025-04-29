@@ -1,19 +1,17 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from 'mongoose';
 
-
-export interface ISDGFocus extends Document {
-    _id: string;
-    name: string;
-    description: string;
+export interface ISdgFocus extends Document {
+  name: string;
+  description?: string;
 }
 
-const sdgFocusSchema: mongoose.Schema = new mongoose.Schema({
-    name: { type: String, required: true },
-    description: { type: String, required: false },
+const SdgFocusSchema = new Schema<ISdgFocus>({
+  name: { type: String, required: true },
+  description: { type: String, required: false },
 }, {
-    timestamps: true,
+  timestamps: true,
 });
 
-const SDGFocus = mongoose.models.SDGFocus || mongoose.model('SDGFocus', sdgFocusSchema);
+const SdgFocus = mongoose.models.SdgFocus || mongoose.model('SdgFocus', SdgFocusSchema);
 
-export default SDGFocus;
+export default SdgFocus;
