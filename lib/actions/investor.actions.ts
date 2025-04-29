@@ -113,8 +113,10 @@ export const getInvestorById = async (investorId: string) => {
 
     // First, try to find the investor in IndividualInvestor
     const individualInvestor = await Investor.findById(investorId)
-      .populate('fundingTypes')
-      .lean();
+       .populate('fundingTypes', 'name')
+  .populate('fundingRounds', 'name') // <- ADD
+  .populate('fundingInstruments', 'name') // <- ADD
+  .lean();
 
     if (individualInvestor) {
       return JSON.parse(JSON.stringify(individualInvestor));
@@ -122,8 +124,10 @@ export const getInvestorById = async (investorId: string) => {
 
     // If not found, try to find the investor in InstitutionInvestor
     const institutionInvestor = await InstitutionInvestor.findById(investorId)
-      .populate('fundingTypes')
-      .lean();
+       .populate('fundingTypes', 'name')
+  .populate('fundingRounds', 'name') // <- ADD
+  .populate('fundingInstruments', 'name') // <- ADD
+  .lean();
 
     if (institutionInvestor) {
       return JSON.parse(JSON.stringify(institutionInvestor));
@@ -142,19 +146,21 @@ export const getAllInvestors = async (params: GetAllInvestorsParams) => {
 
     const individualInvestors = await Investor.find()
       .sort({ _id: 'desc' })
-      .skip((params.page - 1) * params.limit)
-      .limit(params.limit)
-      .populate('fundingTypes', 'name')
-    //  .populate('fundingInstruments', 'name')
-      .lean();
+  .skip((params.page - 1) * params.limit)
+  .limit(params.limit)
+  .populate('fundingTypes', 'name')
+  .populate('fundingRounds', 'name') // <- ADD THIS
+  .populate('fundingInstruments', 'name') // <- AND THIS
+  .lean();
 
     const institutionInvestors = await InstitutionInvestor.find()
       .sort({ _id: 'desc' })
-      .skip((params.page - 1) * params.limit)
-      .limit(params.limit)
-      .populate('fundingTypes', 'name')
-    //  .populate('fundingInstruments', 'name')
-      .lean();
+  .skip((params.page - 1) * params.limit)
+  .limit(params.limit)
+  .populate('fundingTypes', 'name')
+  .populate('fundingRounds', 'name') // <- ADD THIS
+  .populate('fundingInstruments', 'name') // <- AND THIS
+  .lean();
 
     const combinedInvestors = [...individualInvestors, ...institutionInvestors];
 
