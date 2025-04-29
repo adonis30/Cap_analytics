@@ -29,7 +29,7 @@ const fetchData = async (query: string, category: string): Promise<CompaniesData
 
     const result = await getAllCompanies(params);
     
-
+   console.log("result", result)
     if (!result) {
       throw new Error('No data returned');
     }
