@@ -9,8 +9,8 @@ import IndividualInvestor from '../database/models/individualInvestor.model';
 import InstitutionInvestor from '../database/models/institutionInvestor.model';
 import { GetAllInvestorsParams, GetRelatedInvestorsByCategoryParams } from '@/types';
 import FundingType from '../database/models/fundingType.model';
-import FundingInstruments from '../database/models/fundingInstruments.model'
-import FundingRounds from '../database/models/fundingRounds.model/
+import FundingInstruments from '../database/models/fundingInstruments.model';
+import FundingRounds from '../database/models/fundingRounds.model';
 import Category from '../database/models/category.model';
 
 interface InvestorData {
