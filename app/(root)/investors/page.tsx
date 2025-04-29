@@ -47,7 +47,7 @@ const Investors: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [result, setResult] = useState<InvestorsData>(fallbackData);
   const [companiesMap, setCompaniesMap] = useState<{ [key: string]: string }>({});
-
+  console.log("result", result);
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
