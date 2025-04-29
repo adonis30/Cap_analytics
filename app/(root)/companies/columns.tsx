@@ -130,7 +130,7 @@ export const columns: ColumnDef<Company>[] = [
 
   {
     accessorKey: "categories",
-    header: ({ column }) => renderFilterableHeader("categories", column),
+    header: ({ column }) => renderFilterableHeader("sector", column),
     cell: ({ row }) => {
       const categories = row.getValue("categories") as Category[];
       return (
