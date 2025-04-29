@@ -11,6 +11,8 @@ import { revalidatePath } from 'next/cache';
 import { isValidObjectId } from 'mongoose';
 import SdgFocus from '../database/models/sdgfocus.model';
 import FundingType from '@/lib/database/models/fundingType.model';
+import FundingInstruments from '../database/models/fundingInstruments.model';
+import FundingRounds from '../database/models/fundingRounds.model';
 
 const populateCompany = async (query: any) => {
   return query
@@ -18,6 +20,8 @@ const populateCompany = async (query: any) => {
     .populate({ path: 'categories', model: Category, select: '_id name' })
     .populate({ path: 'fundingTypes', model: FundingType, select: '_id name' })
     .populate({ path: 'sdgFocus', model: SdgFocus, select: '_id name' }); // ✅ added
+    .populate({ path: 'fundingInstruments', model: FundingInstruments, select: '_id name'})
+    .populate({ path: 'fundingRounds', model: FundingRounds, select: '_id name'});
 };
 
 
@@ -44,6 +48,8 @@ export const createCompany = async ({ company, userId, path }: CreateCompanyPara
   .populate('categories')
   .populate('fundingTypes')
   .populate('sdgFocus') // ✅ added
+  .populate('fundingRounds') // <- ADD
+  .populate('fundingInstruments') // <- ADD
   .lean();
 
     return JSON.parse(JSON.stringify(populatedCompany));
@@ -130,6 +136,8 @@ export async function getCompanyById(companyId: string) {
      .populate('categories')
   .populate('fundingTypes')
   .populate('sdgFocus') // ✅ added
+  .populate('fundingRounds') // <- ADD
+  .populate('fundingInstruments') // <- ADD
   .lean();
 
       
@@ -151,6 +159,8 @@ export async function getAllCompanies(params: GetAllCompanyParams) {
       .populate('categories')
   .populate('fundingTypes')
   .populate('sdgFocus') // ✅ added
+  .populate('fundingRounds') // <- ADD
+  .populate('fundingInstruments') // <- ADD
   .lean();
 
     
