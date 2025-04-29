@@ -71,12 +71,12 @@ const Investors: React.FC = () => {
     { field: 'type', headerName: 'Investor Type', width: 150 },
      
     {
-      field: 'fundingTypes',
-      headerName: 'Funding Types',
+      field: 'fundingInstruments',
+      headerName: 'Funding Instrument',
       width: 350,
       renderCell: (params) => (
         <span className="line-clamp-1">
-          {params.value?.map((ft: FundingType) => ft.name).join(', ')}
+          {params.value?.map((ft: FundingInstrument) => ft.name).join(', ')}
         </span>
       ),
     },
