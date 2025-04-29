@@ -1,8 +1,9 @@
-import { ColumnDef, CellContext } from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Company as ImportedCompany } from "@/types";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 // Helpers
 const formatHeader = (key: string): string =>
@@ -37,54 +38,30 @@ export interface Company extends ImportedCompany {
   sdgFocus?: SDG[];
 }
 
-const organizationFields: (keyof Company)[] = ["organizationName", "description"];
 const cellClassName = "px-2 py-3 text-sm";
 
-// Dynamic Columns Generator
-const createColumnsFromType = <T,>(fields: (keyof T)[]): ColumnDef<T>[] =>
-  fields.map((field) => ({
-    accessorKey: field as string,
-    header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        {formatHeader(String(field))}
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <ArrowUpDown className="h-4 w-4" />
-        </Button>
-      </div>
-    ),
-    cell: ({ row }) => {
-      const value: any = row.getValue(field as string);
-      if (field === "description") {
-        return (
-          <div className="line-clamp-2" style={{ ...clampInline, maxWidth: "250px" }}>
-            {value}
-          </div>
-        );
-      }
-      if (field === "organizationName") {
-        const organization = row.original as Company;
-        return (
-          <div className="flex items-center space-x-2">
-            <img
-              src={organization.imageUrl}
-              alt={organization.organizationName}
-              className="h-8 w-8 rounded-full"
-            />
-            <span className="whitespace-nowrap">{value}</span>
-          </div>
-        );
-      }
-      return <div className="whitespace-nowrap">{value}</div>;
-    },
-    enableSorting: true,
-    enableColumnFilter: true,
-    filterFn: "includesString",
-  }));
+const renderFilterableHeader = (field: string, column: any) => (
+  <div className="flex flex-col gap-1">
+    <div className="flex items-center gap-2">
+      {formatHeader(field)}
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        <ArrowUpDown className="h-4 w-4" />
+      </Button>
+    </div>
+    <Input
+      type="text"
+      placeholder="Filter..."
+      value={(column.getFilterValue() ?? "") as string}
+      onChange={(e) => column.setFilterValue(e.target.value)}
+      className="h-7 px-2 text-xs"
+    />
+  </div>
+);
 
-// Columns Definition
+// Columns
 export const columns: ColumnDef<Company>[] = [
   {
     id: "select",
@@ -113,23 +90,47 @@ export const columns: ColumnDef<Company>[] = [
     enableHiding: false,
   },
 
-  // Dynamic Org fields
-  ...createColumnsFromType<Company>(organizationFields),
+  {
+    accessorKey: "organizationName",
+    header: ({ column }) => renderFilterableHeader("organizationName", column),
+    cell: ({ row }) => {
+      const org = row.original;
+      const value = row.getValue("organizationName");
+      return (
+        <div className="flex items-center gap-2">
+          <img
+            src={org.imageUrl}
+            alt={org.organizationName}
+            className="h-8 w-8 rounded-full"
+          />
+          <span className="whitespace-nowrap">{value}</span>
+        </div>
+      );
+    },
+    filterFn: "includesString",
+    enableSorting: true,
+    enableColumnFilter: true,
+  },
 
-  // Categories column
+  {
+    accessorKey: "description",
+    header: ({ column }) => renderFilterableHeader("description", column),
+    cell: ({ row }) => {
+      const value = row.getValue("description");
+      return (
+        <div className="line-clamp-2" style={{ ...clampInline, maxWidth: "250px" }}>
+          {value}
+        </div>
+      );
+    },
+    filterFn: "includesString",
+    enableSorting: true,
+    enableColumnFilter: true,
+  },
+
   {
     accessorKey: "categories",
-    header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        Sector / Industry
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <ArrowUpDown className="h-4 w-4" />
-        </Button>
-      </div>
-    ),
+    header: ({ column }) => renderFilterableHeader("categories", column),
     cell: ({ row }) => {
       const categories = row.getValue("categories") as Category[];
       return (
@@ -138,25 +139,14 @@ export const columns: ColumnDef<Company>[] = [
         </div>
       );
     },
+    filterFn: "includesString",
     enableSorting: true,
     enableColumnFilter: true,
-    filterFn: "includesString",
   },
 
-  // SDG Focus column
   {
     accessorKey: "sdgFocus",
-    header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        SDG Focus
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <ArrowUpDown className="h-4 w-4" />
-        </Button>
-      </div>
-    ),
+    header: ({ column }) => renderFilterableHeader("sdgFocus", column),
     cell: ({ row }) => {
       const sdgs = row.getValue("sdgFocus") as SDG[];
       return (
@@ -165,9 +155,9 @@ export const columns: ColumnDef<Company>[] = [
         </div>
       );
     },
+    filterFn: "includesString",
     enableSorting: true,
     enableColumnFilter: true,
-    filterFn: "includesString",
   },
 ];
 
