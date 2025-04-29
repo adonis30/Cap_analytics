@@ -9,7 +9,7 @@ import Company from '../database/models/company.model';
 import Category from '../database/models/category.model';
 import { revalidatePath } from 'next/cache';
 import { isValidObjectId } from 'mongoose';
-import SdgFocus from '../database/models/sdgFocus.model';
+import SdgFocus from '../database/models/sdgfocus.model';
 import FundingType from '@/lib/database/models/fundingType.model';
 
 const populateCompany = async (query: any) => {
