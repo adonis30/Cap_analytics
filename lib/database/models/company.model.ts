@@ -20,6 +20,7 @@ export interface ICompany extends Document {
   people: string[]; // Array of people IDs
   fundedBy: string[]; // Array of fundedBy IDs
   fundingTypes: string[]; // Array of fundingTypes IDs
+  sdgFocus: string[];
   companyCreator?: {
     _id: Schema.Types.ObjectId | string,
     firstName?: string,
@@ -54,6 +55,9 @@ const CompanySchema = new Schema({
   people: [{ type: Schema.Types.ObjectId, ref: 'Person' }],
   fundedBy: [{ type: Schema.Types.ObjectId, ref: 'FundingSource' }],
   fundingTypes: [{ type: Schema.Types.ObjectId, ref: 'FundingType' }],
+   sdgFocus: [
+    { type: Schema.Types.ObjectId, ref: 'SdgFocus' }  
+  ],
   companyCreator: { type: Schema.Types.ObjectId, ref: 'User' },
   boardMembers: [{
     member: { type: Schema.Types.ObjectId, ref: 'BoardMember', required: true },
