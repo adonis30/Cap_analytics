@@ -9,6 +9,8 @@ import IndividualInvestor from '../database/models/individualInvestor.model';
 import InstitutionInvestor from '../database/models/institutionInvestor.model';
 import { GetAllInvestorsParams, GetRelatedInvestorsByCategoryParams } from '@/types';
 import FundingType from '../database/models/fundingType.model';
+import FundingInstruments from '../database/models/fundingInstruments.model'
+import FundingRounds from '../database/models/fundingRounds.model/
 import Category from '../database/models/category.model';
 
 interface InvestorData {
@@ -27,6 +29,8 @@ const populateInvestors = async (query: any) => {
     .populate({ path: 'companyCreator', model: User, select: '_id firstName lastName' })
     .populate({ path: 'categories', model: Category, select: '_id name' })
     .populate({ path: 'fundingTypes', model: FundingType, select: '_id name' });
+    .populate({ path: 'fundingInstruments', model: FundingInstrument, select: '_id name'});
+    .populate({ path: 'fundingRounds', model: FundingRounds, select: '_id name'});
 };
 
 export async function getRelatedInvestorsByCategory({
@@ -141,6 +145,7 @@ export const getAllInvestors = async (params: GetAllInvestorsParams) => {
       .skip((params.page - 1) * params.limit)
       .limit(params.limit)
       .populate('fundingTypes', 'name')
+      .populate('fundingInstruments', 'name')
       .lean();
 
     const institutionInvestors = await InstitutionInvestor.find()
@@ -148,6 +153,7 @@ export const getAllInvestors = async (params: GetAllInvestorsParams) => {
       .skip((params.page - 1) * params.limit)
       .limit(params.limit)
       .populate('fundingTypes', 'name')
+      .populate('fundingInstruments', 'name')
       .lean();
 
     const combinedInvestors = [...individualInvestors, ...institutionInvestors];
