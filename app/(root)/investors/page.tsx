@@ -84,7 +84,7 @@ const Investors: React.FC = () => {
     { field: 'ticketSize', headerName: 'Ticket Size', width: 250},
      
   ];
-
+ console.log("funding instruments",fundingInstruments);
   const handleRowClick = (params: { id: any }) => {
     const investorId = String(params.id);
     router.push(`/investors/${investorId}`);
