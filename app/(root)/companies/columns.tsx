@@ -1,47 +1,38 @@
 import { ColumnDef, Row, CellContext } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Company as ImportedCompany } from "@/types";  // Renamed import
+import { Company as ImportedCompany } from "@/types";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Function to format camelCase or similar strings to readable text
 const formatHeader = (key: string): string => {
   return key
-    .replace(/([A-Z])/g, ' $1') // Add space before capital letters
-    .replace(/^./, str => str.toUpperCase()); // Capitalize the first letter
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, str => str.toUpperCase());
 };
 
-// Define the clampInline style object with explicit types
 const clampInline: React.CSSProperties = {
   display: '-webkit-box',
   WebkitLineClamp: 1,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  WebkitBoxOrient: 'vertical' as 'vertical', // Ensure type compatibility
+  WebkitBoxOrient: 'vertical' as 'vertical',
 };
 
-// Mapping function to generate column definitions dynamically
 const createColumnsFromType = <T,>(fields: (keyof T)[]): ColumnDef<T>[] => {
   return fields.map((field) => ({
     accessorKey: field as string,
     header: formatHeader(field.toString()),
     cell: ({ row }) => {
-      const value: any = row.getValue(field as string); // Explicitly define value as any
-
+      const value: any = row.getValue(field as string);
       if (field === "description") {
-        return (
-          <div className="line-clamp-2" style={clampInline}>
-            {value}
-          </div>
-        );
+        return <div className="line-clamp-2" style={clampInline}>{value}</div>;
       }
-
-      // Check if field is 'category' and handle object with 'name'
       if (field === "category" && typeof value === "object" && value !== null && "name" in value) {
-        return <div className="whitespace-nowrap">{(value as any).name}</div>; // Handle category name
+        return <div className="whitespace-nowrap">{(value as any).name}</div>;
       }
       if (field === "organizationName") {
-        const organization = row.original as Company; // Cast to specific type
+        const organization = row.original as Company;
         return (
           <div className="flex items-center space-x-2">
             <img
@@ -53,29 +44,27 @@ const createColumnsFromType = <T,>(fields: (keyof T)[]): ColumnDef<T>[] => {
           </div>
         );
       }
-
-      // Default render for other fields
       return <div className="whitespace-nowrap">{value}</div>;
     },
   }));
 };
 
-// Update this array to remove "category"
-const organizationFields: (keyof Company)[] = [
-  "organizationName",
-  "description",
-];
+const organizationFields: (keyof Company)[] = ["organizationName", "description"];
+const cellClassName = "px-4 py-3";
 
-const cellClassName = "px-4 py-3"; // Add consistent padding to all cells
-
-// Update the Company type to reflect the actual structure
+// Extra interfaces
 interface Category {
   _id: string;
   name: string;
 }
 
+interface SDG {
+  _id: string;
+  name: string;
+}
+
 export interface Company extends ImportedCompany {
-  // Add any additional properties here if needed
+  sdgFocus?: SDG[];
 }
 
 export const columns: ColumnDef<Company>[] = [
@@ -114,19 +103,15 @@ export const columns: ColumnDef<Company>[] = [
     ),
     cell: (props: CellContext<Company, unknown>) => (
       <div className={cellClassName}>
-        {typeof column.cell === 'function' 
+        {typeof column.cell === 'function'
           ? column.cell(props)
           : props.getValue()}
       </div>
     ),
-  })) as ColumnDef<Company>[], // Add type assertion here
+  })) as ColumnDef<Company>[],
   {
     accessorKey: "categories",
-    header: ({ column }) => (
-      <div className={cellClassName}>
-       Sector / industry 
-      </div>
-    ),
+    header: () => <div className={cellClassName}>Sector / Industry</div>,
     cell: ({ row }) => {
       const categories = row.getValue("categories") as Category[];
       return (
@@ -134,16 +119,32 @@ export const columns: ColumnDef<Company>[] = [
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          maxWidth: '200px', // Adjust this value as needed
+          maxWidth: '200px',
         }}>
-          {categories && categories.length > 0
-            ? categories.map(cat => cat.name).join(", ")
-            : 'N/A'}
+          {categories?.length ? categories.map(cat => cat.name).join(", ") : "N/A"}
         </div>
       );
     },
-  } as ColumnDef<Company>, // Add type assertion here
- 
+  } as ColumnDef<Company>,
+
+  // ✅ NEW SDG FOCUS COLUMN
+  {
+    accessorKey: "sdgFocus",
+    header: () => <div className={cellClassName}>SDG Focus</div>,
+    cell: ({ row }) => {
+      const sdgs = row.getValue("sdgFocus") as SDG[];
+      return (
+        <div className={`${cellClassName} font-medium`} style={{
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: '200px',
+        }}>
+          {sdgs?.length ? sdgs.map(s => s.name).join(", ") : "N/A"}
+        </div>
+      );
+    },
+  } as ColumnDef<Company>,
 ];
 
 export default columns;
