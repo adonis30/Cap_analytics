@@ -4,7 +4,7 @@ import { Company as ImportedCompany } from "@/types";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// Formatting function
+// Helpers
 const formatHeader = (key: string): string =>
   key.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase());
 
@@ -13,7 +13,7 @@ const clampInline: React.CSSProperties = {
   WebkitLineClamp: 1,
   overflow: "hidden",
   textOverflow: "ellipsis",
-  WebkitBoxOrient: "vertical" as "vertical",
+  WebkitBoxOrient: "vertical" as const,
 };
 
 const truncateStyle: React.CSSProperties = {
@@ -22,13 +22,12 @@ const truncateStyle: React.CSSProperties = {
   textOverflow: "ellipsis",
 };
 
-const cellClassName = "px-2 py-3 text-sm";
-const wideCellClass = `${cellClassName} max-w-[200px] truncate`;
-
+// Types
 interface Category {
   _id: string;
   name: string;
 }
+
 interface SDG {
   _id: string;
   name: string;
@@ -39,23 +38,32 @@ export interface Company extends ImportedCompany {
 }
 
 const organizationFields: (keyof Company)[] = ["organizationName", "description"];
+const cellClassName = "px-2 py-3 text-sm";
 
-// Column for each basic field
+// Dynamic Columns Generator
 const createColumnsFromType = <T,>(fields: (keyof T)[]): ColumnDef<T>[] =>
   fields.map((field) => ({
     accessorKey: field as string,
-    header: formatHeader(field.toString()),
+    header: ({ column }) => (
+      <div className="flex items-center gap-2">
+        {formatHeader(String(field))}
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <ArrowUpDown className="h-4 w-4" />
+        </Button>
+      </div>
+    ),
     cell: ({ row }) => {
       const value: any = row.getValue(field as string);
-
       if (field === "description") {
         return (
-          <div style={{ ...clampInline, maxWidth: "250px" }}>
+          <div className="line-clamp-2" style={{ ...clampInline, maxWidth: "250px" }}>
             {value}
           </div>
         );
       }
-
       if (field === "organizationName") {
         const organization = row.original as Company;
         return (
@@ -69,7 +77,6 @@ const createColumnsFromType = <T,>(fields: (keyof T)[]): ColumnDef<T>[] =>
           </div>
         );
       }
-
       return <div className="whitespace-nowrap">{value}</div>;
     },
     enableSorting: true,
@@ -77,6 +84,7 @@ const createColumnsFromType = <T,>(fields: (keyof T)[]): ColumnDef<T>[] =>
     filterFn: "includesString",
   }));
 
+// Columns Definition
 export const columns: ColumnDef<Company>[] = [
   {
     id: "select",
@@ -105,26 +113,10 @@ export const columns: ColumnDef<Company>[] = [
     enableHiding: false,
   },
 
-  ...createColumnsFromType<Company>(organizationFields).map((column) => ({
-    ...column,
-    header: ({ column: col }) => (
-      <div className="flex items-center gap-2">
-        {formatHeader(col.id)}
-        <Button
-          variant="ghost"
-          onClick={() => col.toggleSorting(col.getIsSorted() === "asc")}
-        >
-          <ArrowUpDown className="h-4 w-4" />
-        </Button>
-      </div>
-    ),
-    cell: (props: CellContext<Company, unknown>) => (
-      <div className={cellClassName}>
-        {typeof column.cell === "function" ? column.cell(props) : props.getValue()}
-      </div>
-    ),
-  })),
+  // Dynamic Org fields
+  ...createColumnsFromType<Company>(organizationFields),
 
+  // Categories column
   {
     accessorKey: "categories",
     header: ({ column }) => (
@@ -138,13 +130,11 @@ export const columns: ColumnDef<Company>[] = [
         </Button>
       </div>
     ),
-    accessorFn: (row) =>
-      row.categories?.map((cat) => cat.name).join(", ") ?? "",
     cell: ({ row }) => {
-      const categories = row.getValue("categories") as string;
+      const categories = row.getValue("categories") as Category[];
       return (
-        <div className={`${cellClassName} font-medium`} style={{ maxWidth: "200px", ...truncateStyle }}>
-          {categories || "N/A"}
+        <div className={`${cellClassName} font-medium`} style={{ ...truncateStyle, maxWidth: "200px" }}>
+          {categories?.length ? categories.map((cat) => cat.name).join(", ") : "N/A"}
         </div>
       );
     },
@@ -153,6 +143,7 @@ export const columns: ColumnDef<Company>[] = [
     filterFn: "includesString",
   },
 
+  // SDG Focus column
   {
     accessorKey: "sdgFocus",
     header: ({ column }) => (
@@ -166,13 +157,11 @@ export const columns: ColumnDef<Company>[] = [
         </Button>
       </div>
     ),
-    accessorFn: (row) =>
-      row.sdgFocus?.map((sdg) => sdg.name).join(", ") ?? "",
     cell: ({ row }) => {
-      const sdgs = row.getValue("sdgFocus") as string;
+      const sdgs = row.getValue("sdgFocus") as SDG[];
       return (
-        <div className={`${cellClassName} font-medium`} style={{ maxWidth: "200px", ...truncateStyle }}>
-          {sdgs || "N/A"}
+        <div className={`${cellClassName} font-medium`} style={{ ...truncateStyle, maxWidth: "200px" }}>
+          {sdgs?.length ? sdgs.map((s) => s.name).join(", ") : "N/A"}
         </div>
       );
     },
