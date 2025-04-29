@@ -17,7 +17,7 @@ interface CompanySummaryProps {
     contactEmail?: string;
     url: string;
     fundingTypes: Array<{ name: string }> | string[];
-    fundingInstruments?: string[];
+    fundingInstruments: Array<{ name: string }> | string[];
     categoryNames?: string[];
     fundedDate?: string | number | Date;
     sdgFocus?: Array<{ name: string }>;
