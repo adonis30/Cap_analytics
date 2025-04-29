@@ -9,14 +9,17 @@ import Company from '../database/models/company.model';
 import Category from '../database/models/category.model';
 import { revalidatePath } from 'next/cache';
 import { isValidObjectId } from 'mongoose';
+import SdgFocus from '@/lib/database/models/sdgFocus.model';
 import FundingType from '@/lib/database/models/fundingType.model';
 
 const populateCompany = async (query: any) => {
   return query
     .populate({ path: 'companyCreator', model: User, select: '_id firstName lastName' })
     .populate({ path: 'categories', model: Category, select: '_id name' })
-    .populate({ path: 'fundingTypes', model: FundingType, select: '_id name' });
+    .populate({ path: 'fundingTypes', model: FundingType, select: '_id name' })
+    .populate({ path: 'sdgFocus', model: SdgFocus, select: '_id name' }); // ✅ added
 };
+
 
 export const createCompany = async ({ company, userId, path }: CreateCompanyParams) => {
   try {
@@ -38,9 +41,10 @@ export const createCompany = async ({ company, userId, path }: CreateCompanyPara
     );
 
     const populatedCompany = await Company.findById(newCompany._id)
-      .populate('categories')
-      .populate('fundingTypes')
-      .lean();
+  .populate('categories')
+  .populate('fundingTypes')
+  .populate('sdgFocus') // ✅ added
+  .lean();
 
     return JSON.parse(JSON.stringify(populatedCompany));
   } catch (error) {
@@ -123,9 +127,11 @@ export async function getCompanyById(companyId: string) {
     await connectToDatabase();
     
     const company = await Company.findById(companyId)
-      .populate('categories')
-      .populate('fundingTypes')
-      .lean();
+     .populate('categories')
+  .populate('fundingTypes')
+  .populate('sdgFocus') // ✅ added
+  .lean();
+
       
     if (!company) throw new Error('Company not found');
     
@@ -142,9 +148,11 @@ export async function getAllCompanies(params: GetAllCompanyParams) {
       .sort({ createdAt: 'desc' })
       .skip((params.page - 1) * params.limit)
       .limit(params.limit)
-      .populate('categories', 'name')
-      .populate('fundingTypes', 'name')
-      .lean();
+      .populate('categories')
+  .populate('fundingTypes')
+  .populate('sdgFocus') // ✅ added
+  .lean();
+
     
     return {
       data: JSON.parse(JSON.stringify(companies)),
