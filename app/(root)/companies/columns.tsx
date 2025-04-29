@@ -1,5 +1,3 @@
-'use client';
-
 import { ColumnDef, CellContext } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Company as ImportedCompany } from "@/types";
@@ -135,7 +133,7 @@ export const columns: ColumnDef<Company>[] = [
     cell: ({ row }) => {
       const categories = row.getValue("categories") as Category[];
       return (
-        <div className={${cellClassName} font-medium} style={{ ...truncateStyle, maxWidth: "200px" }}>
+        <div className={`${cellClassName} font-medium`} style={{ ...truncateStyle, maxWidth: "200px" }}>
           {categories?.length ? categories.map((cat) => cat.name).join(", ") : "N/A"}
         </div>
       );
@@ -162,7 +160,7 @@ export const columns: ColumnDef<Company>[] = [
     cell: ({ row }) => {
       const sdgs = row.getValue("sdgFocus") as SDG[];
       return (
-        <div className={${cellClassName} font-medium} style={{ ...truncateStyle, maxWidth: "200px" }}>
+        <div className={`${cellClassName} font-medium`} style={{ ...truncateStyle, maxWidth: "200px" }}>
           {sdgs?.length ? sdgs.map((s) => s.name).join(", ") : "N/A"}
         </div>
       );
