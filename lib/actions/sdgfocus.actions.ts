@@ -2,10 +2,10 @@
 
 import { handleError } from '../utils';
 import { connectToDatabase } from '../database';
-import SDGFocus from '../database/models/sdgFocus.model';
+import SDGFocus from '../database/models/sdgfocus.model';
 
 
-inferface SDGFocusData {
+interface SDGFocusData {
     id: string;
     name: string;
     // Add more properties if needed
