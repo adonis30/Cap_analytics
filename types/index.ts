@@ -109,6 +109,8 @@ export type UpdateInstitutionInvestorProps = {
   highestAmountFunded?: number;
   fundedCompaniesIds?: string[]; // Optional array of funded company IDs
   fundingTypes?: string[]; // Optional array of funding type IDs
+  fundingRounds?: string[]; // Optional array of funding round IDs
+  fundingInstruments?: string[]; // Optional array of funding instrument IDs
   institutionDetails?: {
     organizationName?: string;
     description?: string;
@@ -133,6 +135,8 @@ export type UpdateIndividualInvestorProps = {
   highestAmountFunded?: number;
   fundedCompaniesIds?: string[]; // Optional array of funded company IDs
   fundingTypes?: string[]; // Optional array of funding type IDs
+  fundingRounds?: string[]; // Optional array of funding round IDs
+  fundingInstruments?: string[]; // Optional array of funding instrument IDs
   firstName?: string;
   lastName?: string;
   position?: string; // Optional position field
@@ -149,6 +153,8 @@ export type BaseInvestorProps = {
   totalAmountFunded: number;
   highestAmountFunded: number;
   fundingTypes?: string[]; // Array of funding type IDs
+  fundingRounds?: string[]; // Array of funding round IDs
+  fundingInstruments?: string[]; // Array of funding instrument IDs
   fundedCompaniesIds?: string[]; // Array of funded company IDs
 };
 
@@ -215,6 +221,8 @@ export type Investor = {
   phoneNumber?: string;
   fundedCompaniesIds?: string[];
   fundingTypes?: string[];
+  fundingRounds?: string[];
+  fundingInstruments?: string[];
   totalAmountFunded: number;
   highestAmountFunded: number;
   individualDetails?: {
