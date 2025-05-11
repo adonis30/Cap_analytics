@@ -29,6 +29,11 @@ interface Category {
   name: string;
 }
 
+interface Sector {
+  _id: string;
+  name: string
+}
+
 interface SDG {
   _id: string;
   name: string;
@@ -110,7 +115,7 @@ export const columns: ColumnDef<Company>[] = [
     filterFn: "includesString",
     enableSorting: true,
     enableColumnFilter: true,
-  }, // ✅ Missing comma was here
+  },
 
   {
     accessorKey: "description",
@@ -129,13 +134,13 @@ export const columns: ColumnDef<Company>[] = [
   },
 
   {
-    accessorKey: "categories",
+    accessorKey: "sector",
     header: ({ column }) => renderFilterableHeader("sector", column),
     cell: ({ row }) => {
-      const categories = row.getValue("categories") as Category[];
+      const categories = row.getValue("sector") as Sector[];
       return (
         <div className={`${cellClassName} font-medium`} style={{ ...truncateStyle, maxWidth: "200px" }}>
-          {categories?.length ? categories.map((cat) => cat.name).join(", ") : "N/A"}
+          {sector?.length ? sector.map((cat) => sec.name).join(", ") : "N/A"}
         </div>
       );
     },
