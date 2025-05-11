@@ -58,7 +58,7 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
           <div className="space-y-3">
             <InfoItem icon={MapPin} label="Location" value={company.location || 'Not specified'} />
             <InfoItem icon={Users} label="Employees" value={company.employeeCount || 'Not available'} />
-            <InfoItem icon={Building2} label="Sector" value={company.sector?.map(cat => sec.name).join(', ') || 'Not specified'} />
+            <InfoItem icon={Building2} label="Sector" value={company.sector?.map(sec => sec.name).join(', ') || 'Not specified'} />
             <InfoItem
               icon={Globe}
               label="Website"
