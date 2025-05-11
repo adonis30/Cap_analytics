@@ -114,17 +114,24 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
         </div>
         <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <DetailSection title="Industries/ sector" content={
-              company.categories && company.sector.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                  {company.sector.map((sectorg, index) => (
-                    <span key={index} className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                      {sector.name}
-                    </span>
-                  ))}
-                </div>
-              ) : 'No industries specified'
-            } />
+            <DetailSection
+  title="Industries/ sector"
+  content={
+    Array.isArray(company.sector) && company.sector.length > 0 ? (
+      <div className="flex flex-wrap gap-2">
+        {company.sector.map((sector, index) => (
+          <span
+            key={index}
+            className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full"
+          >
+            {sector.name}
+          </span>
+        ))}
+      </div>
+    ) : 'No sectors specified'
+  }
+/>
+
             <DetailSection title="Headquarters" content={company.location || 'Not specified'} />
             <DetailSection title="Founders" content="N/A" />
             <DetailSection title="Last Funding Type" content="N/A" />
