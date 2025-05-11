@@ -21,6 +21,7 @@ export interface ICompany extends Document {
   fundedBy: string[]; // Array of fundedBy IDs
   fundingTypes: string[]; // Array of fundingTypes IDs
   sdgFocus: string[];
+  sector: string[];
   fundingRounds: string[];
   fundingInstruments: string[];
   companyCreator?: {
@@ -54,6 +55,7 @@ const CompanySchema = new Schema({
   fundedDate: { type: Date, default: Date.now },
   url: { type: String },
   categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
+  sector: [{ type: Schena.Types.ObjectId, ref: 'Sector' }],
   people: [{ type: Schema.Types.ObjectId, ref: 'Person' }],
   fundedBy: [{ type: Schema.Types.ObjectId, ref: 'FundingSource' }],
   fundingTypes: [{ type: Schema.Types.ObjectId, ref: 'FundingType' }],
