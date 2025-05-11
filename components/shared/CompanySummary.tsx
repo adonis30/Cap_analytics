@@ -21,6 +21,7 @@ interface CompanySummaryProps {
     categoryNames?: string[];
     fundedDate?: string | number | Date;
     sdgFocus?: Array<{ name: string }>;
+    sector?: Array<{name: string }>;
   };
 }
 
@@ -57,7 +58,7 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
           <div className="space-y-3">
             <InfoItem icon={MapPin} label="Location" value={company.location || 'Not specified'} />
             <InfoItem icon={Users} label="Employees" value={company.employeeCount || 'Not available'} />
-            <InfoItem icon={Building2} label="Sector" value={company.categories?.map(cat => cat.name).join(', ') || 'Not specified'} />
+            <InfoItem icon={Building2} label="Sector" value={company.sector?.map(cat => sec.name).join(', ') || 'Not specified'} />
             <InfoItem
               icon={Globe}
               label="Website"
@@ -113,12 +114,12 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
         </div>
         <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <DetailSection title="Industries" content={
-              company.categories && company.categories.length > 0 ? (
+            <DetailSection title="Industries/ sector" content={
+              company.categories && company.sector.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
-                  {company.categories.map((category, index) => (
+                  {company.sector.map((sectorg, index) => (
                     <span key={index} className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                      {category.name}
+                      {sector.name}
                     </span>
                   ))}
                 </div>
