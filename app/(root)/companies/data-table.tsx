@@ -41,9 +41,13 @@ interface Organization {
   category?: {
     name: string;
   };
+  sector:? {
+    name: string;
+  } 
   location: string;
   categories: { name: string }[];
   fundingTypes: { name: string }[];
+  sectors: { name: string }[];
   // Add other fields from your company model
 }
 
@@ -72,6 +76,7 @@ export function DataTable<TData extends { _id: string }, TValue>({
     description: true,
     categories: true,
     fundingTypes: true,
+    sectors: true,
     // Set other columns to false by default
   });
   const [globalFilter, setGlobalFilter] = React.useState("");
