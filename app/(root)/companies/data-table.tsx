@@ -41,7 +41,7 @@ interface Organization {
   category?: {
     name: string;
   };
-  sector:? {
+  sector?: {
     name: string;
   } 
   location: string;
