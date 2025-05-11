@@ -134,20 +134,26 @@ export const columns: ColumnDef<Company>[] = [
   },
 
   {
-    accessorKey: "sector",
-    header: ({ column }) => renderFilterableHeader("sector", column),
-    cell: ({ row }) => {
-      const categories = row.getValue("sector") as Sector[];
-      return (
-        <div className={`${cellClassName} font-medium`} style={{ ...truncateStyle, maxWidth: "200px" }}>
-          {sectors?.length ? sector.map((sec) => sec.name).join(", ") : "N/A"}
-        </div>
-      );
-    },
-    filterFn: "includesString",
-    enableSorting: true,
-    enableColumnFilter: true,
+  accessorKey: "sector",
+  header: ({ column }) => renderFilterableHeader("sector", column),
+  cell: ({ row }) => {
+    const sectors = row.getValue("sector") as Sector[]; // this must match how you store sector(s) in your data
+
+    return (
+      <div
+        className={`${cellClassName} font-medium`}
+        style={{ ...truncateStyle, maxWidth: "200px" }}
+      >
+        {Array.isArray(sectors) && sectors.length
+          ? sectors.map((s) => s.name).join(", ")
+          : "N/A"}
+      </div>
+    );
   },
+  filterFn: "includesString",
+  enableSorting: true,
+  enableColumnFilter: true,
+}
 
   {
     accessorKey: "sdgFocus",
