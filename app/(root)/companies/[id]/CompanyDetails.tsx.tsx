@@ -101,7 +101,7 @@ if (Array.isArray(company.sdgFocus)) {
       <div className="bg-grey-50 p-8 xl:rounded-5xl xl:px-16 xl:py-20 relative w-full overflow-hidden rounded-3xl flex gap-10">
         <div className="ml-[160px] relative z-10"> {/* Adjust margin-left to make space for the image */}
           <h3 className="text-base font-semibold leading-7 text-gray-900">{company.organizationName}</h3>
-          <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">{categoryNames}</p>
+          <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">{company.description}</p>
         </div>
         {/* Absolute positioning for the image */}
         <div className="absolute top-0 left-0 h-full w-[150px] flex items-center justify-center z-20 overflow-hidden rounded-3xl">
