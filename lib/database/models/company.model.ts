@@ -55,7 +55,7 @@ const CompanySchema = new Schema({
   fundedDate: { type: Date, default: Date.now },
   url: { type: String },
   categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
-  sector: [{ type: Schena.Types.ObjectId, ref: 'Sector' }],
+  sector: [{ type: Schema.Types.ObjectId, ref: 'Sector' }],
   people: [{ type: Schema.Types.ObjectId, ref: 'Person' }],
   fundedBy: [{ type: Schema.Types.ObjectId, ref: 'FundingSource' }],
   fundingTypes: [{ type: Schema.Types.ObjectId, ref: 'FundingType' }],
