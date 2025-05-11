@@ -140,7 +140,7 @@ export const columns: ColumnDef<Company>[] = [
       const categories = row.getValue("sector") as Sector[];
       return (
         <div className={`${cellClassName} font-medium`} style={{ ...truncateStyle, maxWidth: "200px" }}>
-          {sector?.length ? sector.map((cat) => sec.name).join(", ") : "N/A"}
+          {sectors?.length ? sector.map((cat) => sec.name).join(", ") : "N/A"}
         </div>
       );
     },
