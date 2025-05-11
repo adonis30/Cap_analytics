@@ -153,7 +153,7 @@ export const columns: ColumnDef<Company>[] = [
   filterFn: "includesString",
   enableSorting: true,
   enableColumnFilter: true,
-}
+},
 
   {
     accessorKey: "sdgFocus",
