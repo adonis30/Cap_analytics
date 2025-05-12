@@ -14,7 +14,7 @@ import FundingType from '@/lib/database/models/fundingType.model';
 import FundingInstruments from '../database/models/fundingInstruments.model';
 import FundingRounds from '../database/models/fundingRounds.model';
 import Sector from '../database/models/sector.model';
-import InvestmentAsk from '../database/models/investmentask.model'
+import InvestmentAsk from '../database/models/investmentAsk.model'
 
 const populateCompany = async (query: any) => {
   return query
