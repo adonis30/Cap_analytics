@@ -23,6 +23,7 @@ export interface ICompany extends Document {
   sdgFocus: string[];
   sector: string[];
   fundingRounds: string[];
+  investmentAsk: string[];
   fundingInstruments: string[];
   companyCreator?: {
     _id: Schema.Types.ObjectId | string,
@@ -56,6 +57,7 @@ const CompanySchema = new Schema({
   url: { type: String },
   categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
   sector: [{ type: Schema.Types.ObjectId, ref: 'Sector' }],
+  investmentAsk: [{ type: Schema.Type.ObjectId, ref: 'investmentAsk'}],
   people: [{ type: Schema.Types.ObjectId, ref: 'Person' }],
   fundedBy: [{ type: Schema.Types.ObjectId, ref: 'FundingSource' }],
   fundingTypes: [{ type: Schema.Types.ObjectId, ref: 'FundingType' }],
