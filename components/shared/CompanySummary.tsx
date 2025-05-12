@@ -136,7 +136,7 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
             <DetailSection title="Founders" content="N/A" />
             <DetailSection title="Last Funding Type" content="N/A" />
             <DetailSection title="Legal Name" content={company.organizationName || 'Not available'} />
-            <DetailSection title="Diversity Spotlight" content={
+            <DetailSection title="Impact Spotlight" content={
               <span className="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
                 N/A
               </span>
@@ -152,7 +152,7 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
             } />
             <DetailSection title="Operating Status" content={company.operatingStatus || 'Not available'} />
             <DetailSection title="Also Known As" content={company.organizationName || 'Not available'} />
-            <DetailSection title="Stock Symbol" content="N/A" />
+            {/* <DetailSection title="Stock Symbol" content="N/A" />*/}
             <DetailSection title="Company Type" content="For Profit" />
           </div>
         </div>
