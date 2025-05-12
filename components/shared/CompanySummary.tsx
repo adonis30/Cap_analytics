@@ -71,7 +71,7 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
           </div>
 
           <div className="space-y-3">
-            <InfoItem icon={User} label="Owners" value={company.owners || 'Not specified'} />
+            <InfoItem icon={User} label="Directors" value={company.owners || 'Not specified'} />
             <InfoItem icon={Activity} label="Operating Status" value={company.operatingStatus || 'Not specified'} />
             <InfoItem icon={Phone} label="Phone" value={company.contactNumber || 'Not available'} />
             <InfoItem icon={Mail} label="Email" value={company.contactEmail || 'Not available'} />
