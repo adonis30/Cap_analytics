@@ -57,9 +57,7 @@ const CompanySchema = new Schema({
   url: { type: String },
   categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
   sector: [{ type: Schema.Types.ObjectId, ref: 'Sector' }],
-  iinvestmentAsk: {
-  type: Schema.Types.ObjectId,
-  ref: 'InvestmentAsk',
+ investmentAsk: { type: mongoose.Schema.Types.ObjectId, ref: "Investmentask" },
 },
   people: [{ type: Schema.Types.ObjectId, ref: 'Person' }],
   fundedBy: [{ type: Schema.Types.ObjectId, ref: 'FundingSource' }],
