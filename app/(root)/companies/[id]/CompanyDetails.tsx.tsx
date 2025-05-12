@@ -83,7 +83,12 @@ if (Array.isArray(company.sdgFocus)) {
             </CardHeader>
             <CardContent>
               <p>Investment ASK: ${company.investmentAsk ?? 'N/A'}</p>
-              <p>Funding Rounds : {sdgFocusName}</p>
+              <p>
+  Investment ASK: 
+  {company.investmentAsk && typeof company.investmentAsk === 'object'
+    ? `$${company.investmentAsk.min} - $${company.investmentAsk.max}`
+    : 'N/A'}
+</p>
 
             </CardContent>
           </Card>
