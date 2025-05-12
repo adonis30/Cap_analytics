@@ -14,6 +14,7 @@ import FundingType from '@/lib/database/models/fundingType.model';
 import FundingInstruments from '../database/models/fundingInstruments.model';
 import FundingRounds from '../database/models/fundingRounds.model';
 import Sector from '../database/models/sector.model';
+import InvestmentAsk from '../database/models/investmentask.model'
 
 const populateCompany = async (query: any) => {
   return query
@@ -23,9 +24,9 @@ const populateCompany = async (query: any) => {
     .populate({ path: 'sdgFocus', model: SdgFocus, select: '_id name' })
     .populate({ path: 'fundingInstruments', model: FundingInstruments, select: '_id name' })
     .populate({ path: 'fundingRounds', model: FundingRounds, select: '_id name' })
-    .populate({ path: 'sector', model: Sector, select: '_id name' });  
+    .populate({ path: 'sector', model: Sector, select: '_id name' })
+    .populate({ path: 'investmentAsk', model: InvestmentAsk }); // ✅ Added
 };
-
 
 
 export const createCompany = async ({ company, userId, path }: CreateCompanyParams) => {
@@ -54,6 +55,7 @@ export const createCompany = async ({ company, userId, path }: CreateCompanyPara
   .populate('fundingRounds') // <- ADD
   .populate('fundingInstruments') // <- ADD
   .populate('sector')
+  .populate('investmentAsk')
   .lean();
 
     return JSON.parse(JSON.stringify(populatedCompany));
@@ -143,6 +145,7 @@ export async function getCompanyById(companyId: string) {
   .populate('fundingRounds') // <- ADD
   .populate('fundingInstruments') // <- ADD
   .populate('sector')
+  .populate('investmentAsk')
   .lean();
 
       
@@ -167,6 +170,7 @@ export async function getAllCompanies(params: GetAllCompanyParams) {
   .populate('fundingRounds') // <- ADD
   .populate('fundingInstruments') // <- ADD
   .populate('sector')
+  .populate('investmentAsk')
   .lean();
 
     
