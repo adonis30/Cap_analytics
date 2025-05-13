@@ -14,7 +14,7 @@ import FundingType from '@/lib/database/models/fundingType.model';
 import FundingInstruments from '../database/models/fundingInstruments.model';
 import FundingRounds from '../database/models/fundingRounds.model';
 import Sector from '../database/models/sector.model';
-import InvestmentAsk from '../database/models/investmentAsk.model'
+import InvestmentAsk from '../database/models/investmentAsk.model';
 
 const populateCompany = async (query: any) => {
   return query
@@ -25,7 +25,7 @@ const populateCompany = async (query: any) => {
     .populate({ path: 'fundingInstruments', model: FundingInstruments, select: '_id name' })
     .populate({ path: 'fundingRounds', model: FundingRounds, select: '_id name' })
     .populate({ path: 'sector', model: Sector, select: '_id name' })
-    .populate({ path: 'investmentAsk', model: 'investmentAsk', select: '_id min max description' })
+    .populate({ path: 'investmentAsk', model: 'investmentAsk', select: '_id min max' })
 };
 
 
