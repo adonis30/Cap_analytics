@@ -1,4 +1,4 @@
-/* "use client";
+"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -186,6 +186,7 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
       ...cleanedValues,
       categoryIds,
       userId: authUserId!,
+       sector: values.sector,
     };
 
     const createCompanyParams: ExtendedCreateCompanyParams = {
@@ -569,4 +570,4 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
   );
 };
 
-export default CompaniesForm; */
+export default CompaniesForm;
