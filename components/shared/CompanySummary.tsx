@@ -153,7 +153,8 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
             } />
             <DetailSection title="Operating Status" content={company.operatingStatus || 'Not available'} />
             <DetailSection title="Also Known As" content={company.organizationName || 'Not available'} />
-            <DetailSection title="Years in Operation" content={company.yearsInOperation || "N/A" />
+            <DetailSection title="Years in Operation" content={company.yearsInOperation || "N/A"} />
+
             <DetailSection title="Company Type" content="For Profit" />
           </div>
         </div>
