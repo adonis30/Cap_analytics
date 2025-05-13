@@ -81,7 +81,20 @@ const Investors: React.FC = () => {
       ),
     },
     { field: 'investorCategory',  headerName: 'Investor Category', width: 250},
-    { field: 'ticketSize', headerName: 'Ticket Size', width: 250},
+   {
+    field: 'ticketSize',
+    headerName: 'Ticket Size',
+    width: 300,
+    renderCell: (params) => (
+      <span>
+        {Array.isArray(params.row.ticketSize)
+          ? params.row.ticketSize
+              .map((t: any) => `$${t.min?.toLocaleString()} - $${t.max?.toLocaleString()}`)
+              .join(', ')
+          : 'N/A'}
+      </span>
+    ),
+  },
      
   ];
   
