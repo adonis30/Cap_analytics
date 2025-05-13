@@ -1,4 +1,4 @@
-"use client";
+/* "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -572,3 +572,4 @@ const onSubmit = async (values: z.infer<typeof companyformSchema>) => {
 };
 
 export default CompaniesForm;
+ */
