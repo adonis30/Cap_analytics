@@ -41,7 +41,7 @@ const InvestorSummary: React.FC<InvestorSummaryProps> = ({ investor }) => {
       <span className="font-medium text-gray-700 mr-2">{label}:</span>
       <span className="text-gray-600">{value}</span>
     </div>
-  );
+  
 
   return (
     <div className="space-y-6">
