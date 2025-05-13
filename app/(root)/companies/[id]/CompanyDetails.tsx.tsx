@@ -99,7 +99,14 @@ if (Array.isArray(company.sdgFocus)) {
               <CardTitle>Funding</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>Investment ASK: ${company.investmentAsk ?? 'N/A'}</p>
+              <p>
+  Investment ASK:
+  {Array.isArray(company.investmentAsk) && company.investmentAsk.length > 0
+    ? company.investmentAsk
+        .map((ask: any) => `$${ask.min} - $${ask.max}`)
+        .join(', ')
+    : 'N/A'}
+</p>
               <p>
   Funding Rounds: 
   {fundingRoundsName}
