@@ -158,7 +158,8 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
     return () => subscription.unsubscribe();
   }, [form]);
 
- /*  const onSubmit = async (values: z.infer<typeof companyformSchema>) => {
+const onSubmit = async (values: z.infer<typeof companyformSchema>) => {
+   /*  
     setIsSubmitting(true);
     let imageUrl = values.imageUrl;
 
