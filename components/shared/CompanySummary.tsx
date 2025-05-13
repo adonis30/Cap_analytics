@@ -68,6 +68,7 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
                 </a>
               ) : 'Not available'}
             />
+            <InfoItem icon={Activity} label="Business Growth Stage" value={company.businessGrowthStage || 'N/A'} />
           </div>
 
           <div className="space-y-3">
@@ -152,7 +153,7 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
             } />
             <DetailSection title="Operating Status" content={company.operatingStatus || 'Not available'} />
             <DetailSection title="Also Known As" content={company.organizationName || 'Not available'} />
-            {/* <DetailSection title="Stock Symbol" content="N/A" />*/}
+            <DetailSection title="Years in Operation" content={company.yearsInOperation || "N/A" />
             <DetailSection title="Company Type" content="For Profit" />
           </div>
         </div>
