@@ -227,6 +227,7 @@ export type Investor = {
   fundingInstruments?: string[];
   totalAmountFunded: number;
   highestAmountFunded: number;
+  ticketSize?: TicketSize[];
   individualDetails?: {
     firstName: string;
     lastName: string;
