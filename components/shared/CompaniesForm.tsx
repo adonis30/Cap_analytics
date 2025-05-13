@@ -186,7 +186,7 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
       ...cleanedValues,
       categoryIds,
       userId: authUserId!,
-       sector: values.sector,
+        
     };
 
     const createCompanyParams: ExtendedCreateCompanyParams = {
