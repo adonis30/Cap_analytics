@@ -1,4 +1,4 @@
-/* import CompaniesForm from "@/components/shared/CompaniesForm"
+  import CompaniesForm from "@/components/shared/CompaniesForm"
 import { getCompanyById } from "@/lib/actions/company.actions";
 import { UpdateCompanyParams } from "@/types";
 import { auth } from "@clerk/nextjs/server"
@@ -39,4 +39,4 @@ const UpdateCompany = async ({ params: { id }}: UpdateCompanyProps) => {
   )
 }
 
-export default UpdateCompany   */
+export default UpdateCompany   
