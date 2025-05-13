@@ -1,4 +1,4 @@
-"use client";
+/* "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -569,4 +569,4 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
   );
 };
 
-export default CompaniesForm;
+export default CompaniesForm; */
