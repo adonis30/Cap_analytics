@@ -59,6 +59,19 @@ if (Array.isArray(company.sdgFocus)) {
     sdgFocusName = company.sdgFocus.map((sd: { name: string }) => sd.name).join(', ');
   }
 }
+
+let fundingRoundsIds: string[] = []
+let fundingRoundsName: string = 'N/A'
+
+if (Array.isArray(company.fundingRounds)) {
+  if (typeof company.fundingRounds[0] === 'string') {
+    fundingRoundsIds = company.fundingRounds;
+    fundingRoundsName = 'funding rounds not found';
+  } else {
+    fundingRoundsIds = company.fundingRounds.map((fr: { _id: any }) => fr._id);
+    fundingRoundsName = company.fundingRounds.map((fr: { name: string }) => fr.name).join(', ');
+  }
+}
    
 
 
