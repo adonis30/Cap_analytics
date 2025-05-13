@@ -59,22 +59,7 @@ if (Array.isArray(company.sdgFocus)) {
     sdgFocusName = company.sdgFocus.map((sd: { name: string }) => sd.name).join(', ');
   }
 }
-  let fundingRoundsIds: string[] = []
-  let fundingRoundsName: string = 'N/A'
-
-  if(Array.isArray(company.fundingRounds)) {
-    if(typeof company.fundingRounds[0] === 'string') {
-      fundingRoundsIds = company.fundingRounds;
-      fundingRoundsName = 'No funding Rounds found';
-
-    } else {
-      fundingRoundsIds = company.fundingRounds.map((fd: { _id: any}) => fd._id);
-      fundingRoundsName = company.fundingRounds.map((fd: { name: string }) => fd.name).join(', ');
-
-
-    }
-
-  }
+   
 
 
   const tabs = [
