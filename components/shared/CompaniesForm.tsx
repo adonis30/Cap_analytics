@@ -158,7 +158,7 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
     return () => subscription.unsubscribe();
   }, [form]);
 
-  const onSubmit = async (values: z.infer<typeof companyformSchema>) => {
+ /*  const onSubmit = async (values: z.infer<typeof companyformSchema>) => {
     setIsSubmitting(true);
     let imageUrl = values.imageUrl;
 
@@ -195,7 +195,7 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
       path: '/companies'
     }; */
     
-    try {
+   /*  try {
       if (type === 'Create') {
         await createCompany(createCompanyParams);
         toast.success('Company created successfully!');
@@ -215,7 +215,7 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
     }
     
     addLog(`Form submitted - type: ${type}`, 'submit');
-  };
+  }; */ */
 
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
