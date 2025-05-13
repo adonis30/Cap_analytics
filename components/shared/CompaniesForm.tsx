@@ -215,7 +215,7 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
     }
     
     addLog(`Form submitted - type: ${type}`, 'submit');
-  }; */ */
+  }; */ 
 
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
