@@ -26,14 +26,14 @@ const UpdateCompany = async ({ params: { id }}: UpdateCompanyProps) => {
     </section>
       
       <div className='wrapper my-8'>
-       <CompaniesForm 
+      {/*  <CompaniesForm 
        userId={userId} 
        type="Update" 
        company={company} 
        companyId={company._id}
        initialCategoryIds={initialCategoryIds}
        initialFundingTypeIds={initialFundingTypeIds}
-       />    
+       />  */}   
     </div>
     </>
   )
