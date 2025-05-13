@@ -218,7 +218,7 @@ const onSubmit = async (values: z.infer<typeof companyformSchema>) => {
     addLog(`Form submitted - type: ${type}`, 'submit');
   }; */ 
 
-  useEffect(() => {
+/*   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
       if (name && name in value) {
         const logMessage = `Field "${name}" changed. New value: ${JSON.stringify(value[name as keyof typeof value])}`;
@@ -571,5 +571,5 @@ const onSubmit = async (values: z.infer<typeof companyformSchema>) => {
   );
 };
 
-export default CompaniesForm;
- */
+export default CompaniesForm; */
+ 
