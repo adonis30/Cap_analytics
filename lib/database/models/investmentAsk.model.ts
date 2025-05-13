@@ -1,4 +1,4 @@
-import { Schema, model, models, Document } from 'mongoose';
+import { Schema, model, models } from 'mongoose';
 
 // TypeScript Interface for InvestmentAsk
 export interface IInvestmentAsk extends Document {
@@ -10,7 +10,7 @@ export interface IInvestmentAsk extends Document {
 }
 
 // Mongoose Schema
-const investmentAskSchema = new Schema<IInvestmentAsk>(
+const investmentAskSchema = new Schema(
   {
     min: { type: Number, required: true },
     max: { type: Number, required: true },
@@ -22,6 +22,8 @@ const investmentAskSchema = new Schema<IInvestmentAsk>(
 );
 
 // Mongoose Model
-const InvestmentAsk = mongoose.models.InvestmentAsk || mongoose.model('InvestmentAsk', investmentAskSchema);
+const InvestmentAsk = models.InvestmentAsk || model('InvestmentAsk', investmentAskSchema);
 
 export default InvestmentAsk;
+
+ 
