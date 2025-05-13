@@ -102,8 +102,7 @@ if (Array.isArray(company.sdgFocus)) {
               <p>Investment ASK: ${company.investmentAsk ?? 'N/A'}</p>
               <p>
   Funding Rounds: 
-  {company.fundingRoundsName}
- 
+  {fundingRoundsName}
 </p>
 
             </CardContent>
