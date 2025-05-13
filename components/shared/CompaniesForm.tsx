@@ -189,11 +189,11 @@ const CompaniesForm: React.FC<CompaniesFormProps> = ({
         
     };
 
-    const createCompanyParams: ExtendedCreateCompanyParams = {
+   /*  const createCompanyParams: ExtendedCreateCompanyParams = {
       userId: authUserId!,
       company: companyData,
       path: '/companies'
-    };
+    }; */
     
     try {
       if (type === 'Create') {
