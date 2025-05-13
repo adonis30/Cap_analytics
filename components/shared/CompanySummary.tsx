@@ -15,6 +15,7 @@ interface CompanySummaryProps {
     operatingStatus?: string;
     contactNumber?: string;
     contactEmail?: string;
+    yearsInOperation?: string;
     url: string;
     fundingTypes: Array<{ name: string }> | string[];
     fundingInstruments: Array<{ name: string }> | string[];
