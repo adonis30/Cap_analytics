@@ -23,7 +23,7 @@ export interface ICompany extends Document {
   sdgFocus: string[];
   sector: string[];
   fundingRounds: string[];
-  investmentask: string[];
+  investmentAsk: string[];
   fundingInstruments: string[];
   companyCreator?: {
     _id: Schema.Types.ObjectId | string,
