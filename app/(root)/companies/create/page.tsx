@@ -49,12 +49,12 @@ const CreateCompany = () => {
       </section>
 
       <div className='wrapper my-8'>
-        <CompaniesForm 
+       {/*  <CompaniesForm 
           userId={userId}
           type="Create"
           initialCategoryIds={categories.map(category => category._id)}
           initialFundingTypeIds={fundingTypes.map(type => type._id)}
-        />
+        /> */}
       </div>
     </>
   );
