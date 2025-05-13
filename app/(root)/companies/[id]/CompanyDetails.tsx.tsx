@@ -67,7 +67,7 @@ if (Array.isArray(company.sdgFocus)) {
       fundingRoundsIds = company.fundingRounds;
       fundingRoundsName = 'No funding Rounds found',
 
-    }else {
+    } else {
       fundingRoundsIds = company.fundingRounds.map((fd: { _id: any}) => fd._id);
       fundingRoundsName = company.fundingRounds.map((fd: { name: string }) => fd.name).join(', ');
 
