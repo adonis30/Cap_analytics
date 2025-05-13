@@ -64,7 +64,18 @@ const Companies: React.FC = () => {
 
   const columns: GridColDef<Company>[] = [
     { field: 'organizationName', headerName: 'Company Name', width: 250 },
-    { field: 'industries', headerName: 'Industry', width: 200 },
+    {
+      field: 'sector',
+      headerName: 'Sector',
+      width: 300,
+      renderCell: (params) => (
+        <span className="line-clamp-1">
+          {Array.isArray(params.row.sector)
+            ? params.row.sector.map((s: { name: string }) => s.name).join(', ')
+            : 'N/A'}
+        </span>
+      ),
+    },
     {
       field: 'location',
       headerName: 'Location',
@@ -98,7 +109,7 @@ const Companies: React.FC = () => {
             Company Directory
           </h1>
           <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-600">
-            Explore companies across industries and funding stages.
+            Explore companies across sectors and funding stages.
           </p>
         </div>
 
