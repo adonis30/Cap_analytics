@@ -70,7 +70,7 @@ export interface InvestorDetailsProps {
         <div className="ml-[160px] relative z-10">
           <h3 className="text-base font-semibold leading-7 text-gray-900">{investor.name}</h3>
           <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
-            {investor.type === 'Individual' ? 'Individual Investor' : 'Institutional Investor'}
+            {investor.description}
           </p>
         </div>
 
