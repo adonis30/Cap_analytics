@@ -188,7 +188,8 @@ export async function getRelatedCompaniesByCategory({
       .skip(skipAmount)
       .limit(limit);
 
-    const companiesRaw = await populateCompany(query).lean();
+    const companiesRaw = await populateCompany(query.lean());
+
     const companies = await Promise.all(companiesRaw.map(enrichWithInvestmentAsk));
     const companiesCount = await Company.countDocuments(conditions);
 
