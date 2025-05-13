@@ -44,6 +44,19 @@ export interface InvestorDetailsProps {
       }
     }
 
+
+  const description =
+    investor.type === 'Institution'
+      ? investor.institutionDetails?.description
+      : undefined;
+
+  const bio =
+    investor.type === 'Individual'
+      ? investor.individualDetails?.bio
+      : undefined;
+
+  const summary = description || bio || 'No description or bio available';
+
   // Define tabs
   const tabs = [
     { value: "summary", label: "Profile", content: <InvestorSummary investor={investor} /> },
@@ -70,7 +83,7 @@ export interface InvestorDetailsProps {
         <div className="ml-[160px] relative z-10">
           <h3 className="text-base font-semibold leading-7 text-gray-900">{investor.name}</h3>
           <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
-            {investor.description}
+            {summary}
           </p>
         </div>
 
