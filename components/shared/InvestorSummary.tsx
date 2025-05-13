@@ -48,7 +48,7 @@ const InvestorSummary: React.FC<InvestorSummaryProps> = ({ investor }) => {
       <div className="bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1),0_2px_4px_-1px_rgba(0,0,0,0.06)] rounded-lg p-6">
         <div className="mb-6">
           <h2 className="text-3xl font-bold text-gray-800 mb-2">{investor.name || 'Investor Name Not Available'}</h2>
-          <p className="text-gray-600 text-lg">{summary}</p>
+          <p className="text-gray-600 text-lg"{/* >{summary} */}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
