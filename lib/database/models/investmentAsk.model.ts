@@ -22,6 +22,6 @@ const investmentAskSchema = new Schema<IInvestmentAsk>(
 );
 
 // Mongoose Model
-const InvestmentAsk = models.InvestmentAsk || model<IInvestmentAsk>('InvestmentAsk', investmentAskSchema);
+const InvestmentAsk = mongoose.models.InvestmentAsk || mongoose.model('InvestmentAsk', investmentAskSchema);
 
 export default InvestmentAsk;
