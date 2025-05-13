@@ -12,6 +12,8 @@ import FundingType from '../database/models/fundingType.model';
 import FundingInstruments from '../database/models/fundingInstruments.model';
 import FundingRounds from '../database/models/fundingRounds.model';
 import Category from '../database/models/category.model';
+import TicketSize from '../database/models/ticketSize.model';
+
 
 interface InvestorData {
   name: string;
@@ -31,6 +33,19 @@ const populateInvestors = async (query: any) => {
     .populate({ path: 'fundingTypes', model: FundingType, select: '_id name' })
     .populate({ path: 'fundingInstruments', model: FundingInstruments, select: '_id name'})
     .populate({ path: 'fundingRounds', model: FundingRounds, select: '_id name'});
+};
+
+export const enrichWithTicketSize = async (investor: any) => {
+  if (!investor?.ticketSize?.length) return investor;
+
+  const ticketSizes = await TicketSize.find({
+    _id: { $in: investor.ticketSize },
+  }).select('_id min max description');
+
+  return {
+    ...investor,
+    ticketSize: ticketSizes,
+  };
 };
 
 export async function getRelatedInvestorsByCategory({
@@ -111,29 +126,26 @@ export const getInvestorById = async (investorId: string) => {
   try {
     await connectToDatabase();
 
-    // First, try to find the investor in IndividualInvestor
-    const individualInvestor = await Investor.findById(investorId)
-       .populate('fundingTypes', 'name')
-  .populate('fundingRounds', 'name') // <- ADD
-  .populate('fundingInstruments', 'name') // <- ADD
-  .lean();
+    const investor = await Investor.findById(investorId)
+      .populate('fundingTypes', 'name')
+      .populate('fundingRounds', 'name')
+      .populate('fundingInstruments', 'name')
+      .lean();
 
-    if (individualInvestor) {
-      return JSON.parse(JSON.stringify(individualInvestor));
+    if (investor) {
+      return await enrichWithTicketSize(investor);
     }
 
-    // If not found, try to find the investor in InstitutionInvestor
     const institutionInvestor = await InstitutionInvestor.findById(investorId)
-       .populate('fundingTypes', 'name')
-  .populate('fundingRounds', 'name') // <- ADD
-  .populate('fundingInstruments', 'name') // <- ADD
-  .lean();
+      .populate('fundingTypes', 'name')
+      .populate('fundingRounds', 'name')
+      .populate('fundingInstruments', 'name')
+      .lean();
 
     if (institutionInvestor) {
-      return JSON.parse(JSON.stringify(institutionInvestor));
+      return await enrichWithTicketSize(institutionInvestor);
     }
 
-    // If not found in either model, throw an error
     throw new Error('Investor not found');
   } catch (error) {
     handleError(error);
@@ -144,31 +156,39 @@ export const getAllInvestors = async (params: GetAllInvestorsParams) => {
   try {
     await connectToDatabase();
 
-    const individualInvestors = await Investor.find()
+    const individualInvestorsRaw = await Investor.find()
       .sort({ _id: 'desc' })
-  .skip((params.page - 1) * params.limit)
-  .limit(params.limit)
-  .populate('fundingTypes', 'name')
-  .populate('fundingRounds', 'name') // <- ADD THIS
-  .populate('fundingInstruments', 'name') // <- AND THIS
-  .lean();
+      .skip((params.page - 1) * params.limit)
+      .limit(params.limit)
+      .populate('fundingTypes', 'name')
+      .populate('fundingRounds', 'name')
+      .populate('fundingInstruments', 'name')
+      .lean();
 
-    const institutionInvestors = await InstitutionInvestor.find()
+    const institutionInvestorsRaw = await InstitutionInvestor.find()
       .sort({ _id: 'desc' })
-  .skip((params.page - 1) * params.limit)
-  .limit(params.limit)
-  .populate('fundingTypes', 'name')
-  .populate('fundingRounds', 'name') // <- ADD THIS
-  .populate('fundingInstruments', 'name') // <- AND THIS
-  .lean();
+      .skip((params.page - 1) * params.limit)
+      .limit(params.limit)
+      .populate('fundingTypes', 'name')
+      .populate('fundingRounds', 'name')
+      .populate('fundingInstruments', 'name')
+      .lean();
 
-    const combinedInvestors = [...individualInvestors, ...institutionInvestors];
+    // Enrich all investor records with ticketSize data
+    const enrichedIndividuals = await Promise.all(
+      individualInvestorsRaw.map(enrichWithTicketSize)
+    );
+    const enrichedInstitutions = await Promise.all(
+      institutionInvestorsRaw.map(enrichWithTicketSize)
+    );
+
+    const combinedInvestors = [...enrichedIndividuals, ...enrichedInstitutions];
+
+    const totalCount = await Investor.countDocuments() + await InstitutionInvestor.countDocuments();
 
     return {
-      data: JSON.parse(JSON.stringify(combinedInvestors)),
-      totalPages: Math.ceil(
-        (await Investor.countDocuments() + await InstitutionInvestor.countDocuments()) / params.limit
-      ),
+      data: combinedInvestors,
+      totalPages: Math.ceil(totalCount / params.limit),
     };
   } catch (error) {
     handleError(error);
