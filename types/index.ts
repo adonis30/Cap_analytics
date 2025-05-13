@@ -17,6 +17,13 @@ export type UpdateUserParams = {
   photo: string;
 };
 
+export type TicketSize = {
+  _id: string;
+  min: number;
+  max: number;
+  description?: string;
+};
+
 // ====== COMPANY PARAMS
 export type CreateCompanyParams = {
   company: {
