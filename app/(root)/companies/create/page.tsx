@@ -1,6 +1,6 @@
 'use client';
 
-import CompaniesForm from '@/components/shared/CompaniesForm';
+//import CompaniesForm from '@/components/shared/CompaniesForm';
 import { getAllCategories } from '@/lib/actions/category.actions';
 import { useEffect, useState } from 'react';
 import { getAllFundingTypes } from '@/lib/actions/fundingType.actions';
