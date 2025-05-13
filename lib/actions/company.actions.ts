@@ -1,20 +1,27 @@
-'use server'
+'use server';
 
 import mongoose from 'mongoose';
 import { handleError } from '../utils';
 import { connectToDatabase } from '../database';
-import { CreateCompanyParams, DeleteCompanyParams, GetAllCompanyParams, GetRelatedCompaniesByCategoryParams, UpdateCompanyParams } from '@/types';
+import {
+  CreateCompanyParams,
+  DeleteCompanyParams,
+  GetAllCompanyParams,
+  GetRelatedCompaniesByCategoryParams,
+  UpdateCompanyParams,
+} from '@/types';
+
 import User from '../database/models/user.model';
 import Company from '../database/models/company.model';
 import Category from '../database/models/category.model';
-import { revalidatePath } from 'next/cache';
-import { isValidObjectId } from 'mongoose';
 import SdgFocus from '../database/models/sdgfocus.model';
 import FundingType from '@/lib/database/models/fundingType.model';
 import FundingInstruments from '../database/models/fundingInstruments.model';
 import FundingRounds from '../database/models/fundingRounds.model';
 import Sector from '../database/models/sector.model';
 import InvestmentAsk from '@/lib/database/models/investmentAsk.model';
+import { revalidatePath } from 'next/cache';
+import { isValidObjectId } from 'mongoose';
 
 const populateCompany = async (query: any) => {
   return query
@@ -24,11 +31,22 @@ const populateCompany = async (query: any) => {
     .populate({ path: 'sdgFocus', model: SdgFocus, select: '_id name' })
     .populate({ path: 'fundingInstruments', model: FundingInstruments, select: '_id name' })
     .populate({ path: 'fundingRounds', model: FundingRounds, select: '_id name' })
-    .populate({ path: 'sector', model: Sector, select: '_id name' })
-//   .populate({ path: 'investmentAsk', select: '_id min max' })
-
+    .populate({ path: 'sector', model: Sector, select: '_id name' });
 };
 
+// Manually enrich company with investmentAsk details
+const enrichWithInvestmentAsk = async (company: any) => {
+  if (!company?.investmentAsk?.length) return company;
+
+  const investmentAsks = await InvestmentAsk.find({
+    _id: { $in: company.investmentAsk },
+  }).select('_id min max description');
+
+  return {
+    ...company,
+    investmentAsk: investmentAsks,
+  };
+};
 
 export const createCompany = async ({ company, userId, path }: CreateCompanyParams) => {
   try {
@@ -41,7 +59,7 @@ export const createCompany = async ({ company, userId, path }: CreateCompanyPara
       ...company,
       categories: categoryIds,
       companyCreator: creatorId,
-      fundingTypes: company.fundingTypeIds
+      fundingTypes: company.fundingTypeIds,
     });
 
     await Category.updateMany(
@@ -49,17 +67,18 @@ export const createCompany = async ({ company, userId, path }: CreateCompanyPara
       { $push: { companies: newCompany._id } }
     );
 
-    const populatedCompany = await Company.findById(newCompany._id)
-  .populate('categories')
-  .populate('fundingTypes')
-  .populate('sdgFocus') // ✅ added
-  .populate('fundingRounds') // <- ADD
-  .populate('fundingInstruments') // <- ADD
-  .populate('sector')
-//  .populate('investmentAsk')
-  .lean();
+    let populated = await Company.findById(newCompany._id)
+      .populate('categories')
+      .populate('fundingTypes')
+      .populate('sdgFocus')
+      .populate('fundingRounds')
+      .populate('fundingInstruments')
+      .populate('sector')
+      .lean();
 
-    return JSON.parse(JSON.stringify(populatedCompany));
+    populated = await enrichWithInvestmentAsk(populated);
+
+    return JSON.parse(JSON.stringify(populated));
   } catch (error) {
     handleError(error);
   }
@@ -68,11 +87,8 @@ export const createCompany = async ({ company, userId, path }: CreateCompanyPara
 export const deleteCompnay = async ({ companyId, path }: DeleteCompanyParams) => {
   try {
     await connectToDatabase();
-
-    const deleteCompnay = await Company.findByIdAndDelete(companyId);
-
-    if (deleteCompnay) revalidatePath(path);
-    
+    const deleted = await Company.findByIdAndDelete(companyId);
+    if (deleted) revalidatePath(path);
   } catch (error) {
     handleError(error);
   }
@@ -80,23 +96,73 @@ export const deleteCompnay = async ({ companyId, path }: DeleteCompanyParams) =>
 
 export async function updateCompany({ userId, company, path }: UpdateCompanyParams) {
   try {
-    await connectToDatabase()
+    await connectToDatabase();
 
-    const companyToUpdate = await Company.findById(company._id)
+    const companyToUpdate = await Company.findById(company._id);
     if (!companyToUpdate || companyToUpdate.companyCreator.toString() !== userId) {
-      throw new Error('Unauthorized or company not found')
+      throw new Error('Unauthorized or company not found');
     }
 
     const updatedCompany = await Company.findByIdAndUpdate(
       company._id,
       { ...company, category: company.categoryIds },
       { new: true }
-    )
-    revalidatePath(path)
+    );
 
-    return JSON.parse(JSON.stringify(updatedCompany))
+    revalidatePath(path);
+    return JSON.parse(JSON.stringify(updatedCompany));
   } catch (error) {
-    handleError(error)
+    handleError(error);
+  }
+}
+
+export async function getCompanyById(companyId: string) {
+  try {
+    await connectToDatabase();
+
+    let company = await Company.findById(companyId)
+      .populate('categories')
+      .populate('fundingTypes')
+      .populate('sdgFocus')
+      .populate('fundingRounds')
+      .populate('fundingInstruments')
+      .populate('sector')
+      .lean();
+
+    if (!company) throw new Error('Company not found');
+
+    company = await enrichWithInvestmentAsk(company);
+
+    return JSON.parse(JSON.stringify(company));
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+export async function getAllCompanies(params: GetAllCompanyParams) {
+  try {
+    await connectToDatabase();
+
+    const companiesRaw = await Company.find()
+      .sort({ createdAt: 'desc' })
+      .skip((params.page - 1) * params.limit)
+      .limit(params.limit)
+      .populate('categories')
+      .populate('fundingTypes')
+      .populate('sdgFocus')
+      .populate('fundingRounds')
+      .populate('fundingInstruments')
+      .populate('sector')
+      .lean();
+
+    const companies = await Promise.all(companiesRaw.map(enrichWithInvestmentAsk));
+
+    return {
+      data: JSON.parse(JSON.stringify(companies)),
+      totalPages: Math.ceil(await Company.countDocuments() / params.limit),
+    };
+  } catch (error) {
+    handleError(error);
   }
 }
 
@@ -107,77 +173,28 @@ export async function getRelatedCompaniesByCategory({
   page = 1,
 }: GetRelatedCompaniesByCategoryParams) {
   try {
-    await connectToDatabase()
+    await connectToDatabase();
 
-    const skipAmount = (Number(page) - 1) * limit
-    
+    const skipAmount = (Number(page) - 1) * limit;
+
     const currentCompany = await Company.findById(companyId).select('categories');
+    const conditions = {
+      categories: { $in: currentCompany.categories },
+      _id: { $ne: companyId },
+    };
 
-    const conditions = { 
-      categories: { $in: currentCompany.categories }, 
-      _id: { $ne: companyId } 
-    }
-
-    const companiesQuery = Company.find(conditions)
+    const query = Company.find(conditions)
       .sort({ createdAt: 'desc' })
       .skip(skipAmount)
-      .limit(limit)
+      .limit(limit);
 
-    const companies = await populateCompany(companiesQuery)
-    const companiesCount = await Company.countDocuments(conditions)
+    const companiesRaw = await populateCompany(query).lean();
+    const companies = await Promise.all(companiesRaw.map(enrichWithInvestmentAsk));
+    const companiesCount = await Company.countDocuments(conditions);
 
-    return { 
-      data: JSON.parse(JSON.stringify(companies)), 
-      totalPages: Math.ceil(companiesCount / limit) 
-    }
-  } catch (error) {
-    handleError(error)
-  }
-}
-
-export async function getCompanyById(companyId: string) {
-  try {
-    await connectToDatabase();
-    
-    const company = await Company.findById(companyId)
-     .populate('categories')
-  .populate('fundingTypes')
-  .populate('sdgFocus') // ✅ added
-  .populate('fundingRounds') // <- ADD
-  .populate('fundingInstruments') // <- ADD
-  .populate('sector')
- // .populate('investmentAsk')
-  .lean();
-
-      
-    if (!company) throw new Error('Company not found');
-    
-    return JSON.parse(JSON.stringify(company));
-  } catch (error) {
-    handleError(error);
-  }
-}
-
-export async function getAllCompanies(params: GetAllCompanyParams) {
-  try {
-    await connectToDatabase();
-    const companies = await Company.find()
-      .sort({ createdAt: 'desc' })
-      .skip((params.page - 1) * params.limit)
-      .limit(params.limit)
-      .populate('categories')
-  .populate('fundingTypes')
-  .populate('sdgFocus') // ✅ added
-  .populate('fundingRounds') // <- ADD
-  .populate('fundingInstruments') // <- ADD
-  .populate('sector')
- // .populate('investmentAsk')
-  .lean();
-
-    
     return {
       data: JSON.parse(JSON.stringify(companies)),
-      totalPages: Math.ceil(await Company.countDocuments() / params.limit)
+      totalPages: Math.ceil(companiesCount / limit),
     };
   } catch (error) {
     handleError(error);
