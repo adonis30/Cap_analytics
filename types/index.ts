@@ -29,6 +29,7 @@ export type CreateCompanyParams = {
     location: string;
     owners: string;
     rankCompany: string;
+    sector: string;
     operatingStatus: string;
     fundedDate: Date;
     contactNumber: string;
@@ -85,6 +86,7 @@ export type UpdateCompanyParams = {
     imageUrl?: string;
     location?: string;
     owners?: string;
+    sector?: string;
     rankCompany?: string;
     operatingStatus?: string;
     fundedDate?: Date;
@@ -337,6 +339,7 @@ export type Company = {
   contactEmail?: string;
   numberOfSubOrgs?: string;
   location?: string;
+  sector?: string;
   imageUrl: string;
   fundedDate?: Date;
   url?: string;
