@@ -25,7 +25,7 @@ const populateCompany = async (query: any) => {
     .populate({ path: 'fundingInstruments', model: FundingInstruments, select: '_id name' })
     .populate({ path: 'fundingRounds', model: FundingRounds, select: '_id name' })
     .populate({ path: 'sector', model: Sector, select: '_id name' })
-   .populate({ path: 'investmentAsk', select: '_id min max' })
+//   .populate({ path: 'investmentAsk', select: '_id min max' })
 
 };
 
@@ -56,7 +56,7 @@ export const createCompany = async ({ company, userId, path }: CreateCompanyPara
   .populate('fundingRounds') // <- ADD
   .populate('fundingInstruments') // <- ADD
   .populate('sector')
-  .populate('investmentAsk')
+//  .populate('investmentAsk')
   .lean();
 
     return JSON.parse(JSON.stringify(populatedCompany));
@@ -146,7 +146,7 @@ export async function getCompanyById(companyId: string) {
   .populate('fundingRounds') // <- ADD
   .populate('fundingInstruments') // <- ADD
   .populate('sector')
-  .populate('investmentAsk')
+ // .populate('investmentAsk')
   .lean();
 
       
@@ -171,7 +171,7 @@ export async function getAllCompanies(params: GetAllCompanyParams) {
   .populate('fundingRounds') // <- ADD
   .populate('fundingInstruments') // <- ADD
   .populate('sector')
-  .populate('investmentAsk')
+ // .populate('investmentAsk')
   .lean();
 
     
