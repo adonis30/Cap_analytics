@@ -56,7 +56,6 @@ export default function InvestorNews({
 
   useEffect(() => {
   console.log('Investor value:', investor, typeof investor); // Must log a string
-  ...
 }, [investor]);
 
   useEffect(() => {
