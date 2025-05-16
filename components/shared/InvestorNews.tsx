@@ -13,7 +13,6 @@ import { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import axios from 'axios';
 
-// Explicitly define styles
 const useStyles = makeStyles(() => ({
   root: {
     maxWidth: 345,
@@ -53,19 +52,15 @@ export default function InvestorNews({
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Correct usage of useStyles
   const classes = useStyles();
 
-  // Fetch relevant news based on the investor
   useEffect(() => {
     const fetchNews = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        const response = await axios.get(
-          `https://newsapi.org/v2/top-headlines?category=business&apiKey=852ef605e8ef45b19821c29549e78674`
-        );
+        const response = await axios.get(`/api/news?investor=${encodeURIComponent(investor)}`);
 
         if (!response.data.articles || response.data.articles.length === 0) {
           setError("No news articles available.");
@@ -73,7 +68,7 @@ export default function InvestorNews({
 
         setNews(response.data.articles || []);
       } catch (err: any) {
-        setError(err.message || 'An error occurred');
+        setError(err.response?.data?.error || err.message || 'An error occurred');
       } finally {
         setLoading(false);
       }
@@ -82,13 +77,8 @@ export default function InvestorNews({
     fetchNews();
   }, [investor]);
 
-  if (loading) {
-    return <p>Loading news...</p>;
-  }
-
-  if (error) {
-    return <p className="text-red-500">Error: {error}</p>;
-  }
+  if (loading) return <p>Loading news...</p>;
+  if (error) return <p className="text-red-500">Error: {error}</p>;
 
   const limitedNews = news.slice(0, limit);
 
@@ -117,9 +107,7 @@ export default function InvestorNews({
                 <Button size="small" color="primary" href={article.url} target="_blank">
                   Read More
                 </Button>
-                <Button size="small" color="primary">
-                  Share
-                </Button>
+                <Button size="small" color="primary">Share</Button>
               </CardActions>
             </Card>
           ))}
