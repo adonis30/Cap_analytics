@@ -35,53 +35,44 @@ interface NewsArticle {
   };
 }
 
-interface InvestorNewsProps {
-  investor: string;
+interface BusinessNewsProps {
   limit?: number;
   containerClassName?: string;
   articleClassName?: string;
 }
 
-export default function InvestorNews({
-  investor,
+export default function BusinessNews({
   limit = 6,
   containerClassName,
   articleClassName,
-}: InvestorNewsProps) {
+}: BusinessNewsProps) {
   const [news, setNews] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
   const classes = useStyles();
-
-  useEffect(() => {
-  console.log('Investor value:', investor, typeof investor); // Must log a string
-}, [investor]);
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        setError(null);
-
-        const response = await axios.get(`/api/news?`);
-        setNews(response.data.articles || []);
+        const response = await axios.get(
+          `https://newsapi.org/v2/top-headlines?category=business&apiKey=852ef605e8ef45b19821c29549e78674`
+        );
 
         if (!response.data.articles || response.data.articles.length === 0) {
-          setError("No news articles available.");
+          setError('No news articles available.');
+        } else {
+          setNews(response.data.articles);
         }
-
-        setNews(response.data.articles || []);
       } catch (err: any) {
-        console.error(err);
-        setError(err.response?.data?.error || err.message || 'An error occurred');
+        setError(err.message || 'An error occurred');
       } finally {
         setLoading(false);
       }
     };
 
     fetchNews();
-  }, [investor]);
+  }, []);
 
   if (loading) return <p>Loading news...</p>;
   if (error) return <p className="text-red-500">Error: {error}</p>;
@@ -92,7 +83,7 @@ export default function InvestorNews({
     <div className={`mt-4 ${containerClassName}`}>
       {limitedNews.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {limitedNews.map((article: NewsArticle, index: number) => (
+          {limitedNews.map((article, index) => (
             <Card key={index} className={`${classes.root} ${articleClassName}`}>
               <CardActionArea>
                 <CardMedia
@@ -101,10 +92,10 @@ export default function InvestorNews({
                   title={article.title}
                 />
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
+                  <Typography gutterBottom variant="h5">
                     {article.title}
                   </Typography>
-                  <Typography variant="body2" color="textSecondary" component="p">
+                  <Typography variant="body2" color="textSecondary">
                     {article.description}
                   </Typography>
                 </CardContent>
@@ -113,14 +104,13 @@ export default function InvestorNews({
                 <Button size="small" color="primary" href={article.url} target="_blank">
                   Read More
                 </Button>
-                <Button size="small" color="primary">Share</Button>
               </CardActions>
             </Card>
           ))}
         </div>
       ) : (
         <div className="text-center text-gray-600">
-          <p>No recent news available for the selected investor.</p>
+          <p>No recent business news available.</p>
         </div>
       )}
     </div>
