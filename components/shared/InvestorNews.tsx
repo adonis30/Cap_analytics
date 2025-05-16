@@ -56,9 +56,7 @@ export default function BusinessNews({
     const fetchNews = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
-          `https://newsapi.org/v2/top-headlines?category=business&apiKey=852ef605e8ef45b19821c29549e78674`
-        );
+       const response = await axios.get('/api/news');
 
         if (!response.data.articles || response.data.articles.length === 0) {
           setError('No news articles available.');
