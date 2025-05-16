@@ -39,6 +39,7 @@ interface BusinessNewsProps {
   limit?: number;
   containerClassName?: string;
   articleClassName?: string;
+  investor?: string; // Optional support
 }
 
 export default function BusinessNews({
