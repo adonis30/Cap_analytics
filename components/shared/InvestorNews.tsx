@@ -64,7 +64,7 @@ export default function InvestorNews({
         setLoading(true);
         setError(null);
 
-        const response = await axios.get(`/api/news?investor=${encodeURIComponent(investor)}`);
+        const response = await axios.get(`/api/news?`);
         setNews(response.data.articles || []);
 
         if (!response.data.articles || response.data.articles.length === 0) {
