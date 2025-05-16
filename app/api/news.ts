@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(500).json({ error: 'Missing NEWS_API_KEY in environment variables' });
   }
 
-  const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(investor)}&language=en&sortBy=publishedAt&apiKey=${apiKey}`;
+  const url = `https://newsapi.org/v2/top-headlines?category=business&apiKey=${apiKey}`;
 
   try {
     const response = await fetch(url);
