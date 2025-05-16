@@ -55,6 +55,11 @@ export default function InvestorNews({
   const classes = useStyles();
 
   useEffect(() => {
+  console.log('Investor value:', investor, typeof investor); // Must log a string
+  ...
+}, [investor]);
+
+  useEffect(() => {
     const fetchNews = async () => {
       try {
         setLoading(true);
