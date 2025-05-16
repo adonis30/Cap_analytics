@@ -1,12 +1,21 @@
-import axios from "axios";
+// /pages/api/news.ts
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-// pages/api/news.js (or .ts for TypeScript)
-import { NextApiRequest, NextApiResponse } from 'next';
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const { investor } = req.query;
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-    const { data } = await axios.get(
-      `https://newsapi.org/v2/top-headlines?category=business&apiKey=NEWS_API_KEY`
-    );
-    res.json(data);
-  };
-  
+  const url = `https://newsapi.org/v2/top-headlines?category=business&q=${investor}&apiKey=${process.env.NEWS_API_KEY}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (!data.articles || data.articles.length === 0) {
+      return res.status(404).json({ error: 'No news articles found.' });
+    }
+
+    return res.status(200).json(data);
+  } catch (err) {
+    return res.status(500).json({ error: 'Failed to fetch news' });
+  }
+}
