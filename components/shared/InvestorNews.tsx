@@ -61,6 +61,7 @@ export default function InvestorNews({
         setError(null);
 
         const response = await axios.get(`/api/news?investor=${encodeURIComponent(investor)}`);
+        setNews(response.data.articles || []);
 
         if (!response.data.articles || response.data.articles.length === 0) {
           setError("No news articles available.");
@@ -68,6 +69,7 @@ export default function InvestorNews({
 
         setNews(response.data.articles || []);
       } catch (err: any) {
+        console.error(err);
         setError(err.response?.data?.error || err.message || 'An error occurred');
       } finally {
         setLoading(false);
