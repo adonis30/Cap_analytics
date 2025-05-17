@@ -155,7 +155,7 @@ export async function getCompanyById(companyId: string) {
       organizationType: 'Company',
       
     }).lean();
-    console.log("orgID", company.id);
+    console.log("orgID", companyId);
     const employees = await Promise.all(
       employeesRaw.map(enrichEmployeeWithOrganization)
     );
