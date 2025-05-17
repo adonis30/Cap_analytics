@@ -254,7 +254,7 @@ export const getEmployeesByCompanyId = async (companyId: string) => {
       employeesRaw.map((employee) => ({
         ...employee,
         organization: {
-          _id: company._id,
+          _id: companyId,
           name: company.name,
         },
       }))
