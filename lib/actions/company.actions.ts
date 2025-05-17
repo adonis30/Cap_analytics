@@ -150,12 +150,12 @@ export async function getCompanyById(companyId: string) {
     const company = await enrichWithInvestmentAsk(companyRaw);
 
     const employeesRaw = await Employee.find({
-      organizationId: company._id,
+      organizationId: companyId,
       
       organizationType: 'Company',
       
     }).lean();
-    console.log("orgID", companyId);
+     
     const employees = await Promise.all(
       employeesRaw.map(enrichEmployeeWithOrganization)
     );
