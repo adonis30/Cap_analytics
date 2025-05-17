@@ -135,7 +135,7 @@ export async function getCompanyById(companyId: string) {
   try {
     await connectToDatabase();
 
-    let company = await Company.findById(companyId)
+    const companyRaw = await Company.findById(companyId)
       .populate('categories')
       .populate('fundingTypes')
       .populate('sdgFocus')
@@ -144,11 +144,12 @@ export async function getCompanyById(companyId: string) {
       .populate('sector')
       .lean();
 
-    if (!company) throw new Error('Company not found');
+    if (!companyRaw) {
+      throw new Error('Company not found');
+    }
 
-    company = await enrichWithInvestmentAsk(company);
+    const company = await enrichWithInvestmentAsk(companyRaw);
 
-    // Fetch employees linked to this company
     const employees = await Employee.find({
       organizationId: company._id,
       organizationType: 'Company',
