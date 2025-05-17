@@ -33,7 +33,7 @@ interface CompanySummaryProps {
 const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
   
  // Displays the total number of employees
-  console.log(company.employeeCount); 
+  
 
   const InfoItem = ({
     icon: Icon,
