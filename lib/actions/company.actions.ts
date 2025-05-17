@@ -158,6 +158,7 @@ export async function getCompanyById(companyId: string) {
     return JSON.parse(JSON.stringify({
       ...company,
       employees,
+      console.log("employees", employees);
     }));
   } catch (error) {
     handleError(error);
