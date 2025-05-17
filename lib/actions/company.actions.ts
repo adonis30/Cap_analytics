@@ -255,7 +255,7 @@ export const getEmployeesByCompanyId = async (companyId: string) => {
         ...employee,
         organization: {
           _id: companyId,
-          name: company.name,
+           
         },
       }))
     );
