@@ -158,10 +158,13 @@ export async function getCompanyById(companyId: string) {
       employeesRaw.map(enrichEmployeeWithOrganization)
     );
 
+    // Add logging here
+    console.log('Fetched Employees:', employees);
+
     return JSON.parse(JSON.stringify({
       ...company,
       employees,
-      employeeCount: employees.length, // ← add this line
+      employeeCount: employees.length,
     }));
   } catch (error) {
     handleError(error);
