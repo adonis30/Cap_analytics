@@ -164,7 +164,7 @@ const employeesRaw = await Employee.find({
     );
 
     // Add logging here
-    console.log('Fetched Employees:', employees);
+   
 
     return JSON.parse(JSON.stringify({
       ...company,
