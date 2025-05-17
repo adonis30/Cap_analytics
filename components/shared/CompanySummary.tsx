@@ -10,6 +10,7 @@ interface CompanySummaryProps {
     description: string;
     location: string;
     employees?: Array<{ name?: string }>;
+    employeeCount? string;
     categories?: Array<{ name: string }>;
     owners?: string;
     operatingStatus?: string;
