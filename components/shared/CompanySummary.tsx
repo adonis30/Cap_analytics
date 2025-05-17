@@ -9,7 +9,7 @@ interface CompanySummaryProps {
     organizationName: string;
     description: string;
     location: string;
-    employeeCount: string;
+    employees?: Array<{ name?: string }>;
     categories?: Array<{ name: string }>;
     owners?: string;
     operatingStatus?: string;
@@ -23,9 +23,10 @@ interface CompanySummaryProps {
     categoryNames?: string[];
     fundedDate?: string | number | Date;
     sdgFocus?: Array<{ name: string }>;
-    sector?: Array<{name: string }>;
+    sector?: Array<{ name: string }>;
   };
 }
+
 
 const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
   const InfoItem = ({
@@ -59,7 +60,15 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-3">
             <InfoItem icon={MapPin} label="Location" value={company.location || 'Not specified'} />
-            <InfoItem icon={Users} label="Employees" value={company.employeeCount || 'Not available'} />
+            <InfoItem
+  icon={Users}
+  label="Employees"
+  value={
+    company.employees?.length
+      ? `${company.employees.length} employee${company.employees.length > 1 ? 's' : ''}`
+      : 'Not available'
+  }
+/>
             <InfoItem icon={Building2} label="Sector" value={company.sector?.map(sec => sec.name).join(', ') || 'Not specified'} />
             <InfoItem
               icon={Globe}
