@@ -151,7 +151,7 @@ export async function getCompanyById(companyId: string) {
 
     const employeesRaw = await Employee.find({
       organizationId: company._id,
-      console.log("orgID", company.id)
+      console.log("orgID", company.id),
       organizationType: 'Company',
       
     }).lean();
