@@ -161,11 +161,13 @@ export async function getCompanyById(companyId: string) {
     return JSON.parse(JSON.stringify({
       ...company,
       employees,
+      employeeCount: employees.length, // ← add this line
     }));
   } catch (error) {
     handleError(error);
   }
 }
+
 
 export async function getAllCompanies(params: GetAllCompanyParams) {
   try {
