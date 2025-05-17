@@ -155,7 +155,7 @@ export async function getCompanyById(companyId: string) {
       organizationType: 'Company',
       
     }).lean();
-     
+     console.log("empDta", employeesRaw);
     const employees = await Promise.all(
       employeesRaw.map(enrichEmployeeWithOrganization)
     );
