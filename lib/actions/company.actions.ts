@@ -239,3 +239,30 @@ export async function getRelatedCompaniesByCategory({
     handleError(error);
   }
 }
+
+export const getEmployeesByCompanyId = async (companyId: string) => {
+  try {
+    await connectToDatabase();
+
+    const companyExists = await Company.exists({ _id: companyId });
+    if (!companyExists) throw new Error('Company not found');
+
+    const employeesRaw = await Employee.find({ organizationId: companyId }).lean();
+
+    const employees = await Promise.all(
+      employeesRaw.map(async (employee) => {
+        return {
+          ...employee,
+          organization: {
+            _id: companyId,
+            name: companyExists.name,
+          },
+        };
+      })
+    );
+
+    return JSON.parse(JSON.stringify(employees));
+  } catch (error) {
+    handleError(error);
+  }
+};
