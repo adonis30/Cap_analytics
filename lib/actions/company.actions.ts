@@ -150,9 +150,8 @@ export async function getCompanyById(companyId: string) {
     const company = await enrichWithInvestmentAsk(companyRaw);
 
     const employeesRaw = await Employee.find({
-      organizationId: companyId,
-      
-      organizationType: 'Company',
+       organizationId: ObjectId("681f9309e6c007e5e77e7f4b"),
+       organizationType: "Company"
       
     }).lean();
      console.log("empDta", employeesRaw);
