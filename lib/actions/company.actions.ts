@@ -155,13 +155,10 @@ export async function getCompanyById(companyId: string) {
     console.log("Looking for employees with org ID:", companyId);
 
 const employeesRaw = await Employee.find({
-  organizationId: new mongoose.Types.ObjectId(companyId),
-  organizationType: "Company"
+  organizationId: companyId
 }).lean();
 
-console.log("Fetched employee raw data:", employeesRaw);
-const employee = await Employee.find({ organizationId: companyId });
-console.log("Fected employee", employee);
+ 
     const employees = await Promise.all(
       employeesRaw.map(enrichEmployeeWithOrganization)
     );
