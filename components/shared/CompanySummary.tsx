@@ -9,8 +9,8 @@ interface CompanySummaryProps {
     organizationName: string;
     description: string;
     location: string;
+    employeeCount?: number;  
     employees?: Array<{ name?: string }>;
-    employeeCount?: string;
     categories?: Array<{ name: string }>;
     owners?: string;
     operatingStatus?: string;
@@ -68,8 +68,10 @@ const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
   icon={Users}
   label="Employees"
   value={
-    company.employees?.length
-      ? `${company.employees.length} employee${company.employees.length > 1 ? 's' : ''}`
+    typeof company.employeeCount === 'number'
+      ? `${company.employeeCount} employee${company.employeeCount !== 1 ? 's' : ''}`
+      : company.employees?.length
+      ? `${company.employees.length} employee${company.employees.length !== 1 ? 's' : ''}`
       : 'Not available'
   }
 />
