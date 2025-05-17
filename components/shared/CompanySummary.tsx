@@ -29,6 +29,7 @@ interface CompanySummaryProps {
 
 
 const CompanySummary: React.FC<CompanySummaryProps> = ({ company }) => {
+  console.log("CompanySummary received company data:", company);
   const InfoItem = ({
     icon: Icon,
     label,
