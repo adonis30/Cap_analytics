@@ -50,16 +50,12 @@ const enrichWithInvestmentAsk = async (company: any) => {
 };
 
 
-const enrichEmployeeWithOrganization = async (employee: any) => {
-  if (!employee.organizationId || !employee.organizationType) return employee;
+export const enrichEmployeeWithOrganization = async (employee: any) => {
+  if (!employee.organizationId || employee.organizationType !== 'Company') return employee;
 
-  let organizationData = null;
-
-  if (employee.organizationType === 'Company') {
-    organizationData = await Company.findById(employee.organizationId).select('_id name').lean();
-  } else if (employee.organizationType === 'Investor') {
-    organizationData = await Investor.findById(employee.organizationId).select('_id name').lean();
-  }
+  const organizationData = await Company.findById(employee.organizationId)
+    .select('_id name')
+    .lean();
 
   return {
     ...employee,
