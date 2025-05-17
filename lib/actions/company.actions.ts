@@ -160,7 +160,8 @@ const employeesRaw = await Employee.find({
 }).lean();
 
 console.log("Fetched employee raw data:", employeesRaw);
-
+const employee = await Employee.find({ organizationId: companyId });
+console.log("Fected employee", employee);
     const employees = await Promise.all(
       employeesRaw.map(enrichEmployeeWithOrganization)
     );
