@@ -154,7 +154,7 @@ export async function getCompanyById(companyId: string) {
       organizationId: company._id,
       organizationType: 'Company',
     }).lean();
-    console.log("employees", employees);
+     
     return JSON.parse(JSON.stringify({
       ...company,
       employees,
