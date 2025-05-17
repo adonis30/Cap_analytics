@@ -20,6 +20,7 @@ import FundingInstruments from '../database/models/fundingInstruments.model';
 import FundingRounds from '../database/models/fundingRounds.model';
 import Sector from '../database/models/sector.model';
 import InvestmentAsk from '@/lib/database/models/investmentAsk.model';
+import Employee from '../database/models/employee.model';
 import { revalidatePath } from 'next/cache';
 import { isValidObjectId } from 'mongoose';
 
@@ -45,6 +46,24 @@ const enrichWithInvestmentAsk = async (company: any) => {
   return {
     ...company,
     investmentAsk: investmentAsks,
+  };
+};
+
+
+const enrichEmployeeWithOrganization = async (employee: any) => {
+  if (!employee.organizationId || !employee.organizationType) return employee;
+
+  let organizationData = null;
+
+  if (employee.organizationType === 'Company') {
+    organizationData = await Company.findById(employee.organizationId).select('_id name').lean();
+  } else if (employee.organizationType === 'Investor') {
+    organizationData = await Investor.findById(employee.organizationId).select('_id name').lean();
+  }
+
+  return {
+    ...employee,
+    organization: organizationData,
   };
 };
 
@@ -133,7 +152,16 @@ export async function getCompanyById(companyId: string) {
 
     company = await enrichWithInvestmentAsk(company);
 
-    return JSON.parse(JSON.stringify(company));
+    // Fetch employees linked to this company
+    const employees = await Employee.find({
+      organizationId: company._id,
+      organizationType: 'Company',
+    }).lean();
+
+    return JSON.parse(JSON.stringify({
+      ...company,
+      employees,
+    }));
   } catch (error) {
     handleError(error);
   }
