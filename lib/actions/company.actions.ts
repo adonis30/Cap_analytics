@@ -49,7 +49,6 @@ const enrichWithInvestmentAsk = async (company: any) => {
   };
 };
 
-
 export const enrichEmployeeWithOrganization = async (employee: any) => {
   if (!employee.organizationId || employee.organizationType !== 'Company') return employee;
 
@@ -150,15 +149,18 @@ export async function getCompanyById(companyId: string) {
 
     const company = await enrichWithInvestmentAsk(companyRaw);
 
-    const employees = await Employee.find({
+    const employeesRaw = await Employee.find({
       organizationId: company._id,
       organizationType: 'Company',
     }).lean();
-     
+
+    const employees = await Promise.all(
+      employeesRaw.map(enrichEmployeeWithOrganization)
+    );
+
     return JSON.parse(JSON.stringify({
       ...company,
       employees,
-     
     }));
   } catch (error) {
     handleError(error);
