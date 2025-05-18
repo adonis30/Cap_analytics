@@ -6,11 +6,12 @@ import { useOutsideClick } from "@/app/hooks/use-outside-click";
 import { getEmployeesByCompanyId } from "@/lib/actions/company.actions";
 
 interface EmployeeProfile {
-  _id: string;        // Assume employee id is _id, adjust if different
-  name?: string;
+  _id: string;
+  firstName?: string;
+  lastName?: string;
+  title?: string;
   position?: string;
-  title: string;
-  bio?: string; // Optional description if available
+  bio?: string;
 }
 
 interface Contact {
@@ -172,18 +173,17 @@ export default function CompanyPeople({ company }: { company: any }) {
         {error && <p className="text-red-600">{error}</p>}
         {!loading && !error && employees.length === 0 && <p>No employees found.</p>}
         <ul className="space-y-4">
-          {employees.map((emp) => (
-            <li key={emp._id}>
-              <EmployeeProfileCard
-                id={emp._id}
-               name={`${emp.firstName} ${emp.lastName}`}  
-                title={emp.title}
-                
-                onSelect={() => setActive(emp)}
-              />
-            </li>
-          ))}
-        </ul>
+  {employees.map((emp) => (
+    <li key={emp._id}>
+      <EmployeeProfileCard
+        id={emp._id}
+        name={`${emp.firstName ?? ""} ${emp.lastName ?? ""}`.trim()}
+        title={emp.title ?? emp.position ?? "No title"}
+        onSelect={() => setActive(emp)}
+      />
+    </li>
+  ))}
+</ul>
       </div>
 
       {/* Contacts Card */}
@@ -222,28 +222,30 @@ export default function CompanyPeople({ company }: { company: any }) {
 
       {/* Modal or Details for Active Employee */}
       <AnimatePresence>
-        {active && (
-          <motion.div
-            ref={ref}
-            key="modal"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-          >
-            <motion.div className="bg-white rounded-lg p-6 max-w-lg w-full relative">
-              <button
-                onClick={() => setActive(null)}
-                className="absolute top-3 right-3 text-gray-600 hover:text-gray-800"
-              >
-                &times;
-              </button>
-              <h2 className="text-xl font-bold mb-2">{active.name}</h2>
-              <p className="text-gray-700 mb-2">{active.title}</p>
-              {active.description && <p className="text-gray-600">{active.description}</p>}
-            </motion.div>
-          </motion.div>
-        )}
+       {active && (
+  <motion.div
+    ref={ref}
+    key="modal"
+    initial={{ opacity: 0, y: 50 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: 50 }}
+    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  >
+    <motion.div className="bg-white rounded-lg p-6 max-w-lg w-full relative">
+      <button
+        onClick={() => setActive(null)}
+        className="absolute top-3 right-3 text-gray-600 hover:text-gray-800"
+      >
+        &times;
+      </button>
+      <h2 className="text-xl font-bold mb-2">
+        {`${active.firstName ?? ""} ${active.lastName ?? ""}`.trim()}
+      </h2>
+      <p className="text-gray-700 mb-2">{active.title ?? active.position ?? "No title"}</p>
+      {active.bio && <p className="text-gray-600">{active.bio}</p>}
+    </motion.div>
+  </motion.div>
+)}
       </AnimatePresence>
     </div>
   );
