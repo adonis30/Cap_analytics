@@ -64,7 +64,7 @@ const InvestorSummary: React.FC<InvestorSummaryProps> = ({ investor }) => {
   value={
     typeof investor.employeeCount === 'number'
       ? `${investor.employeeCount} employee${investor.employeeCount !== 1 ? 's' : ''}`
-      : company.employees?.length
+      : investor.employees?.length
       ? `${investor.employees.length} employee${investor.employees.length !== 1 ? 's' : ''}`
       : 'Not available'
   }
