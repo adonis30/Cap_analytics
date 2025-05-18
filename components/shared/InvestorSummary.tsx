@@ -7,7 +7,8 @@ interface InvestorSummaryProps {
     location: string;
     type: 'Individual' | 'Institution';
     contactNumber?: string;
-    employeeCount?: number;  
+    employeeCount?: number;
+    employees?: Array<{ name?: string }>;
     contactEmail?: string;
     totalAmountFunded?: string;
     highestAmountFunded?: string;
