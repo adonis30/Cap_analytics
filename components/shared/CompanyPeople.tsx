@@ -242,7 +242,8 @@ export default function CompanyPeople({ company }: { company: any }) {
         {`${active.title ?? ""}  ${active.firstName ?? ""} ${active.lastName ?? ""}`.trim()}
       </h2>
       <p className="text-gray-700 mb-2">{ active.position ?? "No title"}</p>
-      {active.bio && <p className="text-gray-600">{active.bio}</p>}
+      <p className="text-gray-600">{active.bio || "No biography available."}</p>
+
     </motion.div>
   </motion.div>
 )}
