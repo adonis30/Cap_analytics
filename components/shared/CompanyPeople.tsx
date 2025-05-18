@@ -177,8 +177,8 @@ export default function CompanyPeople({ company }: { company: any }) {
     <li key={emp._id}>
       <EmployeeProfileCard
         id={emp._id}
-        name={`${emp.firstName ?? ""} ${emp.lastName ?? ""}`.trim()}
-        title={emp.title ?? emp.position ?? "No title"}
+        name={`${emp.title + " " : ""}${emp.firstName ?? ""} ${emp.lastName ?? ""}`.trim()}
+        position={emp.position ?? "No title"}
         onSelect={() => setActive(emp)}
       />
     </li>
