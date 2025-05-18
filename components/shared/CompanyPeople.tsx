@@ -179,7 +179,7 @@ export default function CompanyPeople({ company }: { company: any }) {
                 id={emp._id}
                 name={emp.firstName + "  " + emp.lastName}
                 title={emp.title}
-                position={emp.position}
+                
                 onSelect={() => setActive(emp)}
               />
             </li>
