@@ -151,6 +151,16 @@ export default function InvestorProfiles({ investor }: { investor: any }) {
       </div>
 
       {/* Modal for Member Details */}
+      <AnimatePresence>
+        {active && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/20 h-full w-full z-10"
+          />
+        )}
+      </AnimatePresence>
      <AnimatePresence>
   {active && (
     <motion.div
@@ -160,6 +170,7 @@ export default function InvestorProfiles({ investor }: { investor: any }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 50 }}
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      onClick={() => setActive(null)}
     >
       <motion.div className="bg-white rounded-lg p-6 max-w-lg w-full relative">
         <button
