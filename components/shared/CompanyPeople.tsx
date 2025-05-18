@@ -239,9 +239,9 @@ export default function CompanyPeople({ company }: { company: any }) {
         &times;
       </button>
       <h2 className="text-xl font-bold mb-2">
-        {`${active.firstName ?? ""} ${active.lastName ?? ""}`.trim()}
+        {`${active.title ?? ""}  ${active.firstName ?? ""} ${active.lastName ?? ""}`.trim()}
       </h2>
-      <p className="text-gray-700 mb-2">{active.title ?? active.position ?? "No title"}</p>
+      <p className="text-gray-700 mb-2">{ active.position ?? "No title"}</p>
       {active.bio && <p className="text-gray-600">{active.bio}</p>}
     </motion.div>
   </motion.div>
