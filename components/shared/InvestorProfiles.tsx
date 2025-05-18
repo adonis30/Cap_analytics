@@ -120,7 +120,7 @@ export default function InvestorProfiles({ investor }: { investor: any }) {
             <li key={member._id}>
               <TeamProfileCard
                 id={member._id}
-                photoUrl{member.photoUrl}
+                photoUrl={member.photoUrl}
                 name={`${member.title ? member.title + " " : ""}${member.firstName ?? ""} ${member.lastName ?? ""}`.trim()}
                 position={member.position ?? "No role"}
                 onSelect={() => setActive(member)}
