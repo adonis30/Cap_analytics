@@ -243,7 +243,7 @@ function TeamProfileCard({
       }}
     >  
       <img
-        src={imageUrl || "/default-avatar.png"}
+        src={photoUrl || "https://avatar.iran.liara.run/public/boy"}
         alt={name}
         className="w-12 h-12 rounded-full object-cover"
       />
