@@ -13,6 +13,7 @@ import FundingInstruments from '../database/models/fundingInstruments.model';
 import FundingRounds from '../database/models/fundingRounds.model';
 import Category from '../database/models/category.model';
 import TicketSize from '../database/models/ticketSize.model';
+import Employee from '../database/models/employee.model';
 
 
 interface InvestorData {
@@ -47,6 +48,20 @@ export const enrichWithTicketSize = async (investor: any) => {
     ticketSize: ticketSizes,
   };
 };
+
+export const enrichEmployeeWithOrganization = async (employee: any) => {
+  if (!employee.organizationId || employee.organizationType !== 'Investor') return employee;
+
+  const organizationData = await Investor.findById(employee.organizationId)
+    .select('_id name')
+    .lean();
+
+  return {
+    ...employee,
+    organization: organizationData,
+  };
+};
+
 
 export async function getRelatedInvestorsByCategory({
   categoryId,
@@ -134,7 +149,17 @@ export const getInvestorById = async (investorId: string) => {
 
     if (investor) {
       return await enrichWithTicketSize(investor);
+      
     }
+
+    const employeesRaw = await Employee.find({
+  organizationId: investorId
+}).lean();
+
+     const employees = await Promise.all(
+      employeesRaw.map(enrichEmployeeWithOrganization)
+    );
+
 
     const institutionInvestor = await InstitutionInvestor.findById(investorId)
       .populate('fundingTypes', 'name')
@@ -222,6 +247,31 @@ export const deleteInvestor = async (investorId: string) => {
     }
 
     return true;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const getEmployeesByCompanyId = async (investorId: string) => {
+  try {
+    await connectToDatabase();
+
+    const investor = await Investor.findById(investorId).select('_id name').lean();
+    if (!investor) throw new Error('Investor not found');
+
+    const employeesRaw = await Employee.find({ organizationId: investorId }).lean();
+
+    const employees = await Promise.all(
+      employeesRaw.map((employee) => ({
+        ...employee,
+        organization: {
+          _id: investorId,
+           
+        },
+      }))
+    );
+
+    return JSON.parse(JSON.stringify(employees));
   } catch (error) {
     handleError(error);
   }
