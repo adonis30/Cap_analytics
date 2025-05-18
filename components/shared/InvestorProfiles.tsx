@@ -230,9 +230,12 @@ function TeamProfileCard({
           onSelect();
         }
       }}
-    >
-       
-      <p className="w-12 h-12 rounded-full object-cover">{photoUrl}</p>
+    >  
+      <img
+        src={imageUrl || "/default-avatar.png"}
+        alt={name}
+        className="w-12 h-12 rounded-full object-cover"
+      />
       <h3 className="font-semibold text-gray-800">{name}</h3>
       <p className="text-gray-600">{position}</p>
     </div>
