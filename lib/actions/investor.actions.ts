@@ -264,7 +264,7 @@ export const deleteInvestor = async (investorId: string) => {
   }
 };
 
-export const getEmployeesByCompanyId = async (investorId: string) => {
+export const getEmployeesByInvestorId = async (investorId: string) => {
   try {
     await connectToDatabase();
 
