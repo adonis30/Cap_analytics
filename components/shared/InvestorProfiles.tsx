@@ -10,7 +10,7 @@ interface InvestorTeamMember {
   firstName?: string;
   lastName?: string;
   title?: string;
-  role?: string;
+  position?: string;
   bio?: string;
 }
 
@@ -120,7 +120,7 @@ export default function InvestorProfiles({ investor }: { investor: any }) {
               <TeamProfileCard
                 id={member._id}
                 name={`${member.title ? member.title + " " : ""}${member.firstName ?? ""} ${member.lastName ?? ""}`.trim()}
-                role={member.role ?? "No role"}
+                position={member.position ?? "No role"}
                 onSelect={() => setActive(member)}
               />
             </li>
@@ -166,7 +166,7 @@ export default function InvestorProfiles({ investor }: { investor: any }) {
               <h2 className="text-xl font-bold mb-2">
                 {`${active.title ?? ""} ${active.firstName ?? ""} ${active.lastName ?? ""}`.trim()}
               </h2>
-              <p className="text-gray-700 mb-2">{active.role ?? "No role"}</p>
+              <p className="text-gray-700 mb-2">{active.position ?? "No role"}</p>
               <p className="text-gray-600">{active.bio || "No biography available."}</p>
             </motion.div>
           </motion.div>
@@ -204,12 +204,12 @@ function HighlightCard({
 function TeamProfileCard({
   id,
   name,
-  role,
+  position,
   onSelect,
 }: {
   id: string;
   name: string;
-  role: string;
+  position: string;
   onSelect: () => void;
 }) {
   return (
@@ -228,7 +228,7 @@ function TeamProfileCard({
       }}
     >
       <h3 className="font-semibold text-gray-800">{name}</h3>
-      <p className="text-gray-600">{role}</p>
+      <p className="text-gray-600">{position}</p>
     </div>
   );
 }
