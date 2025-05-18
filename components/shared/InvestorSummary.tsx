@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, User, DollarSign, Phone, Mail, Calendar } from 'lucide-react';
+import { MapPin, User, Users, DollarSign, Phone, Mail, Calendar } from 'lucide-react';
 
 interface InvestorSummaryProps {
   investor: {
