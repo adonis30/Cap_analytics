@@ -231,11 +231,8 @@ function TeamProfileCard({
         }
       }}
     >
-      <img
-        src={photoUrl || "https://avatar.iran.liara.run/public/boy"}
-        alt={name}
-        className="w-12 h-12 rounded-full object-cover"
-      />
+       
+      <p className="w-12 h-12 rounded-full object-cover">{photoUrl}</p>
       <h3 className="font-semibold text-gray-800">{name}</h3>
       <p className="text-gray-600">{position}</p>
     </div>
