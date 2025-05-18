@@ -7,6 +7,7 @@ interface InvestorSummaryProps {
     location: string;
     type: 'Individual' | 'Institution';
     contactNumber?: string;
+    employeeCount?: number;  
     contactEmail?: string;
     totalAmountFunded?: string;
     highestAmountFunded?: string;
@@ -57,6 +58,17 @@ const InvestorSummary: React.FC<InvestorSummaryProps> = ({ investor }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-3">
             <InfoItem icon={MapPin} label="Location" value={investor.location || 'Not specified'} />
+            <InfoItem
+  icon={Users}
+  label="Employees"
+  value={
+    typeof investor.employeeCount === 'number'
+      ? `${investor.employeeCount} employee${investor.employeeCount !== 1 ? 's' : ''}`
+      : company.employees?.length
+      ? `${investor.employees.length} employee${investor.employees.length !== 1 ? 's' : ''}`
+      : 'Not available'
+  }
+/>
             <InfoItem icon={User} label="Type" value={investor.type || 'Not specified'} />
             <InfoItem icon={DollarSign} label="Total Funded" value={investor.totalAmountFunded || 'Not available'} />
             <InfoItem
