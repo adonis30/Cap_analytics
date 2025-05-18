@@ -151,15 +151,15 @@ export const getInvestorById = async (investorId: string) => {
       return await enrichWithTicketSize(investor);
       
     }
-
+   console.log("investor ID", investorId)
     const employeesRaw = await Employee.find({
   organizationId: investorId
 }).lean();
-
+   console.log("employeesRew", employeesRaw)
      const employees = await Promise.all(
       employeesRaw.map(enrichEmployeeWithOrganization)
     );
-
+console.log("employees", employees)
 
     const institutionInvestor = await InstitutionInvestor.findById(investorId)
       .populate('fundingTypes', 'name')
