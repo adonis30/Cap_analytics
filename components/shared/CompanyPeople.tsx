@@ -12,6 +12,7 @@ interface EmployeeProfile {
   title?: string;
   position?: string;
   bio?: string;
+  photoUrl?: string;
 }
 
 interface Contact {
@@ -177,6 +178,7 @@ export default function CompanyPeople({ company }: { company: any }) {
     <li key={emp._id}>
       <EmployeeProfileCard
         id={emp._id}
+        photoUrl={emp.photoUrl ?? ""}
         name={`${emp.title ? emp.title + " " : ""}${emp.firstName ?? ""} ${emp.lastName ?? ""}`.trim()}
         title={emp.position ?? "No title"}
         onSelect={() => setActive(emp)}
@@ -238,9 +240,17 @@ export default function CompanyPeople({ company }: { company: any }) {
       >
         &times;
       </button>
-      <h2 className="text-xl font-bold mb-2">
-        {`${active.title ?? ""}  ${active.firstName ?? ""} ${active.lastName ?? ""}`.trim()}
-      </h2>
+      <div className="flex flex-col items-center mb-4">
+          <img
+            src={active.photoUrl || "https://avatar.iran.liara.run/public/boy"}
+            alt={`${active.firstName} ${active.lastName}`}
+            className="w-24 h-24 rounded-full object-cover border border-gray-300 mb-2"
+          />
+          <h2 className="text-xl font-bold text-center">
+            {`${active.title ? active.title + " " : ""}${active.firstName ?? ""} ${active.lastName ?? ""}`.trim()}
+          </h2>
+        </div>
+
       <p className="text-gray-700 mb-2">{ active.position ?? "No title"}</p>
       <p className="text-gray-600">{active.bio || "No biography available."}</p>
 
@@ -254,11 +264,13 @@ export default function CompanyPeople({ company }: { company: any }) {
 
 function EmployeeProfileCard({
   id,
+  photoUrl,
   name,
   title,
   onSelect,
 }: {
   id: string;
+  photoUrl: string;
   name: string;
   title: string;
   onSelect: () => void;
@@ -278,6 +290,11 @@ function EmployeeProfileCard({
         }
       }}
     >
+       <img
+        src={photoUrl || "https://avatar.iran.liara.run/public/boy"}
+        alt={name}
+        className="w-12 h-12 rounded-full object-cover"
+      />
       <h3 className="font-semibold text-gray-800">{name}</h3>
       <p className="text-gray-600">{title}</p>
     </div>
