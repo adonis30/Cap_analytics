@@ -161,17 +161,28 @@ export default function InvestorProfiles({ investor }: { investor: any }) {
             exit={{ opacity: 0, y: 50 }}
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           >
-            <motion.div className="bg-white rounded-lg p-6 max-w-lg w-full relative">
-              <button onClick={() => setActive(null)} className="absolute top-3 right-3 text-gray-600 hover:text-gray-800">
-                &times;
-              </button>
-              <h2 className="text-xl font-bold mb-2">
-                {`${active.photoUrl ?? "" } ${active.title ?? ""} ${active.firstName ?? ""} ${active.lastName ?? ""}`.trim()}
-              </h2>
-              <p className="text-gray-700 mb-2">{active.position ?? "No role"}</p>
-              <p className="text-gray-600">{active.bio || "No biography available."}</p>
-            </motion.div>
-          </motion.div>
+           <motion.div className="bg-white rounded-lg p-6 max-w-lg w-full relative">
+  <button
+    onClick={() => setActive(null)}
+    className="absolute top-3 right-3 text-gray-600 hover:text-gray-800"
+  >
+    &times;
+  </button>
+
+  <div className="flex flex-col items-center mb-4">
+    <img
+      src={active.photoUrl || "https://avatar.iran.liara.run/public/boy"}
+      alt={`${active.firstName} ${active.lastName}`}
+      className="w-24 h-24 rounded-full object-cover border border-gray-300 mb-2"
+    />
+    <h2 className="text-xl font-bold text-center">
+      {`${active.title ? active.title + " " : ""}${active.firstName ?? ""} ${active.lastName ?? ""}`.trim()}
+    </h2>
+  </div>
+
+  <p className="text-gray-700 mb-2 text-center">{active.position ?? "No role"}</p>
+  <p className="text-gray-600">{active.bio || "No biography available."}</p>
+</motion.div>
         )}
       </AnimatePresence>
     </div>
