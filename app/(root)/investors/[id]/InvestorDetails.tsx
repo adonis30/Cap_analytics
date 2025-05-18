@@ -6,6 +6,7 @@ import Collection from "@/components/shared/Collection";
 import Image from "next/image";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import InvestorNews from '@/components/shared/InvestorNews';
+import InvestorProfiles from '@/components/shared/InvestorProfiles';
 import InvestorInvestments from '@/components/shared/InvestorInvestments';
 import InvestorSummary from '@/components/shared/InvestorSummary';
 import { getInvestorById, getAllInvestors } from '@/lib/actions/investor.actions';
@@ -68,7 +69,7 @@ export interface InvestorDetailsProps {
     { 
       value: "people", 
       label: "People", 
-      content: <InvestorNews investor={investor} />
+      content: <InvestorProfiles investor={investor} />
     },
     { 
       value: "news", 
