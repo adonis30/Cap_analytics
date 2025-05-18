@@ -358,6 +358,25 @@ export type Company = {
   companyCreator: { _id: string; firstName: string; lastName: string };
 };
 
+export interface Employee {
+  _id: string;
+  title?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumbers?: string;
+  organizationId?: string[];
+  position?: string;
+  department?: string;
+  hireDate?: string;
+  address?: string;
+  linkedInUrl?: string;
+  photoUrl?: string;
+  bio?: string;
+}
+
+
+
 // ====== CATEGORY PARAMS
 export type CreateCategoryParams = {
   categoryName: string;
