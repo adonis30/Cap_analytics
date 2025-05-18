@@ -157,9 +157,13 @@ console.log("employees", employees)
       .lean();
 
     if (investor) {
-      return await enrichWithTicketSize(investor);
-      
-    }
+  const enrichedInvestor = await enrichWithTicketSize(investor);
+  return {
+    ...enrichedInvestor,
+    employees,
+    employeeCount: employees.length,
+  };
+}
    
 
     const institutionInvestor = await InstitutionInvestor.findById(investorId)
@@ -169,8 +173,13 @@ console.log("employees", employees)
       .lean();
 
     if (institutionInvestor) {
-      return await enrichWithTicketSize(institutionInvestor);
-    }
+  const enrichedInstitution = await enrichWithTicketSize(institutionInvestor);
+  return {
+    ...enrichedInstitution,
+    employees,
+    employeeCount: employees.length,
+  };
+}
 
 
    
