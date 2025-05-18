@@ -12,6 +12,7 @@ interface InvestorTeamMember {
   title?: string;
   position?: string;
   bio?: string;
+  photoUrl?: string;
 }
 
 interface Contact {
@@ -119,6 +120,7 @@ export default function InvestorProfiles({ investor }: { investor: any }) {
             <li key={member._id}>
               <TeamProfileCard
                 id={member._id}
+                photoUrl{member.photoUrl}
                 name={`${member.title ? member.title + " " : ""}${member.firstName ?? ""} ${member.lastName ?? ""}`.trim()}
                 position={member.position ?? "No role"}
                 onSelect={() => setActive(member)}
@@ -164,7 +166,7 @@ export default function InvestorProfiles({ investor }: { investor: any }) {
                 &times;
               </button>
               <h2 className="text-xl font-bold mb-2">
-                {`${active.title ?? ""} ${active.firstName ?? ""} ${active.lastName ?? ""}`.trim()}
+                {`${active.photoUrl ?? "" } ${active.title ?? ""} ${active.firstName ?? ""} ${active.lastName ?? ""}`.trim()}
               </h2>
               <p className="text-gray-700 mb-2">{active.position ?? "No role"}</p>
               <p className="text-gray-600">{active.bio || "No biography available."}</p>
@@ -203,11 +205,13 @@ function HighlightCard({
 
 function TeamProfileCard({
   id,
+  photoUrl,
   name,
   position,
   onSelect,
 }: {
   id: string;
+  photoUrl: string;
   name: string;
   position: string;
   onSelect: () => void;
@@ -227,6 +231,11 @@ function TeamProfileCard({
         }
       }}
     >
+      <img
+        src={photoUrl || "https://avatar.iran.liara.run/public/boy"}
+        alt={name}
+        className="w-12 h-12 rounded-full object-cover"
+      />
       <h3 className="font-semibold text-gray-800">{name}</h3>
       <p className="text-gray-600">{position}</p>
     </div>
