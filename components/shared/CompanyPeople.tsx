@@ -7,8 +7,7 @@ import { getEmployeesByCompanyId } from "@/lib/actions/company.actions";
 
 interface EmployeeProfile {
   _id: string;        // Assume employee id is _id, adjust if different
-  firstName?: string;
-  lastName?: string;
+  name?: = {firstName + "  " + lastName}
   position?: string;
   title: string;
   bio?: string; // Optional description if available
@@ -158,7 +157,7 @@ export default function CompanyPeople({ company }: { company: any }) {
         <div className="mt-4">
           <h3 className="text-lg font-semibold text-gray-800 mb-2">About</h3>
           <p className="text-sm text-gray-600 mb-2">
-            {company.name} has {employees.length} current employee profiles, including CEO {company.ceo}.
+            {company.name} has {employees.length} current employee profiles, including CEO {company.owners}.
           </p>
           <p className="text-sm text-gray-600">
             {company.name} has {company.boardMemberProfiles} board members and advisors, including {company.ceo}.
