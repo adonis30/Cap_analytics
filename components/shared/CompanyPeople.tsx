@@ -7,7 +7,7 @@ import { getEmployeesByCompanyId } from "@/lib/actions/company.actions";
 
 interface EmployeeProfile {
   _id: string;        // Assume employee id is _id, adjust if different
-  name?: = {firstName + "  " + lastName}
+  name?: string;
   position?: string;
   title: string;
   bio?: string; // Optional description if available
@@ -176,7 +176,7 @@ export default function CompanyPeople({ company }: { company: any }) {
             <li key={emp._id}>
               <EmployeeProfileCard
                 id={emp._id}
-                name={emp.firstName + "  " + emp.lastName}
+               name={`${emp.firstName} ${emp.lastName}`}  
                 title={emp.title}
                 
                 onSelect={() => setActive(emp)}
