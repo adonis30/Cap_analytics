@@ -37,18 +37,7 @@ const InvestorSummary: React.FC<InvestorSummaryProps> = ({ investor }) => {
 
   const summary = description || bio || 'No description or bio available';
 
-  const employeeDisplay = (() => {
-  const count = Number(investor.employeeCount);
-  if (!isNaN(count)) {
-    return `${count} employee${count !== 1 ? 's' : ''}`;
-  } else if (Array.isArray(investor.employees)) {
-    const length = investor.employees.length;
-    return `${length} employee${length !== 1 ? 's' : ''}`;
-  } else {
-    return 'Not available';
-  }
-})();
-
+   
    const InfoItem = ({ icon: Icon, label, value }: { icon: any; label: string; value: string | React.ReactNode }) => {
     return (
       <div className="flex items-center py-2 border-b border-gray-200 last:border-b-0">
@@ -71,7 +60,17 @@ const InvestorSummary: React.FC<InvestorSummaryProps> = ({ investor }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-3">
             <InfoItem icon={MapPin} label="Location" value={investor.location || 'Not specified'} />
-           <InfoItem icon={Users} label="Employees" value={employeeDisplay} />
+           <InfoItem
+  icon={Users}
+  label="Employees"
+  value={
+    (typeof investor.employeeCount === 'number' && investor.employeeCount >= 0)
+      ? `${investor.employeeCount} employee${investor.employeeCount !== 1 ? 's' : ''}`
+      : (investor.employees?.length
+          ? `${investor.employees.length} employee${investor.employees.length !== 1 ? 's' : ''}`
+          : 'Not available')
+  }
+/>
             <InfoItem icon={User} label="Type" value={investor.type || 'Not specified'} />
             <InfoItem icon={DollarSign} label="Total Funded" value={investor.totalAmountFunded || 'Not available'} />
             <InfoItem
