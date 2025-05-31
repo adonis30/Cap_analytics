@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import "keen-slider/keen-slider.min.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Providers from "./providers";
 
