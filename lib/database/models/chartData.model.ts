@@ -1,8 +1,9 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema, models, model } from 'mongoose';
 
-const chartDataSchema = new mongoose.Schema({
+const chartDataSchema = new Schema({
   metadataId: { type: mongoose.Schema.Types.ObjectId, ref: 'ChartMetadata', required: true },
-  // dynamic structure, allow any fields
 }, { strict: false });
 
-export default mongoose.model('ChartData', chartDataSchema);
+const ChartData = models.ChartData || model('ChartData', chartDataSchema);
+
+export default ChartData;
