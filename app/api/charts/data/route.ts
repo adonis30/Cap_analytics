@@ -1,23 +1,35 @@
-// /pages/api/charts/data.ts
-import { NextApiRequest, NextApiResponse } from 'next';
-import { connectToDatabase } from '@/lib/database';
-import ChartMetadata from '@/lib/database/models/chartMetadata.model';
+// app/api/charts/data/route.ts
+import { NextRequest, NextResponse } from 'next/server';
 import ChartData from '@/lib/database/models/chartData.model';
+import ChartMetadata from '@/lib/database/models/chartMetadata.model';
+import { connectToDatabase } from '@/lib/database';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: NextRequest) {
   try {
+    const { searchParams } = new URL(req.url);
+    const name = searchParams.get('name');
+
+    if (!name) {
+      return NextResponse.json({ error: 'Missing chart name' }, { status: 400 });
+    }
+
     await connectToDatabase();
 
-    const { name } = req.query;
-    if (!name) return res.status(400).json({ error: "Chart name is required" });
-
     const metadata = await ChartMetadata.findOne({ name });
-    if (!metadata) return res.status(404).json({ error: 'Chart not found' });
 
-    const data = await ChartData.find({ metadataId: metadata._id });
-    return res.status(200).json({ metadata, data });
+    if (!metadata) {
+      return NextResponse.json({ error: 'Chart metadata not found' }, { status: 404 });
+    }
+
+    const chartData = await ChartData.find({ metadataId: metadata._id });
+
+    return NextResponse.json({
+      metadata,
+      data: chartData,
+    });
+
   } catch (error) {
-    console.error('Fetch chart data error:', error);
-    res.status(500).json({ error: 'Failed to retrieve chart data' });
+    console.error('[API] Failed to load chart data:', error);
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
