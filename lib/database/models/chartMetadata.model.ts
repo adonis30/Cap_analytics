@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, models, model } from 'mongoose';
 
-const ChartMetadataSchema = new mongoose.Schema({
+const ChartMetadataSchema = new Schema({
   title: { type: String, required: true },
   sheetName: { type: String },
   sourceFileName: { type: String },
@@ -23,30 +23,33 @@ const ChartMetadataSchema = new mongoose.Schema({
     enum: ["line", "bar", "pie", "area", "combo"],
     default: "line",
   },
- chartSubtype: {
-  type: String,
-  enum: [
-    'default',
 
-    // ✅ Line chart subtypes
-    'monotone', 'step', 'spline', 'stepped',
+  chartSubtype: {
+    type: String,
+    enum: [
+      'default',
+      'monotone', 'step', 'spline', 'stepped',
+      'grouped', 'stacked', 'horizontal', 'percent',
+      'stacked_area', 'percentage_area',
+      'donut',
+      'line-bar', 'area-bar', 'multi-axis',
+    ],
+    default: 'default',
+  },
 
-    // ✅ Bar chart subtypes
-    'grouped', 'stacked', 'horizontal', 'percent',
+  yKeys: {
+    type: [String],
+    default: [],
+  },
 
-    // ✅ Area chart subtypes
-    'stacked_area', 'percentage_area',
+  xKey: {
+    type: String,
+    default: 'x',
+  },
 
-    // ✅ Pie chart subtypes
-    'donut',
+}, { timestamps: true });
 
-    // ✅ Combo chart subtypes
-    'line-bar', 'area-bar', 'multi-axis'
-  ],
-  default: 'default',
-},
+// ✅ This line prevents OverwriteModelError
+const ChartMetadata = models.ChartMetadata || model("ChartMetadata", ChartMetadataSchema);
 
-});
-
-const ChartMetadata = mongoose.model("ChartMetadata", ChartMetadataSchema);
 export default ChartMetadata;
