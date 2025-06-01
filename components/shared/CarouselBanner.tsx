@@ -6,15 +6,15 @@ import Image from "next/image";
 
 const slides = [
   {
-    image: "/assets/images/hero1.jpeg",
+    image: "/assets/images/hero1.jpg",
     caption: "Empowering Your Investment Journey",
   },
   {
-    image: "/assets/images/hero2.jpeg",
+    image: "/assets/images/hero2.jpg",
     caption: "Connecting Investors With Opportunities",
   },
   {
-    image: "/assets/images/hero3.jpeg",
+    image: "/assets/images/hero3.jpg",
     caption: "Invest Smart, Grow Fast",
   },
 ];
