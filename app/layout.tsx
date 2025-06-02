@@ -36,14 +36,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <ClerkProvider
-          signInUrl="/sign-in"
-          signUpUrl="/sign-up"
-        >
+         
           <Providers>
             {children}
           </Providers>
-        </ClerkProvider>
+        
       </body>
     </html>
   );
