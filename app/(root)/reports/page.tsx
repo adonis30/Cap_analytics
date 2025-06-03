@@ -265,16 +265,11 @@ export default function Reports() {
       {loading ? (
         <p>Loading charts...</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        <div className="flex flex-wrap justify-start gap-6 mt-6">
           {charts.map(({ metadata, data }) => (
             <div
               key={metadata._id}
-              className="p-4 border rounded shadow bg-gray-50"
-              style={{
-                minHeight: "250px",
-                maxHeight: "400px",
-                height: "100%",
-              }}
+              className="w-full sm:w-[48%] lg:w-[46%] xl:w-[44%] 2xl:w-[32%] p-4 border rounded shadow bg-gray-50"
             >
               <h3 className="text-base sm:text-lg font-semibold mb-2">
                 {metadata.name}
