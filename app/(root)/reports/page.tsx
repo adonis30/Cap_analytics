@@ -99,52 +99,68 @@ export default function Reports() {
   };
 
   const transformToChartJsData = (
-    metadata: ChartMetadata,
-    raw: ChartDataItem[]
-  ) => {
-    const keys = Object.keys(raw[0] || {}).filter(
-      (k) => !["_id", "__v", "metadataId"].includes(k)
-    );
+  metadata: ChartMetadata,
+  raw: ChartDataItem[]
+) => {
+  const keys = Object.keys(raw[0] || {}).filter(
+    (k) => !["_id", "__v", "metadataId"].includes(k)
+  );
 
-    const xKey =
-      keys.find((k) =>
-        ["display_month", "month_year", "date", "year", "x"].includes(
-          k.toLowerCase()
-        )
-      ) || keys[0];
+  const xKey =
+    keys.find((k) =>
+      ["display_month", "month_year", "date", "year", "x"].includes(
+        k.toLowerCase()
+      )
+    ) || keys[0];
 
-    const yKeys = keys.filter((k) => k !== xKey);
+  const yKeys = keys.filter((k) => k !== xKey);
 
-    const labels = raw.map(
-      (item) =>
-        item.display_month ||
-        (item.month_year ? formatMonthYear(item.month_year) : item[xKey])
-    );
+  // Sort raw data by xKey (parsed as Date or number)
+  const sortedRaw = [...raw].sort((a, b) => {
+    const aVal = a[xKey];
+    const bVal = b[xKey];
 
-    const datasets = yKeys.map((key, i) => {
-      const color = `hsl(${i * 60}, 70%, 50%)`;
-      const backgroundAlpha = `hsl(${i * 60}, 70%, 50%)`;
+    const aDate = new Date(aVal).getTime();
+    const bDate = new Date(bVal).getTime();
 
-      return {
-        label: key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
-        data: raw.map((item) => item[key]),
-        backgroundColor:
-          metadata.chartType === "area" ? backgroundAlpha : color,
-        borderColor: color,
-        pointBackgroundColor: color,
-        fill: metadata.chartType === "area",
-        tension: metadata.chartSubtype?.includes("spline") ? 0.4 : 0,
-        type:
-          metadata.chartType === "combo"
-            ? i % 2 === 0
-              ? "bar"
-              : "line"
-            : undefined,
-      };
-    });
+    // fallback for year as number
+    if (isNaN(aDate) || isNaN(bDate)) {
+      return (parseInt(aVal) || 0) - (parseInt(bVal) || 0);
+    }
 
-    return { labels, datasets };
-  };
+    return aDate - bDate;
+  });
+
+  const labels = sortedRaw.map(
+    (item) =>
+      item.display_month ||
+      (item.month_year ? formatMonthYear(item.month_year) : item[xKey])
+  );
+
+  const datasets = yKeys.map((key, i) => {
+    const color = `hsl(${i * 60}, 70%, 50%)`;
+    const backgroundAlpha = `hsl(${i * 60}, 70%, 50%)`;
+
+    return {
+      label: key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+      data: sortedRaw.map((item) => item[key]),
+      backgroundColor:
+        metadata.chartType === "area" ? backgroundAlpha : color,
+      borderColor: color,
+      pointBackgroundColor: color,
+      fill: metadata.chartType === "area",
+      tension: metadata.chartSubtype?.includes("spline") ? 0.4 : 0,
+      type:
+        metadata.chartType === "combo"
+          ? i % 2 === 0
+            ? "bar"
+            : "line"
+          : undefined,
+    };
+  });
+
+  return { labels, datasets };
+};
 
   const renderChart = (meta: ChartMetadata, data: ChartDataItem[]) => {
     if (!data || data.length === 0) return <p>No data available.</p>;
