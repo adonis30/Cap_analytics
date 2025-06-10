@@ -98,7 +98,7 @@ export default function Reports() {
     }
   };
 
-  const transformToChartJsData = (
+ const transformToChartJsData = (
   metadata: ChartMetadata,
   raw: ChartDataItem[]
 ) => {
@@ -108,35 +108,45 @@ export default function Reports() {
 
   const xKey =
     keys.find((k) =>
-      ["display_month", "month_year", "date", "year", "x"].includes(
+      ["month_year", "date", "year", "x", "display_month"].includes(
         k.toLowerCase()
       )
     ) || keys[0];
 
   const yKeys = keys.filter((k) => k !== xKey);
 
-  // Sort raw data by xKey (parsed as Date or number)
+  // Sort raw data by actual date/year values (not formatted labels)
   const sortedRaw = [...raw].sort((a, b) => {
     const aVal = a[xKey];
     const bVal = b[xKey];
 
+    // If date string like "2024-05-01", "2023-12-01"
+    if (typeof aVal === "string" && aVal.includes("T")) {
+      return new Date(aVal).getTime() - new Date(bVal).getTime();
+    }
+
+    // If numeric year like 2020, 2021
+    if (!isNaN(parseFloat(aVal)) && !isNaN(parseFloat(bVal))) {
+      return parseFloat(aVal) - parseFloat(bVal);
+    }
+
+    // Fallback: try general date parsing
     const aDate = new Date(aVal).getTime();
     const bDate = new Date(bVal).getTime();
-
-    // fallback for year as number
-    if (isNaN(aDate) || isNaN(bDate)) {
-      return (parseInt(aVal) || 0) - (parseInt(bVal) || 0);
-    }
 
     return aDate - bDate;
   });
 
-  const labels = sortedRaw.map(
-    (item) =>
-      item.display_month ||
-      (item.month_year ? formatMonthYear(item.month_year) : item[xKey])
-  );
+  // Format x-axis labels
+  const labels = sortedRaw.map((item) => {
+    const val = item[xKey];
+    if (item.display_month) return item.display_month;
+    if (xKey.toLowerCase().includes("year") && typeof val === "string")
+      return val;
+    return item.month_year ? formatMonthYear(item.month_year) : val;
+  });
 
+  // Build datasets
   const datasets = yKeys.map((key, i) => {
     const color = `hsl(${i * 60}, 70%, 50%)`;
     const backgroundAlpha = `hsl(${i * 60}, 70%, 50%)`;
