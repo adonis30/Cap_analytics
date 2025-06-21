@@ -72,6 +72,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/d3": "^7.4.3",
     "@types/dotenv": "^8.2.0",
     "@types/node": "^20",
     "@types/react": "^18.3.18",
