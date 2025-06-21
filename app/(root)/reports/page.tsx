@@ -18,6 +18,8 @@ import { Line, Bar, Pie } from "react-chartjs-2";
 import type { ChartData, ChartOptions } from "chart.js";
 import { format } from "date-fns";
 
+import  ChoroplethChart  from "@/components/shared/ChoroplethChart";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -37,7 +39,8 @@ const CATEGORIES = [
   "Investment Trends",
 ] as const;
 
-type SupportedChartType = "bar" | "line" | "pie" | "combo" | "area";
+type SupportedChartType = "bar" | "line" | "pie" | "combo" | "area" | "choropleth";
+
 
 interface ChartMetadata {
   _id: string;
@@ -98,79 +101,53 @@ export default function Reports() {
     }
   };
 
- const transformToChartJsData = (
-  metadata: ChartMetadata,
-  raw: ChartDataItem[]
-) => {
-  const keys = Object.keys(raw[0] || {}).filter(
-    (k) => !["_id", "__v", "metadataId"].includes(k)
-  );
+  const transformToChartJsData = (
+    metadata: ChartMetadata,
+    raw: ChartDataItem[]
+  ) => {
+    const keys = Object.keys(raw[0] || {}).filter(
+      (k) => !["_id", "__v", "metadataId"].includes(k)
+    );
 
-  const xKey =
-    keys.find((k) =>
-      ["month_year", "date", "year", "x", "display_month"].includes(
-        k.toLowerCase()
-      )
-    ) || keys[0];
+    const xKey =
+      keys.find((k) =>
+        ["display_month", "month_year", "date", "year", "x"].includes(
+          k.toLowerCase()
+        )
+      ) || keys[0];
 
-  const yKeys = keys.filter((k) => k !== xKey);
+    const yKeys = keys.filter((k) => k !== xKey);
 
-  // Sort raw data by actual date/year values (not formatted labels)
-  const sortedRaw = [...raw].sort((a, b) => {
-    const aVal = a[xKey];
-    const bVal = b[xKey];
+    const labels = raw.map(
+      (item) =>
+        item.display_month ||
+        (item.month_year ? formatMonthYear(item.month_year) : item[xKey])
+    );
 
-    // If date string like "2024-05-01", "2023-12-01"
-    if (typeof aVal === "string" && aVal.includes("T")) {
-      return new Date(aVal).getTime() - new Date(bVal).getTime();
-    }
+    const datasets = yKeys.map((key, i) => {
+      const color = `hsl(${i * 60}, 70%, 50%)`;
+      const backgroundAlpha = `hsl(${i * 60}, 70%, 50%)`;
 
-    // If numeric year like 2020, 2021
-    if (!isNaN(parseFloat(aVal)) && !isNaN(parseFloat(bVal))) {
-      return parseFloat(aVal) - parseFloat(bVal);
-    }
+      return {
+        label: key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+        data: raw.map((item) => item[key]),
+        backgroundColor:
+          metadata.chartType === "area" ? backgroundAlpha : color,
+        borderColor: color,
+        pointBackgroundColor: color,
+        fill: metadata.chartType === "area",
+        tension: metadata.chartSubtype?.includes("spline") ? 0.4 : 0,
+        type:
+          metadata.chartType === "combo"
+            ? i % 2 === 0
+              ? "bar"
+              : "line"
+            : undefined,
+      };
+    });
 
-    // Fallback: try general date parsing
-    const aDate = new Date(aVal).getTime();
-    const bDate = new Date(bVal).getTime();
-
-    return aDate - bDate;
-  });
-
-  // Format x-axis labels
-  const labels = sortedRaw.map((item) => {
-    const val = item[xKey];
-    if (item.display_month) return item.display_month;
-    if (xKey.toLowerCase().includes("year") && typeof val === "string")
-      return val;
-    return item.month_year ? formatMonthYear(item.month_year) : val;
-  });
-
-  // Build datasets
-  const datasets = yKeys.map((key, i) => {
-    const color = `hsl(${i * 60}, 70%, 50%)`;
-    const backgroundAlpha = `hsl(${i * 60}, 70%, 50%)`;
-
-    return {
-      label: key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
-      data: sortedRaw.map((item) => item[key]),
-      backgroundColor:
-        metadata.chartType === "area" ? backgroundAlpha : color,
-      borderColor: color,
-      pointBackgroundColor: color,
-      fill: metadata.chartType === "area",
-      tension: metadata.chartSubtype?.includes("spline") ? 0.4 : 0,
-      type:
-        metadata.chartType === "combo"
-          ? i % 2 === 0
-            ? "bar"
-            : "line"
-          : undefined,
-    };
-  });
-
-  return { labels, datasets };
-};
+    return { labels, datasets };
+  };
 
   const renderChart = (meta: ChartMetadata, data: ChartDataItem[]) => {
     if (!data || data.length === 0) return <p>No data available.</p>;
@@ -260,6 +237,22 @@ export default function Reports() {
           <Bar data={comboData} options={baseOptions as ChartOptions<"bar">} />
         );
       }
+     case "choropleth": {
+  const mapData = data
+    .filter((d) => d.country && typeof d.market_size_usd_ === "number")
+    .map((d) => ({
+      country: d.country,
+      value: d.market_size_usd_,
+    }));
+
+  return <ChoroplethChart
+  data={data.map(d => ({
+    country: d.country, // e.g., "ZMB"
+    value: d.market_size_usd_, // numeric value
+  }))}
+/>
+}
+
       default:
         return <p>Unsupported chart type</p>;
     }
