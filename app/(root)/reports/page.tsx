@@ -19,6 +19,8 @@ import type { ChartData, ChartOptions } from "chart.js";
 import { format } from "date-fns";
 
 import  ChoroplethChart  from "@/components/shared/ChoroplethChart";
+import { formatUSD } from "@/utils/formatUSD";
+
 
 ChartJS.register(
   CategoryScale,
@@ -243,14 +245,23 @@ export default function Reports() {
     .map((d) => ({
       country: d.country,
       value: d.market_size_usd_,
+      backgroundColor: d.market_size_usd_ > 0 ? `hsl(${Math.random() * 360}, 80%, 50%)` : "#fff",
+      tooltip: `${d.country}: $${d.market_size_usd_.toLocaleString()}`,
     }));
 
   return <ChoroplethChart
   data={data.map(d => ({
-    country: d.country, // e.g., "ZMB"
-    value: d.market_size_usd_, // numeric value
+    country: d.country,
+    value: d.market_size_usd_,
   }))}
+  onCountryClick={(code) => {
+    const countryData = data.find(d => d.country === code);
+    if (countryData) {
+      alert(`${code}: $${formatUSD(countryData.market_size_usd_)}`);
+    }
+  }}
 />
+
 }
 
       default:
