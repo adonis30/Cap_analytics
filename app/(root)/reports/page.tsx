@@ -1,5 +1,17 @@
 "use client";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Box,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
@@ -17,10 +29,8 @@ import {
 import { Line, Bar, Pie } from "react-chartjs-2";
 import type { ChartData, ChartOptions } from "chart.js";
 import { format } from "date-fns";
-
-import  ChoroplethChart  from "@/components/shared/ChoroplethChart";
+import ChoroplethChart from "@/components/shared/ChoroplethChart";
 import { formatUSD } from "@/utils/formatUSD";
-
 
 ChartJS.register(
   CategoryScale,
@@ -43,7 +53,6 @@ const CATEGORIES = [
 
 type SupportedChartType = "bar" | "line" | "pie" | "combo" | "area" | "choropleth";
 
-
 interface ChartMetadata {
   _id: string;
   name: string;
@@ -54,30 +63,22 @@ interface ChartMetadata {
 type ChartDataItem = { [key: string]: any };
 
 export default function Reports() {
-  const [selectedCategory, setSelectedCategory] = useState<string>(
-    CATEGORIES[0]
-  );
-  const [charts, setCharts] = useState<
-    { metadata: ChartMetadata; data: ChartDataItem[] }[]
-  >([]);
+ const [selectedCategory, setSelectedCategory] = useState<string>(CATEGORIES[0]);
+
+  const [charts, setCharts] = useState<{ metadata: ChartMetadata; data: ChartDataItem[] }[]>([]);
+  const [selectedChart, setSelectedChart] = useState<{ metadata: ChartMetadata; data: ChartDataItem[] } | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchCharts = async () => {
       setLoading(true);
       try {
-        const res = await fetch(
-          `/api/charts/distinct-names?category=${encodeURIComponent(
-            selectedCategory
-          )}`
-        );
+        const res = await fetch(`/api/charts/distinct-names?category=${encodeURIComponent(selectedCategory)}`);
         const { names } = await res.json();
 
         const chartFetches = await Promise.all(
           names.map(async (name: string) => {
-            const res = await fetch(
-              `/api/charts/data?name=${encodeURIComponent(name)}`
-            );
+            const res = await fetch(`/api/charts/data?name=${encodeURIComponent(name)}`);
             const result = await res.json();
             return { metadata: result.metadata, data: result.data };
           })
@@ -96,55 +97,33 @@ export default function Reports() {
 
   const formatMonthYear = (input: string) => {
     try {
-      const date = new Date(input);
-      return format(date, "MMM-yyyy"); // e.g., "Apr-2024"
+      return format(new Date(input), "MMM-yyyy");
     } catch {
       return input;
     }
   };
 
-  const transformToChartJsData = (
-    metadata: ChartMetadata,
-    raw: ChartDataItem[]
-  ) => {
-    const keys = Object.keys(raw[0] || {}).filter(
-      (k) => !["_id", "__v", "metadataId"].includes(k)
-    );
+  const transformToChartJsData = (metadata: ChartMetadata, raw: ChartDataItem[]) => {
+    const keys = Object.keys(raw[0] || {}).filter(k => !["_id", "__v", "metadataId"].includes(k));
+    const xKey = keys.find(k =>
+      ["display_month", "month_year", "date", "year", "x"].includes(k.toLowerCase())
+    ) || keys[0];
+    const yKeys = keys.filter(k => k !== xKey);
 
-    const xKey =
-      keys.find((k) =>
-        ["display_month", "month_year", "date", "year", "x"].includes(
-          k.toLowerCase()
-        )
-      ) || keys[0];
-
-    const yKeys = keys.filter((k) => k !== xKey);
-
-    const labels = raw.map(
-      (item) =>
-        item.display_month ||
-        (item.month_year ? formatMonthYear(item.month_year) : item[xKey])
-    );
-
+    const labels = raw.map(item => item.display_month || (item.month_year ? formatMonthYear(item.month_year) : item[xKey]));
     const datasets = yKeys.map((key, i) => {
       const color = `hsl(${i * 60}, 70%, 50%)`;
-      const backgroundAlpha = `hsl(${i * 60}, 70%, 50%)`;
-
       return {
-        label: key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
-        data: raw.map((item) => item[key]),
-        backgroundColor:
-          metadata.chartType === "area" ? backgroundAlpha : color,
+        label: key.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase()),
+        data: raw.map(item => item[key]),
+        backgroundColor: color,
         borderColor: color,
         pointBackgroundColor: color,
         fill: metadata.chartType === "area",
         tension: metadata.chartSubtype?.includes("spline") ? 0.4 : 0,
-        type:
-          metadata.chartType === "combo"
-            ? i % 2 === 0
-              ? "bar"
-              : "line"
-            : undefined,
+        ...(metadata.chartType === "combo" && {
+          type: i % 2 === 0 ? "bar" : "line",
+        }),
       };
     });
 
@@ -152,63 +131,38 @@ export default function Reports() {
   };
 
   const renderChart = (meta: ChartMetadata, data: ChartDataItem[]) => {
-    if (!data || data.length === 0) return <p>No data available.</p>;
-
     const chartData = transformToChartJsData(meta, data);
-    const baseOptions = {
+    const baseOptions: ChartOptions = {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          display:
-            typeof window !== "undefined" ? window.innerWidth > 768 : true,
-          position: "top" as const,
+          display: true,
+          position: "top",
         },
         title: {
           display: true,
           text: meta.name,
         },
       },
-      layout: {
-        padding: {
-          top: 10,
-          bottom: 10,
-        },
-      },
-      elements: {
-        point: {
-          radius: window.innerWidth > 768 ? 3 : 2,
-        },
-      },
+      layout: { padding: { top: 10, bottom: 10 } },
     };
 
     switch (meta.chartType) {
       case "bar":
-        return (
-          <Bar
-            data={chartData as ChartData<"bar">}
-            options={baseOptions as ChartOptions<"bar">}
-          />
-        );
+        return <Bar data={chartData as ChartData<"bar">} options={baseOptions as ChartOptions<"bar">} />;
       case "line":
-        return (
-          <Line
-            data={chartData as ChartData<"line">}
-            options={baseOptions as ChartOptions<"line">}
-          />
-        );
+        return <Line data={chartData as ChartData<"line">} options={baseOptions as ChartOptions<"line">} />;
       case "area": {
         const areaData = {
           ...chartData,
-          datasets: chartData.datasets.map((ds) => ({
+          datasets: chartData.datasets.map(ds => ({
             ...ds,
-            fill: false,
+            fill: true,
             backgroundColor: ds.borderColor + "33",
           })),
-        } as ChartData<"line">;
-        return (
-          <Line data={areaData} options={baseOptions as ChartOptions<"line">} />
-        );
+        };
+        return <Line data={areaData as ChartData<"line">} options={baseOptions as ChartOptions<"line">} />;
       }
       case "pie": {
         const pieData: ChartData<"pie"> = {
@@ -217,13 +171,11 @@ export default function Reports() {
             {
               label: meta.name,
               data: chartData.datasets[0]?.data || [],
-              backgroundColor: chartData.datasets.map((ds) => ds.borderColor),
+              backgroundColor: chartData.datasets.map(ds => ds.borderColor),
             },
           ],
         };
-        return (
-          <Pie data={pieData} options={baseOptions as ChartOptions<"pie">} />
-        );
+        return <Pie data={pieData} options={baseOptions as ChartOptions<"pie">} />;
       }
       case "combo": {
         const comboData = {
@@ -234,49 +186,28 @@ export default function Reports() {
             borderWidth: 2,
             fill: false,
           })),
-        } as ChartData<"bar">;
-        return (
-          <Bar data={comboData} options={baseOptions as ChartOptions<"bar">} />
-        );
+        };
+        return <Bar data={comboData as ChartData<"bar">} options={baseOptions as ChartOptions<"bar">} />;
       }
-     case "choropleth": {
-  const mapData = data
-    .filter((d) => d.country && typeof d.market_size_usd_ === "number")
-    .map((d) => ({
-      country: d.country,
-      value: d.market_size_usd_,
-      backgroundColor: d.market_size_usd_ > 0 ? `hsl(${Math.random() * 360}, 80%, 50%)` : "#fff",
-      tooltip: `${d.country}: $${d.market_size_usd_.toLocaleString()}`,
-    }));
-
-  return <ChoroplethChart
-  data={data.map(d => ({
-    country: d.country,
-    value: d.market_size_usd_,
-  }))}
-  onCountryClick={(code) => {
-    const countryData = data.find(d => d.country === code);
-    if (countryData) {
-      alert(`${code}: $${formatUSD(countryData.market_size_usd_)}`);
-    }
-  }}
-/>
-
-}
-
+      case "choropleth":
+        return (
+          <ChoroplethChart
+            data={data.map(d => ({ country: d.country, value: d.market_size_usd_ }))}
+            onCountryClick={code => {
+              const c = data.find(d => d.country === code);
+              if (c) alert(`${code}: $${formatUSD(c.market_size_usd_)}`);
+            }}
+          />
+        );
       default:
         return <p>Unsupported chart type</p>;
     }
   };
 
   return (
-    <main className="min-h-screen bg-white px-4 py-6 sm:px-6 md:px-8">
-      <h1 className="text-2xl md:text-3xl font-bold mb-2">
-        Reports & Analytics
-      </h1>
-      <p className="text-gray-600 text-sm md:text-base mb-4">
-        Browse charts grouped by category.
-      </p>
+    <main className="min-h-screen px-4 py-6 sm:px-6 md:px-8 bg-white">
+      <h1 className="text-2xl md:text-3xl font-bold mb-4">Reports & Analytics</h1>
+
       <label className="mb-4 block">
         <span className="font-semibold">Category:</span>
         <select
@@ -295,22 +226,36 @@ export default function Reports() {
       {loading ? (
         <p>Loading charts...</p>
       ) : (
-        <div className="flex flex-wrap justify-start gap-6 mt-6">
+        <div className="flex flex-wrap gap-6 mt-6">
           {charts.map(({ metadata, data }) => (
             <div
               key={metadata._id}
-              className="w-full sm:w-[48%] lg:w-[46%] xl:w-[44%] 2xl:w-[32%] p-4 border rounded shadow bg-gray-50"
+              className="w-full sm:w-[48%] lg:w-[46%] xl:w-[44%] 2xl:w-[32%] p-4 border rounded shadow bg-gray-50 cursor-pointer"
+              onClick={() => setSelectedChart({ metadata, data })}
             >
-              <h3 className="text-base sm:text-lg font-semibold mb-2">
-                {metadata.name}
-              </h3>
-              <div className="relative w-full h-[300px] sm:h-[400px]">
+              <h3 className="text-base sm:text-lg font-semibold mb-2">{metadata.name}</h3>
+              <div className="relative w-full h-[300px] sm:h-[400px] overflow-hidden">
                 {renderChart(metadata, data)}
               </div>
             </div>
           ))}
         </div>
       )}
+
+      <Dialog open={!!selectedChart} onClose={() => setSelectedChart(null)} fullWidth maxWidth="lg">
+        <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          {selectedChart?.metadata.name}
+          <IconButton onClick={() => setSelectedChart(null)}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          <Box sx={{ width: "100%", height: "500px" }}>
+            {selectedChart && renderChart(selectedChart.metadata, selectedChart.data)}
+          </Box>
+        </DialogContent>
+      </Dialog>
+
       <section className="mt-12 border-t pt-8">
         <h2 className="text-2xl font-bold mb-4">
           Sources for Zambia’s Macroeconomic Data
@@ -550,3 +495,5 @@ export default function Reports() {
     </main>
   );
 }
+
+   
