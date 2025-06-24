@@ -158,7 +158,7 @@ export default function Reports() {
           ...chartData,
           datasets: chartData.datasets.map(ds => ({
             ...ds,
-            fill: true,
+            fill: false,
             backgroundColor: ds.borderColor + "33",
           })),
         };
