@@ -3,6 +3,8 @@ import { connectToDatabase } from '@/lib/database';
 import ChartMetadata from '@/lib/database/models/chartMetadata.model';
 import ChartData from '@/lib/database/models/chartData.model';
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: NextRequest) {
    
   try {
