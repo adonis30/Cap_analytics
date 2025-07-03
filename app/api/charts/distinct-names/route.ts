@@ -4,6 +4,8 @@ import { NextResponse } from 'next/server';
 import ChartMetadata from '@/lib/database/models/chartMetadata.model';
 import { connectToDatabase } from '@/lib/database';
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
