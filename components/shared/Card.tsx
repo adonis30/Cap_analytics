@@ -48,10 +48,7 @@ const Card = ({ company, hasOrderLink, hidePrice }: CardProps) => {
       
       { !hidePrice && (
         <div className='absolute right-2 top-2 z-30 flex gap-2'>
-          <Link href={`/companies/${company._id}/update`} className='rounded-full bg-white p-2 shadow-md hover:bg-gray-100'>
-            <Image src="/assets/icons/edit.svg" alt="edit" width={16} height={16} />
-          </Link>
-          
+        
         </div>
       )}
       
