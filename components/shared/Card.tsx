@@ -6,7 +6,6 @@ import { useAuth } from '@clerk/nextjs';
 import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
-import { DeleteConfirmation } from './DeleteConfirmation';
 import { Building2, Calendar, MapPin, Globe } from 'lucide-react';
 
 type CardProps = {
