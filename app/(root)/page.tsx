@@ -35,7 +35,7 @@ export default async function Home() {
       collectionType="All_Companies"
       limit={6}
       page={1}
-      totalPages={2}
+      totalPages={3}
     />
   </section>
 </>
