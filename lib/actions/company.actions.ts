@@ -98,37 +98,6 @@ export const createCompany = async ({ company, userId, path }: CreateCompanyPara
   }
 };
 
-export const deleteCompnay = async ({ companyId, path }: DeleteCompanyParams) => {
-  try {
-    await connectToDatabase();
-    const deleted = await Company.findByIdAndDelete(companyId);
-    if (deleted) revalidatePath(path);
-  } catch (error) {
-    handleError(error);
-  }
-};
-
-export async function updateCompany({ userId, company, path }: UpdateCompanyParams) {
-  try {
-    await connectToDatabase();
-
-    const companyToUpdate = await Company.findById(company._id);
-    if (!companyToUpdate || companyToUpdate.companyCreator.toString() !== userId) {
-      throw new Error('Unauthorized or company not found');
-    }
-
-    const updatedCompany = await Company.findByIdAndUpdate(
-      company._id,
-      { ...company, category: company.categoryIds },
-      { new: true }
-    );
-
-    revalidatePath(path);
-    return JSON.parse(JSON.stringify(updatedCompany));
-  } catch (error) {
-    handleError(error);
-  }
-}
 
 export async function getCompanyById(companyId: string) {
   try {
