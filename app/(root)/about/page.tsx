@@ -41,7 +41,7 @@ const About = () => {
       {/* Team Section */}
       <section className="py-10 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-2xl font-bold text-center mb-6">Meet Our Team</h2>
+          <h2 className="text-2xl font-bold text-center mb-6">Meet the Core Project Team</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white p-6 rounded-md shadow-md text-center">
               <img
