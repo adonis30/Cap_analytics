@@ -7,26 +7,32 @@ import Image from "next/image";
 const slides = [
   {
     image: "/assets/images/Hero_Sectio.png",
+    caption: "",
   
   },
   {
     image: "/assets/images/Cap-Analytics_Intro.png",
+    caption: "",
     
   },
   {
     image: "/assets/images/landing1.png",
+   caption: "",
     
   },
   {
     image: "/assets/images/visually1.png",
+   caption: "",
     
   },
   {
     image: "/assets/images/We_Serve.png",
+   caption: "",
     
   },
   {
     image: "/assets/images/We_Serve.png",
+   caption: "",
     
   },
 ];
@@ -51,14 +57,14 @@ const CarouselBanner = () => {
         <div key={idx} className="keen-slider__slide relative">
           <Image
             src={slide.image}
-          //  alt={slide.caption}
+            alt={slide.caption}
             fill
             className="object-cover object-center"
             priority
           />
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
             <h2 className="text-white text-2xl md:text-4xl font-bold text-center px-4">
-             // {slide.caption}
+              {slide.caption}
             </h2>
           </div>
         </div>
