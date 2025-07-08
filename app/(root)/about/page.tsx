@@ -49,8 +49,8 @@ const About = () => {
                 alt="Team Member"
                 className="w-24 h-24 mx-auto rounded-full mb-4"
               />
-              <h3 className="text-lg font-bold">John Doe</h3>
-              <p className="text-gray-600">CEO & Founder</p>
+              <h3 className="text-lg font-bold">Evans Chama</h3>
+              <p className="text-gray-600">Project Manager</p>
             </div>
             <div className="bg-white p-6 rounded-md shadow-md text-center">
               <img
@@ -59,7 +59,7 @@ const About = () => {
                 className="w-24 h-24 mx-auto rounded-full mb-4"
               />
               <h3 className="text-lg font-bold">Onis Chirwa Ndhlovu</h3>
-              <p className="text-gray-600">CTO</p>
+              <p className="text-gray-600">Programmer and Developer</p>
             </div>
             <div className="bg-white p-6 rounded-md shadow-md text-center">
               <img
@@ -67,8 +67,8 @@ const About = () => {
                 alt="Team Member"
                 className="w-24 h-24 mx-auto rounded-full mb-4"
               />
-              <h3 className="text-lg font-bold">Alex Johnson</h3>
-              <p className="text-gray-600">COO</p>
+              <h3 className="text-lg font-bold">Emmanuel Bwanga</h3>
+              <p className="text-gray-600">Project Analyst</p>
             </div>
           </div>
         </div>
@@ -121,15 +121,15 @@ const About = () => {
         <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-md shadow-md">
             <h3 className="text-lg font-bold">Address</h3>
-            <p className="text-gray-600">123 Main Street, Ndola, Zambia</p>
+            <p className="text-gray-600">140 2nd Street, Mwambula Road, Jesmondine</p>
           </div>
           <div className="bg-white p-6 rounded-md shadow-md">
             <h3 className="text-lg font-bold">Phone</h3>
-            <p className="text-gray-600">+260 123 456 789</p>
+            <p className="text-gray-600">+260 977 681 800,</p>
           </div>
           <div className="bg-white p-6 rounded-md shadow-md">
             <h3 className="text-lg font-bold">Email</h3>
-            <p className="text-gray-600">contact@onixtech.com</p>
+            <p className="text-gray-600">info@capanalytics.site</p>
           </div>
         </div>
       </section>
