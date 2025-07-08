@@ -28,7 +28,7 @@ const CarouselBanner = () => {
         <div
           key={idx}
           className="keen-slider__slide relative w-full"
-          style={{ aspectRatio: "16 / 9" }} // Ensures correct height
+          style={{ aspectRatio: "16 / 6" }} // ⬅️ Reduced height
         >
           <Image
             src={slide.image}
@@ -38,7 +38,7 @@ const CarouselBanner = () => {
             priority
           />
           {slide.caption && (
-            <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+            <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
               <h2 className="text-white text-2xl md:text-4xl font-bold text-center px-4">
                 {slide.caption}
               </h2>
