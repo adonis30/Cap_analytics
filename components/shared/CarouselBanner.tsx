@@ -6,16 +6,28 @@ import Image from "next/image";
 
 const slides = [
   {
-    image: "/assets/images/hero1.jpg",
-    caption: "Empowering Your Investment Journey",
+    image: "/assets/images/Hero_Sectio.png",
+  
   },
   {
-    image: "/assets/images/hero2.jpg",
-    caption: "Connecting Investors With Opportunities",
+    image: "/assets/images/Cap-Analytics_Intro.png",
+    
   },
   {
-    image: "/assets/images/hero3.jpg",
-    caption: "Invest Smart, Grow Fast",
+    image: "/assets/images/landing1.png",
+    
+  },
+  {
+    image: "/assets/images/visually1.png",
+    
+  },
+  {
+    image: "/assets/images/We_Serve.png",
+    
+  },
+  {
+    image: "/assets/images/We_Serve.png",
+    
   },
 ];
 
