@@ -3,47 +3,21 @@
 import React from "react";
 import { useKeenSlider } from "keen-slider/react";
 import Image from "next/image";
+import "keen-slider/keen-slider.min.css";
 
 const slides = [
-  {
-    image: "/assets/images/Hero_Sectio.png",
-    caption: "",
-  
-  },
-  {
-    image: "/assets/images/Cap-Analytics_Intro.png",
-    caption: "",
-    
-  },
-  {
-    image: "/assets/images/landing1.png",
-   caption: "",
-    
-  },
-  {
-    image: "/assets/images/visually1.png",
-   caption: "",
-    
-  },
-  {
-    image: "/assets/images/We_Serve.png",
-   caption: "",
-    
-  },
-  {
-    image: "/assets/images/We_Serve.png",
-   caption: "",
-    
-  },
+  { image: "/assets/images/Hero_Sectio.png", caption: "" },
+  { image: "/assets/images/Cap-Analytics_Intro.png", caption: "" },
+  { image: "/assets/images/landing1.png", caption: "" },
+  { image: "/assets/images/visually1.png", caption: "" },
+  { image: "/assets/images/We_Serve.png", caption: "" },
+  { image: "/assets/images/We_Serve.png", caption: "" },
 ];
 
 const CarouselBanner = () => {
   const [sliderRef] = useKeenSlider<HTMLDivElement>({
     loop: true,
-    mode: "snap",
-    slides: {
-      perView: 1,
-    },
+    slides: { perView: 1 },
     breakpoints: {
       "(min-width: 768px)": {
         slides: { perView: 1 },
@@ -52,14 +26,14 @@ const CarouselBanner = () => {
   });
 
   return (
-    <div ref={sliderRef} className="keen-slider h-[70vh] overflow-hidden">
+    <div ref={sliderRef} className="keen-slider h-[70vh]">
       {slides.map((slide, idx) => (
-        <div key={idx} className="keen-slider__slide relative">
+        <div key={idx} className="keen-slider__slide relative w-full h-[70vh]">
           <Image
             src={slide.image}
-            alt={slide.caption}
+            alt={`Slide ${idx + 1}`}
             fill
-            className="object-cover object-center"
+            className="object-cover"
             priority
           />
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
