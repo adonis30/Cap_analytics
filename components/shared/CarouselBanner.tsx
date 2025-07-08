@@ -11,36 +11,39 @@ const slides = [
   { image: "/assets/images/landing1.png", caption: "" },
   { image: "/assets/images/visually1.png", caption: "" },
   { image: "/assets/images/We_Serve.png", caption: "" },
-  { image: "/assets/images/We_Serve.png", caption: "" },
 ];
 
 const CarouselBanner = () => {
   const [sliderRef] = useKeenSlider<HTMLDivElement>({
     loop: true,
-    slides: { perView: 1 },
-    breakpoints: {
-      "(min-width: 768px)": {
-        slides: { perView: 1 },
-      },
+    mode: "snap",
+    slides: {
+      perView: 1,
     },
   });
 
   return (
-    <div ref={sliderRef} className="keen-slider h-[70vh]">
+    <div ref={sliderRef} className="keen-slider w-full h-[75vh]">
       {slides.map((slide, idx) => (
-        <div key={idx} className="keen-slider__slide relative w-full h-[70vh]">
+        <div
+          key={idx}
+          className="keen-slider__slide relative w-full h-[75vh] overflow-hidden"
+        >
           <Image
             src={slide.image}
             alt={`Slide ${idx + 1}`}
             fill
-            className="object-cover"
+            className="object-cover object-center"
             priority
+            sizes="100vw"
           />
-          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-            <h2 className="text-white text-2xl md:text-4xl font-bold text-center px-4">
-              {slide.caption}
-            </h2>
-          </div>
+          {slide.caption && (
+            <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+              <h2 className="text-white text-2xl md:text-4xl font-bold text-center px-4">
+                {slide.caption}
+              </h2>
+            </div>
+          )}
         </div>
       ))}
     </div>
