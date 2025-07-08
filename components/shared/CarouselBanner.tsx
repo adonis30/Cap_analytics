@@ -27,15 +27,15 @@ const CarouselBanner = () => {
       {slides.map((slide, idx) => (
         <div
           key={idx}
-          className="keen-slider__slide relative w-full aspect-[16/9] sm:aspect-[21/9] overflow-hidden"
+          className="keen-slider__slide relative w-full"
+          style={{ aspectRatio: "16 / 9" }} // Ensures correct height
         >
           <Image
             src={slide.image}
             alt={`Slide ${idx + 1}`}
-            fill
-            className="object-cover object-center"
+            layout="fill"
+            className="object-cover"
             priority
-            sizes="100vw"
           />
           {slide.caption && (
             <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
