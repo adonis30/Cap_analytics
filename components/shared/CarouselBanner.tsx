@@ -28,7 +28,7 @@ const CarouselBanner = () => {
         <div
           key={idx}
           className="keen-slider__slide relative w-full"
-          style={{ aspectRatio: "16 / 5" }} // ⬅️ Reduced height
+          style={{ aspectRatio: "16 / 7" }} // ⬅️ Reduced height
         >
           <Image
             src={slide.image}
