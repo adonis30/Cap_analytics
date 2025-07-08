@@ -23,11 +23,11 @@ const CarouselBanner = () => {
   });
 
   return (
-    <div ref={sliderRef} className="keen-slider w-full h-[75vh]">
+    <div ref={sliderRef} className="keen-slider w-full">
       {slides.map((slide, idx) => (
         <div
           key={idx}
-          className="keen-slider__slide relative w-full h-[75vh] overflow-hidden"
+          className="keen-slider__slide relative w-full aspect-[16/9] sm:aspect-[21/9] overflow-hidden"
         >
           <Image
             src={slide.image}
