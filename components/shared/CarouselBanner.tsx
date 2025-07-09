@@ -8,10 +8,10 @@ import { Button } from "@/components/ui/button";
 import { useCallback } from "react";
 
 const slides = [
-  { image: "/assets/images/cap2.jpg", caption: "Empower Data", link: "/about" },
-  { image: "/assets/images/cap4.jpg", caption: "Insights that Matter", link: "/services" },
-  { image: "/assets/images/cap1.jpg", caption: "Africa’s Business Pulse", link: "/charts" },
-  { image: "/assets/images/cap5.jpg", caption: "Invest Smart", link: "/invest" },
+  { image: "/assets/images/cap2.jpg", caption: "", link: "/investors" },
+  { image: "/assets/images/cap4.jpg", caption: "", link: "/about" },
+  { image: "/assets/images/cap1.jpg", caption: "", link: "/reports" },
+  { image: "/assets/images/cap5.jpg", caption: "", link: "/about" },
 ];
 
 export default function CarouselBanner() {
