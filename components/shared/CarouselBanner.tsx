@@ -35,12 +35,14 @@ export default function CarouselBanner() {
 
             >
               <Image
-                src={slide.image}
-                alt={`Slide ${index + 1}`}
-                fill
-                className="object-cover"
-                priority
-              />
+  src={slide.image}
+  alt={`Slide ${index + 1}`}
+  fill
+  className="object-cover"
+  priority
+  style={{ objectPosition: "center", objectFit: "cover" }} // Add this
+/>
+
 
               {/* Caption + Overlay Button */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col items-center justify-end p-10 text-center">
