@@ -48,14 +48,17 @@ const CarouselBanner = () => {
   );
 
   return (
-    <div ref={sliderRef} className="keen-slider w-full aspect-[16/6] relative">
+    <div
+      ref={sliderRef}
+      className="keen-slider w-full h-[60vh] sm:h-[70vh] md:h-[75vh] lg:h-[80vh] relative overflow-hidden"
+    >
       {slides.map((slide, idx) => (
         <div key={idx} className="keen-slider__slide relative">
           <Image
             src={slide.image}
             alt={`Slide ${idx + 1}`}
             fill
-            className="object-cover"
+            className="object-contain bg-black"
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent flex items-end justify-center p-6">
