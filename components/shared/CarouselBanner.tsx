@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
-import { useKeenSlider } from "keen-slider/react";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
-import "keen-slider/keen-slider.min.css";
+import { Button } from "@/components/ui/button";
+import { useCallback } from "react";
 
 const slides = [
   { image: "/assets/images/Hero_Sectio.png", caption: "Empowering Africa's Data Economy" },
@@ -13,63 +14,58 @@ const slides = [
   { image: "/assets/images/We_Serve.png", caption: "Serving Businesses Across Africa" },
 ];
 
-function AutoplayPlugin(delay = 5000) {
-  return (slider: any) => {
-    let timeout: any;
-    let mouseOver = false;
-
-    const nextTimeout = () => {
-      clearTimeout(timeout);
-      if (!mouseOver) timeout = setTimeout(() => slider.next(), delay);
-    };
-
-    slider.on("created", () => {
-      slider.container.addEventListener("mouseover", () => (mouseOver = true));
-      slider.container.addEventListener("mouseout", () => {
-        mouseOver = false;
-        nextTimeout();
-      });
-      nextTimeout();
-    });
-
-    slider.on("dragStarted", () => clearTimeout(timeout));
-    slider.on("animationEnded", nextTimeout);
-    slider.on("updated", nextTimeout);
-  };
-}
-
-const CarouselBanner = () => {
-  const [sliderRef] = useKeenSlider<HTMLDivElement>(
-    {
-      loop: true,
-      slides: { perView: 1 },
-    },
-    [AutoplayPlugin(5000)]
+export default function CarouselBanner() {
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true },
+    [Autoplay({ delay: 4000, stopOnInteraction: false })]
   );
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
   return (
-    <div
-      ref={sliderRef}
-      className="keen-slider w-full h-[60vh] sm:h-[70vh] md:h-[75vh] lg:h-[80vh] relative overflow-hidden"
-    >
-      {slides.map((slide, idx) => (
-        <div key={idx} className="keen-slider__slide relative">
-          <Image
-  src={slide.image}
-  alt={`Slide ${idx + 1}`}
-  fill
-  className="object-cover object-[center_top]"
-  priority
-/>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent flex items-end justify-center p-6">
-            <h2 className="text-white text-xl md:text-3xl font-bold text-center drop-shadow-lg">
-              {slide.caption}
-            </h2>
-          </div>
+    <div className="relative w-full h-[60vh] overflow-hidden">
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex">
+          {slides.map((slide, index) => (
+            <div
+              key={index}
+              className="min-w-full h-[60vh] relative flex items-end justify-center"
+            >
+              <Image
+                src={slide.image}
+                alt={`Slide ${index + 1}`}
+                fill
+                className="object-cover"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent p-6 flex items-end">
+                <h2 className="text-white text-2xl md:text-4xl font-semibold drop-shadow-lg">
+                  {slide.caption}
+                </h2>
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
+
+      {/* Optional Prev/Next Buttons */}
+      <Button
+        onClick={scrollPrev}
+        variant="secondary"
+        size="icon"
+        className="absolute top-1/2 left-4 -translate-y-1/2 z-10"
+      >
+        ←
+      </Button>
+      <Button
+        onClick={scrollNext}
+        variant="secondary"
+        size="icon"
+        className="absolute top-1/2 right-4 -translate-y-1/2 z-10"
+      >
+        →
+      </Button>
     </div>
   );
-};
-
-export default CarouselBanner;
+}
