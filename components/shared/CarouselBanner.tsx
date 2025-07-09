@@ -30,7 +30,9 @@ export default function CarouselBanner() {
           {slides.map((slide, index) => (
             <div
               key={index}
-              className="relative min-w-full h-full flex items-center justify-center"
+               className="min-w-full relative aspect-[16/9] sm:aspect-auto sm:h-[80vh] flex items-center justify-center"
+              
+
             >
               <Image
                 src={slide.image}
