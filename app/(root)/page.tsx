@@ -15,16 +15,12 @@ export default async function Home() {
     
 
       <section id="events" className="wrapper my-10 flex flex-col gap-8 md:gap-12 px-4 md:px-8">
+        <CarouselBanner />
         <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
           Trusted by <br className="hidden md:block" /> Many Investors and Businesses
         </h2>
-        <CarouselBanner />
-        <div className="flex w-full flex-col gap-5 md:flex-row">
-          {/* Replace with actual search and filter components */}
-          <div className="flex-1">Search</div>
-          <div className="flex-1">CategoryFilter</div>
-        </div>
-
+        
+        
         <Collection
           data={companies?.data}
           emptyTitle="No Businesses Found"
