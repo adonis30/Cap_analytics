@@ -3,14 +3,15 @@
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useCallback } from "react";
 
 const slides = [
-  { image: "/assets/images/cap2.jpg", caption: "" },
-  { image: "/assets/images/cap4.jpg", caption: "" },
-  { image: "/assets/images/cap1.jpg", caption: "" },
-  { image: "/assets/images/cap5.jpg", caption: "" },
+  { image: "/assets/images/cap2.jpg", caption: "Empower Data", link: "/about" },
+  { image: "/assets/images/cap4.jpg", caption: "Insights that Matter", link: "/services" },
+  { image: "/assets/images/cap1.jpg", caption: "Africa’s Business Pulse", link: "/charts" },
+  { image: "/assets/images/cap5.jpg", caption: "Invest Smart", link: "/invest" },
 ];
 
 export default function CarouselBanner() {
@@ -24,40 +25,34 @@ export default function CarouselBanner() {
 
   return (
     <div className="relative w-full h-[70vh] overflow-hidden">
-      {/* Embla viewport */}
       <div className="overflow-hidden h-full" ref={emblaRef}>
         <div className="flex h-full">
           {slides.map((slide, index) => (
-             <div
+            <Link
+              href={slide.link}
               key={index}
-              className="min-w-full h-[70vh] relative flex items-end justify-center"
+              className="min-w-full h-[70vh] relative block"
             >
-              <Image
-  src={slide.image}
-  alt={`Slide ${index + 1}`}
-  fill
-  className="object-fill"
-  priority
- 
-/>
-
-
-              {/* Caption + Overlay Button */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col items-center justify-end p-10 text-center">
-                <h2 className="text-white text-2xl md:text-4xl font-bold drop-shadow mb-4">
-                  {slide.caption}
-                </h2>
-                <div className="flex gap-4">
-                  {/* <Button variant="default">Explore Now</Button>
-                  <Button variant="outline">Get Investment Ready</Button> */}
+              <div className="relative w-full h-full flex items-end justify-center">
+                <Image
+                  src={slide.image}
+                  alt={`Slide ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col items-center justify-end p-10 text-center">
+                  <h2 className="text-white text-2xl md:text-4xl font-bold drop-shadow mb-4">
+                    {slide.caption}
+                  </h2>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
 
-      {/* Prev/Next Navigation */}
+      {/* Navigation Arrows */}
       <Button
         onClick={scrollPrev}
         size="icon"
