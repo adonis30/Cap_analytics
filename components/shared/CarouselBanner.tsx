@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button";
 import { useCallback } from "react";
 
 const slides = [
-  { image: "/assets/images/cap2.jpg", caption: "Explore Investment Opportunities" },
-  { image: "/assets/images/cap4.jpg", caption: "Empowering Entrepreneurs" },
-  { image: "/assets/images/cap1.jpg", caption: "Growth in Zambia" },
-  { image: "/assets/images/cap5.jpg", caption: "Innovation & Impact" },
+  { image: "/assets/images/cap2.jpg", caption: "" },
+  { image: "/assets/images/cap4.jpg", caption: "" },
+  { image: "/assets/images/cap1.jpg", caption: "" },
+  { image: "/assets/images/cap5.jpg", caption: "" },
 ];
 
 export default function CarouselBanner() {
@@ -48,8 +48,8 @@ export default function CarouselBanner() {
                   {slide.caption}
                 </h2>
                 <div className="flex gap-4">
-                  <Button variant="default">Explore Now</Button>
-                  <Button variant="outline">Get Investment Ready</Button>
+                  {/* <Button variant="default">Explore Now</Button>
+                  <Button variant="outline">Get Investment Ready</Button> */}
                 </div>
               </div>
             </div>
