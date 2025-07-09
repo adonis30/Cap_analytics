@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button";
 import { useCallback } from "react";
 
 const slides = [
-  { image: "/assets/images/capImage3a.png", caption: "" },
-  { image: "/assets/images/capImage4a.png", caption: "" },
-  { image: "/assets/images/capImage5a.png", caption: "" },
-  { image: "/assets/images/capImage1a.png", caption: "" },
+  { image: "/assets/images/cap2.png", caption: "" },
+  { image: "/assets/images/cap4.png", caption: "" },
+  { image: "/assets/images/cap1.png", caption: "" },
+  { image: "/assets/images/cap5.png", caption: "" },
 ];
 
 export default function CarouselBanner() {
