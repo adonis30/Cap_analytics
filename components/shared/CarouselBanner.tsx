@@ -29,11 +29,9 @@ export default function CarouselBanner() {
       <div className="overflow-hidden h-full" ref={emblaRef}>
         <div className="flex h-full">
           {slides.map((slide, index) => (
-            <div
+             <div
               key={index}
-               className="min-w-full relative aspect-[16/9] sm:aspect-auto sm:h-[80vh] flex items-center justify-center"
-              style={{ aspectRatio: "16 / 9" }}
-
+              className="min-w-full h-[60vh] relative flex items-end justify-center"
             >
               <Image
   src={slide.image}
