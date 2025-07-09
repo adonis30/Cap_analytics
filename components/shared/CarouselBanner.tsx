@@ -7,11 +7,10 @@ import { Button } from "@/components/ui/button";
 import { useCallback } from "react";
 
 const slides = [
-  { image: "/assets/images/Hero_Sectio.png", caption: "Empowering Africa's Data Economy" },
-  { image: "/assets/images/Cap-Analytics_Intro.png", caption: "Visualize Trends. Unlock Value." },
-  { image: "/assets/images/landing1.png", caption: "Intelligence that Drives Investment" },
-  { image: "/assets/images/visually1.png", caption: "Insightful Charts. Real-time Analytics." },
-  { image: "/assets/images/We_Serve.png", caption: "Serving Businesses Across Africa" },
+  { image: "/assets/images/capImage3a.png", caption: "" },
+  { image: "/assets/images/capImage4a.png", caption: "" },
+  { image: "/assets/images/capImage5a.png", caption: "" },
+  { image: "/assets/images/capImage1a.png", caption: "" },
 ];
 
 export default function CarouselBanner() {
