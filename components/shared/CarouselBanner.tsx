@@ -32,7 +32,7 @@ export default function CarouselBanner() {
             <div
               key={index}
                className="min-w-full relative aspect-[16/9] sm:aspect-auto sm:h-[80vh] flex items-center justify-center"
-              
+              style={{ aspectRatio: "16 / 9" }}
 
             >
               <Image
