@@ -12,9 +12,7 @@ export default async function Home() {
 
   return (
     <>
-      <section className="flex w-ful>
-        <CarouselBanner />
-      </section>
+    
 
       <section id="events" className="wrapper my-10 flex flex-col gap-8 md:gap-12 px-4 md:px-8">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
