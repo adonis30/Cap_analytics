@@ -36,7 +36,7 @@ export default function CarouselBanner() {
   src={slide.image}
   alt={`Slide ${index + 1}`}
   fill
-  className="object-cover"
+  className="object-fill"
   priority
  
 />
