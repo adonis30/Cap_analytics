@@ -11,6 +11,7 @@ const slides = [
   { image: "/assets/images/cap4.jpg", caption: "Empowering Entrepreneurs" },
   { image: "/assets/images/cap1.jpg", caption: "Growth in Zambia" },
   { image: "/assets/images/cap5.jpg", caption: "Innovation & Impact" },
+   { image: "/assets/images/cap1a.png", caption: "Growth in Zambia" },
 ];
 
 export default function CarouselBanner() {
