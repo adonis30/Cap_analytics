@@ -55,12 +55,12 @@ const CarouselBanner = () => {
       {slides.map((slide, idx) => (
         <div key={idx} className="keen-slider__slide relative">
           <Image
-            src={slide.image}
-            alt={`Slide ${idx + 1}`}
-            fill
-            className="object-contain bg-black"
-            priority
-          />
+  src={slide.image}
+  alt={`Slide ${idx + 1}`}
+  fill
+  className="object-cover object-[center_top]"
+  priority
+/>
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent flex items-end justify-center p-6">
             <h2 className="text-white text-xl md:text-3xl font-bold text-center drop-shadow-lg">
               {slide.caption}
