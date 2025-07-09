@@ -1,10 +1,6 @@
 import Collection from "@/components/shared/Collection";
-import { Button } from "@/components/ui/button";
 import { getAllCompanies } from "@/lib/actions/company.actions";
-import Image from "next/image";
-import Link from "next/link";
-import CarouselBanner from "@/components/shared/CarouselBanner"; // Adjust path as needed
-
+import CarouselBanner from "@/components/shared/CarouselBanner";
 
 export default async function Home() {
   const companies = await getAllCompanies({
@@ -12,33 +8,35 @@ export default async function Home() {
     category: '',
     page: 1,
     limit: 6
-  })
-  
+  });
 
   return (
     <>
-  <CarouselBanner />
+      <section className="w-full">
+        <CarouselBanner />
+      </section>
 
-  <section id="events" className="wrapper my-8 flex flex-col gap-8 md:gap-12">
-    <h2 className="h2-bold">Trusted by <br/> Many Investors and Businesses</h2>
+      <section id="events" className="wrapper my-10 flex flex-col gap-8 md:gap-12 px-4 md:px-8">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+          Trusted by <br className="hidden md:block" /> Many Investors and Businesses
+        </h2>
 
-    <div className="flex w-full flex-col gap-5 md:flex-row">
-      {/* Replace with actual Search and CategoryFilter components */}
-      Search
-      CategoryFilter
-    </div>
+        <div className="flex w-full flex-col gap-5 md:flex-row">
+          {/* Replace with actual search and filter components */}
+          <div className="flex-1">Search</div>
+          <div className="flex-1">CategoryFilter</div>
+        </div>
 
-    <Collection 
-      data={companies?.data}
-      emptyTitle="No Businesses Found"
-      emptyStateSubtext="Come Back Later"
-      collectionType="All_Companies"
-      limit={6}
-      page={1}
-      totalPages={3}
-    />
-  </section>
-</>
-
+        <Collection
+          data={companies?.data}
+          emptyTitle="No Businesses Found"
+          emptyStateSubtext="Come Back Later"
+          collectionType="All_Companies"
+          limit={6}
+          page={1}
+          totalPages={3}
+        />
+      </section>
+    </>
   );
 }
