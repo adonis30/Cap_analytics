@@ -12,7 +12,7 @@ export default async function Home() {
 
   return (
     <>
-      <section className="w-full">
+      <section className="flex w-ful>
         <CarouselBanner />
       </section>
 
@@ -20,7 +20,7 @@ export default async function Home() {
         <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
           Trusted by <br className="hidden md:block" /> Many Investors and Businesses
         </h2>
-
+        <CarouselBanner />
         <div className="flex w-full flex-col gap-5 md:flex-row">
           {/* Replace with actual search and filter components */}
           <div className="flex-1">Search</div>
