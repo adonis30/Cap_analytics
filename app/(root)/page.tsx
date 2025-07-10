@@ -40,7 +40,7 @@ const blogPosts: BlogPost[] = [
     publishDate: "",
     category: "Market Trends",
     summary: "Get the latest trends and analytics on Investments and Macroeconomic performance.",
-    imageUrl: "/assets/images/hero3.png",
+    imageUrl: "/assets/images/hero3.jpg",
   },
 ];
 
