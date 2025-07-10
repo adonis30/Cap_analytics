@@ -19,6 +19,11 @@ const nextConfig = {
                 hostname: 'placehold.co',
                 pathname: '/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'via.placeholder.com',
+                pathname: '/**',
+            },
             
         ],
         domains: ['example.com', 'anotherdomain.com'],
