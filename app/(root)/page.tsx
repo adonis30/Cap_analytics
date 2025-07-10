@@ -16,9 +16,9 @@ export default async function Home() {
 
       <section id="events" className="wrapper my-10 flex flex-col gap-8 md:gap-12 px-4 md:px-8">
         <CarouselBanner />
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
-          Trusted by <br className="hidden md:block" /> Many Investors and Businesses
-        </h2>
+        <h1 className="text-2xl text-center md:text-3xl font-bold text-gray-800">
+          A Bridge Between Capital and Change
+        </h1>
         
         
         <Collection
