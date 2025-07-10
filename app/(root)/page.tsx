@@ -22,7 +22,7 @@ const blogPosts: BlogPost[] = [
     publishDate: "",
     category: "Market Trends",
     summary: "Raise capital. Improve visibility. Build sustainable business practices.",
-    imageUrl: /assets/images/test-2.png",
+    imageUrl: "/assets/images/test-2.png",
   },
   {
     id: "2",
