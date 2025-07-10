@@ -17,12 +17,12 @@ type BlogPost = {
 const blogPosts: BlogPost[] = [
   {
     id: "1",
-    title: "Top Investment Trends for 2024",
-    author: "Jane Doe",
-    publishDate: "November 20, 2024",
+    title: "For SMEs",
+    author: "",
+    publishDate: "",
     category: "Market Trends",
-    summary: "Explore the latest investment trends shaping the market in 2024.",
-    imageUrl: "https://via.placeholder.com/400x200",
+    summary: "Raise capital. Improve visibility. Build sustainable business practices.",
+    imageUrl: "test-2.png",
   },
   {
     id: "2",
