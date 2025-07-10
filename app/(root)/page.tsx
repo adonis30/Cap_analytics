@@ -16,7 +16,7 @@ export default async function Home() {
 
       <section id="events" className="wrapper my-10 flex flex-col gap-8 md:gap-12 px-4 md:px-8">
         <CarouselBanner />
-        <div className=" border border-n-1/10 rounded-3xl overflow-hidden lg:p-20">
+        <div className=" border border-n-1/10 rounded-3xl overflow-hidden lg:p-5">
           <h1 className="text-2xl text-center md:text-3xl font-bold text-gray-800">
           A Bridge Between Capital and Change
           </h1>
