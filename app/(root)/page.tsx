@@ -20,6 +20,11 @@ export default async function Home() {
           <h1 className="text-2xl text-center md:text-3xl font-bold text-gray-800">
           A Bridge Between Capital and Change
           </h1>
+          <p>
+          Cap-Analytics is an initiative of Canet Consulting that empowers Zambian SMEs to become investment-ready 
+            while equipping impact investors with ground-level intelligence. 
+            We provide actionable ESG guidance, business profiling, and matchmaking tools to unlock sustainable capital flows in Zambia.
+          </p>
           </div>  
         
         
