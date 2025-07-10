@@ -26,12 +26,21 @@ const blogPosts: BlogPost[] = [
   },
   {
     id: "2",
-    title: "How to Attract Investors to Your Startup",
-    author: "John Smith",
-    publishDate: "November 15, 2024",
+    title: "For Impact Investors",
+    author: "",
+    publishDate: "",
     category: "Investor Tips",
-    summary: "Proven strategies to capture investor interest and secure funding.",
-    imageUrl: "https://via.placeholder.com/400x200",
+    summary: "Discover investable opportunities, backed by real-time insights and ESG alignment.",
+    imageUrl: "/assets/images/hero2.jpg",
+  },
+   {
+    id: "1",
+    title: "For Ecosystem Partners",
+    author: "",
+    publishDate: "",
+    category: "Market Trends",
+    summary: "Get the latest trends and analytics on Investments and Macroeconomic performance.",
+    imageUrl: "/assets/images/hero3.png",
   },
 ];
 
