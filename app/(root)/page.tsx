@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import Collection from "@/components/shared/Collection";
 import { getAllCompanies } from "@/lib/actions/company.actions";
 import CarouselBanner from "@/components/shared/CarouselBanner";
@@ -13,6 +14,7 @@ type BlogPost = {
   summary: string;
   imageUrl: string;
   buttonText: string;
+  link: string;
 };
 
 
@@ -26,6 +28,7 @@ const blogPosts: BlogPost[] = [
     summary: "Raise capital. Improve visibility. Build sustainable business practices.",
     imageUrl: "/assets/images/test-2.png",
     buttonText: "Join Our SME Network",
+    link: "/companies",
   },
   {
     id: "2",
@@ -36,6 +39,7 @@ const blogPosts: BlogPost[] = [
     summary: "Discover investable opportunities, backed by real-time insights and ESG alignment.",
     imageUrl: "/assets/images/hero2.jpg",
     buttonText: "View Investment Pipeline",
+    link: "/investors",
   },
   {
     id: "3",
@@ -46,6 +50,7 @@ const blogPosts: BlogPost[] = [
     summary: "Get the latest trends and analytics on Investments and Macroeconomic performance.",
     imageUrl: "/assets/images/hero3.jpg",
     buttonText: "View Reports and Analytics",
+    link: "/reports",
   },
 ];
 
@@ -82,6 +87,7 @@ export default async function Home() {
            <section className="py-10">
         <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {blogPosts.map((post) => (
+          <Link key={post.id} href={post.link} passHref>
             <div
               key={post.id}
               className="p-4 bg-white rounded-md shadow-md hover:shadow-lg transition-shadow duration-300"
@@ -100,6 +106,7 @@ export default async function Home() {
             {post.buttonText}
            </button>
             </div>
+              </Link>
           ))}
         </div>
       </section>
