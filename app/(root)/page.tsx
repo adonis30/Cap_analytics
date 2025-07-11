@@ -12,7 +12,9 @@ type BlogPost = {
   category: string;
   summary: string;
   imageUrl: string;
+  buttonText: string;
 };
+
 
 const blogPosts: BlogPost[] = [
   {
@@ -23,6 +25,7 @@ const blogPosts: BlogPost[] = [
     category: "Market Trends",
     summary: "Raise capital. Improve visibility. Build sustainable business practices.",
     imageUrl: "/assets/images/test-2.png",
+    buttonText: "Join Our SME Network",
   },
   {
     id: "2",
@@ -32,17 +35,20 @@ const blogPosts: BlogPost[] = [
     category: "Investor Tips",
     summary: "Discover investable opportunities, backed by real-time insights and ESG alignment.",
     imageUrl: "/assets/images/hero2.jpg",
+    buttonText: "View Investment Pipeline",
   },
-   {
-    id: "1",
+  {
+    id: "3",
     title: "For Ecosystem Partners",
     author: "",
     publishDate: "",
     category: "Market Trends",
     summary: "Get the latest trends and analytics on Investments and Macroeconomic performance.",
     imageUrl: "/assets/images/hero3.jpg",
+    buttonText: "View Reports and Analytics",
   },
 ];
+
 
 export default async function Home() {
   const companies = await getAllCompanies({
@@ -91,8 +97,8 @@ export default async function Home() {
               </p>
               <p className="mt-2 text-gray-700">{post.summary}</p>
               <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-                Read More
-              </button>
+            {post.buttonText}
+           </button>
             </div>
           ))}
         </div>
