@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   title: "Capanalytics",
   description: "Your Goto investment website",
   icons: {
-    icon: "/assets/images/logo.svg", // Ensure this file exists in the 'public' directory
+    icon: "/assets/images/logo3.svg", // Ensure this file exists in the 'public' directory
   },
 };
 
