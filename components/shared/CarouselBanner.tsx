@@ -38,7 +38,7 @@ export default function CarouselBanner() {
                   src={slide.image}
                   alt={`Slide ${index + 1}`}
                   fill
-                  lassName="object-cover brightness-110"
+                  className="object-cover brightness-110"
                   priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col items-center justify-end p-10 text-center">
