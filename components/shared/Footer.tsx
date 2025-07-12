@@ -15,7 +15,7 @@ const Footer = () => {
         </Link>
 
         <p>2025 Cap analytics. All Rights reserved.</p>
-         <p>Developed by Onix Ndhlovu</p>
+        
       </div>
     </footer>
   )
