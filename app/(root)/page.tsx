@@ -27,8 +27,8 @@ const blogPosts: BlogPost[] = [
     category: "Market Trends",
     summary: "Raise capital. Improve visibility. Build sustainable business practices.",
     imageUrl: "/assets/images/test-2.png",
-    buttonText: "Join Our SME Network",
-    link: "/companies",
+    buttonText: "View our investor Network",
+    link: "/investors",
   },
   {
     id: "2",
@@ -38,8 +38,8 @@ const blogPosts: BlogPost[] = [
     category: "Investor Tips",
     summary: "Discover investable opportunities, backed by real-time insights and ESG alignment.",
     imageUrl: "/assets/images/hero2.jpg",
-    buttonText: "View Investment Pipeline",
-    link: "/investors",
+    buttonText: "View our Investment Pipeline",
+    link: "/companies",
   },
   {
     id: "3",
