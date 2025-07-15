@@ -153,20 +153,18 @@ export default function Reports() {
         return <Bar data={chartData as ChartData<"bar">} options={baseOptions as ChartOptions<"bar">} />;
       case "line":
         return <Line data={chartData as ChartData<"line">} options={baseOptions as ChartOptions<"line">} />;
-      case "area":
-        return (
-          <Line
-            data={{
-              ...chartData,
-              datasets: chartData.datasets.map(ds => ({
-                ...ds,
-                fill: true,
-                backgroundColor: ds.borderColor + "33",
-              })),
-            }}
-            options={baseOptions as ChartOptions<"line">}
-          />
-        );
+      case "area": {
+  const areaData = {
+    ...chartData,
+    datasets: chartData.datasets.map(({ type, ...ds }) => ({
+      ...ds,
+      fill: true,
+      backgroundColor: ds.borderColor + "33",
+    })),
+  };
+  return <Line data={areaData as ChartData<"line">} options={baseOptions as ChartOptions<"line">} />;
+}
+
       case "pie":
         return (
           <Pie
