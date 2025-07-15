@@ -90,9 +90,10 @@ export default function Reports() {
         // Extract unique countries
         const countries = new Set<string>();
         chartFetches.forEach(({ data }) => {
-          data.forEach((item) => {
-            if (item.country) countries.add(item.country);
-          });
+          data.forEach((item: ChartDataItem) => {
+  if (item.country) countries.add(item.country);
+});
+
         });
         setAvailableCountries(["All", ...Array.from(countries).sort()]);
       } catch (err) {
