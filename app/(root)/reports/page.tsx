@@ -22,7 +22,7 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import { Line, Bar, Pie } from "react-chartjs-2";
+import { Line, Bar, Pie, Chart } from "react-chartjs-2";
 import type { ChartData, ChartOptions } from "chart.js";
 import { format } from "date-fns";
 import ChoroplethChart from "@/components/shared/ChoroplethChart";
@@ -150,7 +150,8 @@ export default function Reports() {
 
     switch (meta.chartType) {
       case "bar":
-        return <Bar data={chartData as ChartData<"bar">} options={baseOptions as ChartOptions<"bar">} />;
+        
+return <Chart type="bar" data={comboData} options={baseOptions} />;
       case "line":
         return <Line data={chartData as ChartData<"line">} options={baseOptions as ChartOptions<"line">} />;
       case "area": {
