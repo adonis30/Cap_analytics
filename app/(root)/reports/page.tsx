@@ -1,4 +1,4 @@
-"use client";
+"use client"; 
 
 import {
   Dialog,
@@ -6,6 +6,10 @@ import {
   DialogTitle,
   IconButton,
   Box,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useEffect, useState } from "react";
@@ -22,7 +26,7 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import { Line, Bar, Pie, Chart } from "react-chartjs-2";
+import { Line, Bar, Pie } from "react-chartjs-2";
 import type { ChartData, ChartOptions } from "chart.js";
 import { format } from "date-fns";
 import ChoroplethChart from "@/components/shared/ChoroplethChart";
@@ -54,15 +58,12 @@ interface ChartMetadata {
   name: string;
   chartType: SupportedChartType;
   chartSubtype?: string;
-  country?: string;
 }
 
 type ChartDataItem = { [key: string]: any };
 
 export default function Reports() {
-  const [selectedCategory, setSelectedCategory] = useState<string>(CATEGORIES[0]);
-  const [selectedCountry, setSelectedCountry] = useState<string>("All");
-  const [countries, setCountries] = useState<string[]>([]);
+ const [selectedCategory, setSelectedCategory] = useState<string>(CATEGORIES[0]);
 
   const [charts, setCharts] = useState<{ metadata: ChartMetadata; data: ChartDataItem[] }[]>([]);
   const [selectedChart, setSelectedChart] = useState<{ metadata: ChartMetadata; data: ChartDataItem[] } | null>(null);
@@ -72,23 +73,16 @@ export default function Reports() {
     const fetchCharts = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/charts/distinct-names?category=${encodeURIComponent(selectedCategory)}`);
+        const res = await fetch(/api/charts/distinct-names?category=${encodeURIComponent(selectedCategory)});
         const { names } = await res.json();
 
         const chartFetches = await Promise.all(
           names.map(async (name: string) => {
-            const res = await fetch(`/api/charts/data?name=${encodeURIComponent(name)}`);
+            const res = await fetch(/api/charts/data?name=${encodeURIComponent(name)});
             const result = await res.json();
             return { metadata: result.metadata, data: result.data };
           })
         );
-
-        // Extract country codes from metadata
-        const countrySet = new Set<string>();
-        chartFetches.forEach(({ metadata }) => {
-          if (metadata.country) countrySet.add(metadata.country);
-        });
-        setCountries(["All", ...Array.from(countrySet)]);
 
         setCharts(chartFetches);
       } catch (err) {
@@ -118,7 +112,7 @@ export default function Reports() {
 
     const labels = raw.map(item => item.display_month || (item.month_year ? formatMonthYear(item.month_year) : item[xKey]));
     const datasets = yKeys.map((key, i) => {
-      const color = `hsl(${i * 60}, 70%, 50%)`;
+      const color = hsl(${i * 60}, 70%, 50%);
       return {
         label: key.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase()),
         data: raw.map(item => item[key]),
@@ -142,68 +136,66 @@ export default function Reports() {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { display: true, position: "top" },
-        title: { display: true, text: meta.name },
+        legend: {
+          display: true,
+          position: "top",
+        },
+        title: {
+          display: true,
+          text: meta.name,
+        },
       },
       layout: { padding: { top: 10, bottom: 10 } },
     };
 
     switch (meta.chartType) {
       case "bar":
-        
-return <Chart type="bar" data={comboData} options={baseOptions} />;
+        return <Bar data={chartData as ChartData<"bar">} options={baseOptions as ChartOptions<"bar">} />;
       case "line":
         return <Line data={chartData as ChartData<"line">} options={baseOptions as ChartOptions<"line">} />;
       case "area": {
-  const areaData = {
-    ...chartData,
-    datasets: chartData.datasets.map(({ type, ...ds }) => ({
-      ...ds,
-      fill: true,
-      backgroundColor: ds.borderColor + "33",
-    })),
-  };
-  return <Line data={areaData as ChartData<"line">} options={baseOptions as ChartOptions<"line">} />;
-}
-
-      case "pie":
-        return (
-          <Pie
-            data={{
-              labels: chartData.labels,
-              datasets: [
-                {
-                  label: meta.name,
-                  data: chartData.datasets[0]?.data || [],
-                  backgroundColor: chartData.datasets.map(ds => ds.borderColor),
-                },
-              ],
-            }}
-            options={baseOptions as ChartOptions<"pie">}
-          />
-        );
-      case "combo":
-        return (
-          <Bar
-            data={{
-              ...chartData,
-              datasets: chartData.datasets.map((ds, i) => ({
-                ...ds,
-                type: i % 2 === 0 ? "bar" : "line",
-                borderWidth: 2,
-                fill: false,
-              })),
-            }}
-            options={baseOptions as ChartOptions<"bar">}
-          />
-        );
+        const areaData = {
+          ...chartData,
+          datasets: chartData.datasets.map(ds => ({
+            ...ds,
+            fill: false,
+            backgroundColor: ds.borderColor + "33",
+          })),
+        };
+        return <Line data={areaData as ChartData<"line">} options={baseOptions as ChartOptions<"line">} />;
+      }
+      case "pie": {
+        const pieData: ChartData<"pie"> = {
+          labels: chartData.labels,
+          datasets: [
+            {
+              label: meta.name,
+              data: chartData.datasets[0]?.data || [],
+              backgroundColor: chartData.datasets.map(ds => ds.borderColor),
+            },
+          ],
+        };
+        return <Pie data={pieData} options={baseOptions as ChartOptions<"pie">} />;
+      }
+      case "combo": {
+        const comboData = {
+          ...chartData,
+          datasets: chartData.datasets.map((ds, i) => ({
+            ...ds,
+            type: i % 2 === 0 ? "bar" : "line",
+            borderWidth: 2,
+            fill: false,
+          })),
+        };
+        return <Bar data={comboData as ChartData<"bar">} options={baseOptions as ChartOptions<"bar">} />;
+      }
       case "choropleth":
         return (
           <ChoroplethChart
             data={data.map(d => ({ country: d.country, value: d.market_size_usd_ }))}
             onCountryClick={code => {
               const c = data.find(d => d.country === code);
-              if (c) alert(`${code}: $${formatUSD(c.market_size_usd_)}`);
+              if (c) alert(${code}: $${formatUSD(c.market_size_usd_)});
             }}
           />
         );
@@ -212,51 +204,30 @@ return <Chart type="bar" data={comboData} options={baseOptions} />;
     }
   };
 
-  const filteredCharts = selectedCountry === "All"
-    ? charts
-    : charts.filter(chart => chart.metadata.country === selectedCountry);
-
   return (
     <main className="min-h-screen px-4 py-6 sm:px-6 md:px-8 bg-white">
       <h1 className="text-2xl md:text-3xl font-bold mb-4">Reports & Analytics</h1>
 
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
-        {/* Category Filter */}
-        <label className="flex-1">
-          <span className="font-semibold">Category:</span>
-          <select
-            className="mt-1 w-full p-2 border rounded text-sm"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-          >
-            {CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>{cat}</option>
-            ))}
-          </select>
-        </label>
-
-        {/* Country Filter */}
-        <label className="flex-1">
-          <span className="font-semibold">Country:</span>
-          <select
-            className="mt-1 w-full p-2 border rounded text-sm"
-            value={selectedCountry}
-            onChange={(e) => setSelectedCountry(e.target.value)}
-          >
-            {countries.map((countryCode) => (
-              <option key={countryCode} value={countryCode}>
-                {countryCode === "All" ? "All Countries" : countryCode}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
+      <label className="mb-4 block">
+        <span className="font-semibold">Category:</span>
+        <select
+          className="mt-1 w-full p-2 border rounded text-sm"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          {CATEGORIES.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
+      </label>
 
       {loading ? (
         <p>Loading charts...</p>
       ) : (
         <div className="flex flex-wrap gap-6 mt-6">
-          {filteredCharts.map(({ metadata, data }) => (
+          {charts.map(({ metadata, data }) => (
             <div
               key={metadata._id}
               className="w-full sm:w-[48%] lg:w-[46%] xl:w-[44%] 2xl:w-[32%] p-4 border rounded shadow bg-gray-50 cursor-pointer"
@@ -284,7 +255,6 @@ return <Chart type="bar" data={comboData} options={baseOptions} />;
           </Box>
         </DialogContent>
       </Dialog>
-    
 
       <section className="mt-12 border-t pt-8">
         <h2 className="text-2xl font-bold mb-4">
