@@ -73,7 +73,7 @@ type ChartDataItem = { [key: string]: any };
 
 export default function Reports() {
 const [selectedCategory, setSelectedCategory] = useState<string>(CATEGORIES[0]);
-const [selectedCountry, setSelectedCountry] = useState<string>("All");
+const [selectedCountry, setSelectedCountry] = useState<string>("ZMB");
 const [availableCountries, setAvailableCountries] = useState<string[]>([]);
 
   const [charts, setCharts] = useState<
