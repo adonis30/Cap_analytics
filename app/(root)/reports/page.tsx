@@ -113,7 +113,7 @@ export default function Reports() {
 
     const labels = raw.map(item => item.display_month || (item.month_year ? formatMonthYear(item.month_year) : item[xKey]));
     const datasets = yKeys.map((key, i) => {
-      const color = hsl(${i * 60}, 70%, 50%);
+      const color = `hsl(${i * 60}, 70%, 50%)`;
       return {
         label: key.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase()),
         data: raw.map(item => item[key]),
