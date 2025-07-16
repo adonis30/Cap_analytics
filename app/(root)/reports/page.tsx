@@ -73,12 +73,13 @@ export default function Reports() {
     const fetchCharts = async () => {
       setLoading(true);
       try {
-        const res = await fetch(/api/charts/distinct-names?category=${encodeURIComponent(selectedCategory)});
+        const res = await fetch(`/api/charts/distinct-names?category=${encodeURIComponent(selectedCategory)}`);
+
         const { names } = await res.json();
 
         const chartFetches = await Promise.all(
           names.map(async (name: string) => {
-            const res = await fetch(/api/charts/data?name=${encodeURIComponent(name)});
+            const res = await fetch(`/api/charts/data?name=${encodeURIComponent(name)}`);
             const result = await res.json();
             return { metadata: result.metadata, data: result.data };
           })
