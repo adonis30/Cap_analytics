@@ -196,7 +196,7 @@ export default function Reports() {
             data={data.map(d => ({ country: d.country, value: d.market_size_usd_ }))}
             onCountryClick={code => {
               const c = data.find(d => d.country === code);
-              if (c) alert(${code}: $${formatUSD(c.market_size_usd_)});
+              if (c) alert(`${code}: $${formatUSD(c.market_size_usd_)}`);
             }}
           />
         );
