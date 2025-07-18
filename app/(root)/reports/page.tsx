@@ -95,10 +95,17 @@ const [availableCountries, setAvailableCountries] = useState<string[]>([]);
   const fetchCharts = async () => {
     setLoading(true);
     try {
-      const res = await fetch(
-        `/api/charts/distinct-names?category=${encodeURIComponent(selectedCategory)}&country=${encodeURIComponent(selectedCountry)}`
-      );
-      const { names } = await res.json();
+      const resCountry = await fetch(
+  `/api/charts/distinct-names?category=${encodeURIComponent(selectedCategory)}&country=${encodeURIComponent(selectedCountry)}`
+);
+const resGlobal = await fetch(
+  `/api/charts/distinct-names?category=${encodeURIComponent(selectedCategory)}&country=GLB`
+);
+
+const { names: countryNames } = await resCountry.json();
+const { names: globalNames } = await resGlobal.json();
+
+const allNames = Array.from(new Set([...countryNames, ...globalNames]));
 
       const chartFetches = await Promise.all(
         names.map(async (name: string) => {
