@@ -67,8 +67,8 @@ const fillColor = record ? colorScale(record.value) : "#eeeeee";
 
 return (
   <g key={geo.rsmKey}>
-  <title>
-  {record
+ <title>
+  {record && typeof record.value === "number"
     ? `${countryName} – ${record.metric ?? "Value"}: $${formatUSD(record.value)}`
     : `${countryName} – No Data`}
 </title>
