@@ -69,8 +69,8 @@ return (
   <g key={geo.rsmKey}>
  <title>
   {countryName} –{" "}
-  {typeof record !== "undefined" && typeof record.value === "number"
-    ? `${record.metric ?? "Value"}: $${formatUSD(record.value)}`
+  {record?.value !== undefined
+    ? `${record?.metric ?? "Value"}: $${formatUSD(record.value)}`
     : "No Data"}
 </title>
 
