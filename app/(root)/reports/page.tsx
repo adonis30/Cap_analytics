@@ -91,33 +91,40 @@ const [availableCountries, setAvailableCountries] = useState<string[]>([]);
 }, []);
 
 
-  useEffect(() => {
+useEffect(() => {
   const fetchCharts = async () => {
     setLoading(true);
     try {
-      const resCountry = await fetch(
-  `/api/charts/distinct-names?category=${encodeURIComponent(selectedCategory)}&country=${encodeURIComponent(selectedCountry)}`
-);
-const resGlobal = await fetch(
-  `/api/charts/distinct-names?category=${encodeURIComponent(selectedCategory)}&country=GLB`
-);
+      const res = await fetch(
+        `/api/charts/distinct-names?category=${encodeURIComponent(
+          selectedCategory
+        )}&country=${encodeURIComponent(selectedCountry)}`
+      );
 
-const { names: countryNames } = await resCountry.json();
-const { names: globalNames } = await resGlobal.json();
+      if (!res.ok) throw new Error("Failed to fetch chart names");
 
-const allNames = Array.from(new Set([...countryNames, ...globalNames]));
+      const json = await res.json();
+      const names: string[] = json.names || [];
 
       const chartFetches = await Promise.all(
         names.map(async (name: string) => {
-          const res = await fetch(
-            `/api/charts/data?name=${encodeURIComponent(name)}`
-          );
-          const result = await res.json();
-          return { metadata: result.metadata, data: result.data };
+          try {
+            const res = await fetch(
+              `/api/charts/data?name=${encodeURIComponent(name)}`
+            );
+
+            if (!res.ok) throw new Error("Failed to fetch chart data");
+
+            const result = await res.json();
+            return { metadata: result.metadata, data: result.data };
+          } catch (chartErr) {
+            console.error(`Error fetching chart "${name}":`, chartErr);
+            return null;
+          }
         })
       );
 
-      setCharts(chartFetches);
+      setCharts(chartFetches.filter(Boolean) as { metadata: ChartMetadata; data: ChartDataItem[] }[]);
     } catch (err) {
       console.error("Chart fetch failed:", err);
     } finally {
@@ -125,8 +132,11 @@ const allNames = Array.from(new Set([...countryNames, ...globalNames]));
     }
   };
 
-  fetchCharts();
+  if (selectedCategory && selectedCountry) {
+    fetchCharts();
+  }
 }, [selectedCategory, selectedCountry]);
+
 
 
 
