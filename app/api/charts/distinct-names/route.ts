@@ -18,9 +18,15 @@ export async function GET(request: Request) {
 
     await connectToDatabase();
 
+    // Build query condition
     const query: any = { category };
-    if (country && country !== "All") query.country = country;
 
+    if (country && country !== "All") {
+      // Include both selected country and global (GLB)
+      query.country = { $in: [country, "GLB"] };
+    }
+
+    // Otherwise (All or undefined), just match category and return all countries including GLB
     const names = await ChartMetadata.distinct("name", query);
 
     return NextResponse.json({ category, country, names }, { status: 200 });
