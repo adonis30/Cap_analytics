@@ -21,6 +21,8 @@ import { format } from "date-fns";
 import  ChoroplethChart  from "@/components/shared/ChoroplethChart";
 import { formatUSD } from "@/utils/formatUSD";
 import { isMonetary } from "@/utils/isMonetary";
+import { formatNumber } from "@/utils/formatNumber";
+
 
 
 ChartJS.register(
