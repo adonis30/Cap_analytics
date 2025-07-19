@@ -96,33 +96,7 @@ return (
   </g>
 );
 
-              return (
-              <g key={geo.rsmKey}>
-    <title>
-      {countryName} –{" "}
-      {record ? `${record.metric || "Value"}: $${formatUSD(record.value)}` : "No Data"}
-    </title>
-    <Geography
-      geography={geo}
-      fill={fillColor}
-      stroke="#ffffff"
-      strokeWidth={0.5}
-      style={{
-        default: { outline: "none", transition: "fill 0.3s ease-in-out" },
-        hover: {
-          fill: "#f57c00",
-          stroke: "#333",
-          outline: "none",
-          cursor: "pointer",
-        },
-        pressed: { fill: "#c62828", outline: "none" },
-      }}
-      onClick={() => {
-        if (onCountryClick && isoCode) onCountryClick(isoCode);
-      }}
-    />
-  </g>
-);
+             
             })
           }
         </Geographies>
