@@ -14,7 +14,8 @@ import worldGeoJson from "@/utils/world-geo.json";
 interface ChoroplethChartProps {
   data: {
     country: string; // ISO Alpha-3 code
-    value: number;   // Market size
+    value: number;
+    metric?: string; // Optional label (e.g., 'score' or 'market_size_usd_')
   }[];
   onCountryClick?: (countryCode: string) => void;
 }
@@ -61,42 +62,64 @@ const ChoroplethChart: React.FC<ChoroplethChartProps> = ({ data, onCountryClick 
               const countryName =
                 geo.properties.NAME_LONG || geo.properties.name || isoCode;
 
-              const fillColor = value ? colorScale(value) : "#eeeeee";
+              const record = data.find((d) => d.country === isoCode);
+const fillColor = record ? colorScale(record.value) : "#eeeeee";
+
+return (
+  <g key={geo.rsmKey}>
+    <title>
+      {countryName} –{" "}
+      {record ? `${record.metric || "Value"}: $${formatUSD(record.value)}` : "No Data"}
+    </title>
+    <Geography
+      geography={geo}
+      fill={fillColor}
+      stroke="#ffffff"
+      strokeWidth={0.5}
+      style={{
+        default: { outline: "none", transition: "fill 0.3s ease-in-out" },
+        hover: {
+          fill: "#f57c00",
+          stroke: "#333",
+          outline: "none",
+          cursor: "pointer",
+        },
+        pressed: { fill: "#c62828", outline: "none" },
+      }}
+      onClick={() => {
+        if (onCountryClick && isoCode) onCountryClick(isoCode);
+      }}
+    />
+  </g>
+);
 
               return (
-                <g key={geo.rsmKey}>
-                  <title>
-                    {countryName} – {value ? `$${formatUSD(value)}` : "No Data"}
-                  </title>
-                  <Geography
-                    geography={geo}
-                    fill={fillColor}
-                    stroke="#ffffff"
-                    strokeWidth={0.5}
-                    style={{
-                      default: {
-                        outline: "none",
-                        transition: "fill 0.3s ease-in-out",
-                      },
-                      hover: {
-                        fill: "#f57c00",
-                        stroke: "#333",
-                        outline: "none",
-                        cursor: "pointer",
-                      },
-                      pressed: {
-                        fill: "#c62828",
-                        outline: "none",
-                      },
-                    }}
-                    onClick={() => {
-                      if (onCountryClick && isoCode) {
-                        onCountryClick(isoCode);
-                      }
-                    }}
-                  />
-                </g>
-              );
+              <g key={geo.rsmKey}>
+    <title>
+      {countryName} –{" "}
+      {record ? `${record.metric || "Value"}: $${formatUSD(record.value)}` : "No Data"}
+    </title>
+    <Geography
+      geography={geo}
+      fill={fillColor}
+      stroke="#ffffff"
+      strokeWidth={0.5}
+      style={{
+        default: { outline: "none", transition: "fill 0.3s ease-in-out" },
+        hover: {
+          fill: "#f57c00",
+          stroke: "#333",
+          outline: "none",
+          cursor: "pointer",
+        },
+        pressed: { fill: "#c62828", outline: "none" },
+      }}
+      onClick={() => {
+        if (onCountryClick && isoCode) onCountryClick(isoCode);
+      }}
+    />
+  </g>
+);
             })
           }
         </Geographies>
