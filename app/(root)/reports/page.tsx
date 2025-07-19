@@ -314,19 +314,21 @@ useEffect(() => {
     .filter(Boolean) as { country: string; value: number; metric: string }[];
 
   return (
-    <ChoroplethChart
-      data={mapData}
-      onCountryClick={(code) => {
-        const countryData = mapData.find((d) => d.country === code);
-        if (countryData) {
-          alert(
-            `${code}: ${countryData.metric.toUpperCase()} = ${formatUSD(
-              countryData.value
-            )}`
-          );
-        }
-      }}
-    />
+   <ChoroplethChart
+  data={mapData}
+  onCountryClick={(code) => {
+    const countryData = mapData.find((d) => d.country === code);
+    if (countryData) {
+      alert(
+        `${code}: ${countryData.metric?.toUpperCase()} = ${
+          isMonetary(countryData.metric)
+            ? `$${formatUSD(countryData.value)}`
+            : formatNumber(countryData.value)
+        }`
+      );
+    }
+  }}
+/>
   );
 }
 
