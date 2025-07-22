@@ -8,7 +8,7 @@ export default function GrantsPage() {
   const [selectedGrant, setSelectedGrant] = useState<GrantOpportunity | null>(null);
 
   return (
-    <main className="min-h-screen px-4 py-10 bg-white">
+    <main className="px-4 py-10 bg-white">
       <h1 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800">
         Grants & Technical Assistance Opportunities
       </h1>
