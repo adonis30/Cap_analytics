@@ -137,8 +137,8 @@ const [availableCountries, setAvailableCountries] = useState<string[]>([]);
     raw: ChartDataItem[]
   ) => {
     const keys = Object.keys(raw[0] || {}).filter(
-      (k) => !["_id", "__v", "metadataId"].includes(k)
-    );
+  (k) => !["_id", "__v", "metadataId", "createdAt", "updatedAt"].includes(k)
+);
 
     const xKey =
       keys.find((k) =>
