@@ -14,15 +14,12 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import { Line, Bar, Pie } from "react-chartjs-2";
+import { Line, Bar, Pie, Chart } from "react-chartjs-2";
 import type { ChartData, ChartOptions } from "chart.js";
 import { format } from "date-fns";
 
 import  ChoroplethChart  from "@/components/shared/ChoroplethChart";
 import { formatUSD } from "@/utils/formatUSD";
-import { isMonetary } from "@/utils/isMonetary";
-import { formatNumber } from "@/utils/formatNumber";
-
 
 
 ChartJS.register(
@@ -76,7 +73,7 @@ type ChartDataItem = { [key: string]: any };
 
 export default function Reports() {
 const [selectedCategory, setSelectedCategory] = useState<string>(CATEGORIES[0]);
-const [selectedCountry, setSelectedCountry] = useState<string>("ZMB");
+const [selectedCountry, setSelectedCountry] = useState<string>('ZMB');
 const [availableCountries, setAvailableCountries] = useState<string[]>([]);
 
   const [charts, setCharts] = useState<
@@ -94,40 +91,26 @@ const [availableCountries, setAvailableCountries] = useState<string[]>([]);
 }, []);
 
 
-useEffect(() => {
+  useEffect(() => {
   const fetchCharts = async () => {
     setLoading(true);
     try {
       const res = await fetch(
-        `/api/charts/distinct-names?category=${encodeURIComponent(
-          selectedCategory
-        )}&country=${encodeURIComponent(selectedCountry)}`
+        `/api/charts/distinct-names?category=${encodeURIComponent(selectedCategory)}&country=${encodeURIComponent(selectedCountry)}`
       );
-
-      if (!res.ok) throw new Error("Failed to fetch chart names");
-
-      const json = await res.json();
-      const names: string[] = json.names || [];
+      const { names } = await res.json();
 
       const chartFetches = await Promise.all(
         names.map(async (name: string) => {
-          try {
-            const res = await fetch(
-              `/api/charts/data?name=${encodeURIComponent(name)}`
-            );
-
-            if (!res.ok) throw new Error("Failed to fetch chart data");
-
-            const result = await res.json();
-            return { metadata: result.metadata, data: result.data };
-          } catch (chartErr) {
-            console.error(`Error fetching chart "${name}":`, chartErr);
-            return null;
-          }
+          const res = await fetch(
+            `/api/charts/data?name=${encodeURIComponent(name)}`
+          );
+          const result = await res.json();
+          return { metadata: result.metadata, data: result.data };
         })
       );
 
-      setCharts(chartFetches.filter(Boolean) as { metadata: ChartMetadata; data: ChartDataItem[] }[]);
+      setCharts(chartFetches);
     } catch (err) {
       console.error("Chart fetch failed:", err);
     } finally {
@@ -135,11 +118,8 @@ useEffect(() => {
     }
   };
 
-  if (selectedCategory && selectedCountry) {
-    fetchCharts();
-  }
+  fetchCharts();
 }, [selectedCategory, selectedCountry]);
-
 
 
 
@@ -157,8 +137,8 @@ useEffect(() => {
     raw: ChartDataItem[]
   ) => {
     const keys = Object.keys(raw[0] || {}).filter(
-  (k) => !["_id", "__v", "metadataId", "createdAt", "updatedAt"].includes(k)
-);
+      (k) => !["_id", "__v", "metadataId"].includes(k)
+    );
 
     const xKey =
       keys.find((k) =>
@@ -275,64 +255,102 @@ useEffect(() => {
         );
       }
       case "combo": {
-        const comboData = {
-          ...chartData,
-          datasets: chartData.datasets.map((ds, i) => ({
-            ...ds,
-            type: i % 2 === 0 ? "bar" : "line",
-            borderWidth: 2,
-            fill: false,
-          })),
-        } as ChartData<"bar">;
-        return (
-          <Bar data={comboData} options={baseOptions as ChartOptions<"bar">} />
-        );
-      }
-  case "choropleth": {
-  const mapData = data
-    .map((d) => {
-      const country = d.country;
+    
+const comboData: ChartData<"bar" | "line", number[], string> = {
+    labels: chartData.labels,
+    datasets: chartData.datasets.map((ds, i) => ({
+      ...ds,
+      type: i === 0 ? "bar" : "line", // primary as bar, secondary as line
+      yAxisID: i === 0 ? "y" : "y1",
+      fill: false,
+      borderWidth: 2,
+      tension: i === 1 ? 0.4 : 0,
+      backgroundColor: i === 0 ? "rgba(54, 162, 235, 0.6)" : "transparent",
+      borderColor: i === 0 ? ds.borderColor : "red",
+    })),
+  };
 
-      const valueKey = Object.keys(d).find(
-        (k) =>
-          k !== "_id" &&
-          k !== "__v" &&
-          k !== "metadataId" &&
-          k !== "region" &&
-          k !== "year" &&
-          k !== "country" &&
-          k !== "createdAt" &&
-          k !== "updatedAt" &&
-          typeof d[k] === "number"
-      );
-
-      return valueKey && country
-        ? {
-            country,
-            value: d[valueKey],
-            metric: valueKey,
-          }
-        : null;
-    })
-    .filter(Boolean) as { country: string; value: number; metric: string }[];
+  const comboOptions: ChartOptions<"bar" | "line"> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: {
+      mode: "index",
+      intersect: false,
+    },
+    plugins: {
+      legend: { position: "top" },
+      title: {
+        display: true,
+        text: meta.name,
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Year",
+        },
+      },
+      y: {
+        type: "linear",
+        position: "left",
+        title: {
+          display: true,
+          text: chartData.datasets[0]?.label || "Left Axis",
+        },
+        ticks: {
+          callback: (val) => `${val}`,
+        },
+      },
+      y1: {
+        type: "linear",
+        position: "right",
+        grid: { drawOnChartArea: false },
+        title: {
+          display: true,
+          text: chartData.datasets[1]?.label || "Right Axis",
+        },
+        ticks: {
+          callback: (val) => `${val}`,
+        },
+      },
+    },
+  };
 
   return (
-   <ChoroplethChart
-  data={mapData}
+    <Chart
+      type="bar" // base type
+      data={comboData}
+      options={comboOptions}
+    />
+  );
+}
+
+
+      
+     case "choropleth": {
+  const mapData = data
+    .filter((d) => d.country && typeof d.market_size_usd_ === "number")
+    .map((d) => ({
+      country: d.country,
+      value: d.market_size_usd_,
+      backgroundColor: d.market_size_usd_ > 0 ? `hsl(${Math.random() * 360}, 80%, 50%)` : "#fff",
+      tooltip: `${d.country}: $${d.market_size_usd_.toLocaleString()}`,
+    }));
+
+  return <ChoroplethChart
+  data={data.map(d => ({
+    country: d.country,
+    value: d.market_size_usd_,
+  }))}
   onCountryClick={(code) => {
-    const countryData = mapData.find((d) => d.country === code);
+    const countryData = data.find(d => d.country === code);
     if (countryData) {
-      alert(
-        `${code}: ${countryData.metric?.toUpperCase()} = ${
-          isMonetary(countryData.metric)
-            ? `$${formatUSD(countryData.value)}`
-            : formatNumber(countryData.value)
-        }`
-      );
+      alert(`${code}: $${formatUSD(countryData.market_size_usd_)}`);
     }
   }}
 />
-  );
+
 }
 
       default:
