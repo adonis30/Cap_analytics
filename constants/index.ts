@@ -17,7 +17,7 @@ export const headerLinks = [
         route: '/deals',
       },
     {
-        label: 'Grants and TA Opportunities', 
+        label: 'Grants and TA', 
         route: '/grants'
 
       },
