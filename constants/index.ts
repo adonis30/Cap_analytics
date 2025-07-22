@@ -16,6 +16,11 @@ export const headerLinks = [
         label: 'Deals',
         route: '/deals',
       },
+    {
+        label: 'Grants and TA Opportunities', 
+        route: '/grants'
+
+      },
       {
         label: 'Blog',
         route: '/blog',
