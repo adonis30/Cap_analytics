@@ -329,35 +329,53 @@ const comboData: ChartData<"bar" | "line", number[], string> = {
 
       
      case "choropleth": {
-  const mapData = data
-    .filter((d) => d.country && typeof d.market_size_usd_ === "number")
-    .map((d) => ({
-      country: d.country,
-      value: d.market_size_usd_,
-      backgroundColor: d.market_size_usd_ > 0 ? `hsl(${Math.random() * 360}, 80%, 50%)` : "#fff",
-      tooltip: `${d.country}: $${d.market_size_usd_.toLocaleString()}`,
-    }));
+ const mapData = data
+    .map((d) => {
+      const country = d.country;
+      const valueKey = Object.keys(d).find(
+        (k) =>
+          k !== "_id" &&
+          k !== "__v" &&
+          k !== "metadataId" &&
+          k !== "region" &&
+          k !== "year" &&
+          k !== "country" &&
+          k !== "createdAt" &&
+          k !== "updatedAt" &&
+          typeof d[k] === "number"
+      );
 
-  return <ChoroplethChart
-  data={data.map(d => ({
-    country: d.country,
-    value: d.market_size_usd_,
-  }))}
-  onCountryClick={(code) => {
-    const countryData = data.find(d => d.country === code);
-    if (countryData) {
-      alert(`${code}: $${formatUSD(countryData.market_size_usd_)}`);
-    }
-  }}
-/>
+      return valueKey && country
+        ? {
+            country,
+            value: d[valueKey],
+            metric: valueKey,
+          }
+        : null;
+    })
+    .filter((item): item is { country: string; value: number; metric: string } => !!item && typeof item.value === "number");
 
-}
-
+  return (
+    <ChoroplethChart
+      data={mapData}
+      onCountryClick={(code) => {
+        const countryData = mapData.find((d) => d.country === code);
+        if (countryData) {
+          const value = countryData.value;
+          const label = countryData.metric;
+          const formatted = label?.toLowerCase().includes("usd")
+            ? `$${formatUSD(value)}`
+            : value.toString();
+          alert(`${COUNTRY_MAP[code] || code}: ${label.toUpperCase()} = ${formatted}`);
+        }
+      }}
+    />
+  );
+      }
       default:
-        return <p>Unsupported chart type</p>;
+        return <p>Unsupported chart type: {meta.chartType}</p>;
     }
-  };
-
+  }
   return (
     <main className="min-h-screen bg-white px-4 py-6 sm:px-6 md:px-8">
       <h1 className="text-2xl md:text-3xl font-bold mb-2">
