@@ -1,32 +1,35 @@
-// data/grants.ts
+import mongoose from "mongoose";
+import Grants, { IGrant } from "../database/models/grants.model";
 
-import { GrantOpportunity } from "@/types/GrantOpportunity";
+/**
+ * Fetch all grants from the database
+ * @returns Array of grant documents
+ */
+export const getAllGrants = async (): Promise<IGrant[]> => {
+  try {
+    const grants = await Grants.find().sort({ expiredingDate: 1 }); // Optional: sort by expiration
+    return grants;
+  } catch (error) {
+    console.error("Error fetching all grants:", error);
+    throw new Error("Failed to retrieve grants");
+  }
+};
 
+/**
+ * Fetch a single grant by its ID
+ * @param id - MongoDB ObjectId string
+ * @returns Grant document or null
+ */
+export const getGrantById = async (id: string): Promise<IGrant | null> => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new Error("Invalid grant ID");
+    }
 
-
-export const grants: GrantOpportunity[] = [
-  {
-    id: "grant-1",
-    title: "Africa Digital Transformation Grant",
-    description: "Supports digital infrastructure initiatives across Africa.",
-    awardingOrganization: "World Bank",
-    amount: "Up to $1,000,000",
-    eligibility: "Government agencies, NGOs, tech startups",
-  },
-  {
-    id: "grant-2",
-    title: "Green Energy Innovation Fund",
-    description: "Funds renewable energy initiatives across Sub-Saharan Africa.",
-    awardingOrganization: "UNDP",
-    amount: "$250,000 – $500,000",
-    eligibility: "Enterprises and research institutions in green tech",
-  },
-  {
-    id: "grant-3",
-    title: "Women in Tech Accelerator",
-    description: "Technical assistance and non-dilutive funding for women-led tech firms.",
-    awardingOrganization: "USAID",
-    amount: "$100,000",
-    eligibility: "Female founders in Africa's tech ecosystem",
-  },
-];
+    const grant = await Grants.findById(id);
+    return grant;
+  } catch (error) {
+    console.error(`Error fetching grant with ID ${id}:`, error);
+    throw new Error("Failed to retrieve grant");
+  }
+};
