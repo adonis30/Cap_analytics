@@ -1,10 +1,13 @@
 // types/GrantOpportunity.ts
 
 export interface GrantOpportunity {
-  id: string;
+  _id: string; // MongoDB ObjectId as string
   title: string;
   description: string;
-  awardingOrganization: string;
-  amount: string;
+  awardingOrg: string;
+  orgURL: string;
+  amount: number;
   eligibility: string;
+  duration: string;
+  expiredingDate: Date; // or Date if you're parsing it
 }
