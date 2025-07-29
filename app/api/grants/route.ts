@@ -6,7 +6,7 @@ export async function GET() {
   try {
     await connectToDatabase();
     const grants = await getAllGrants();
-    console.log("grants", grants)
+    
     return NextResponse.json(grants || []);
   } catch (error) {
     console.error("API error:", error);
