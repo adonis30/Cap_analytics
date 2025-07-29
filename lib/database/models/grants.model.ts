@@ -6,7 +6,7 @@ export interface IGrant extends Document {
   description: string;
   awardingOrg: string;
   orgURL: string;
-  amount: number;
+  amount: string;
   eligibility: string;
   duration: string;
   expiredingDate: Date;
@@ -19,7 +19,7 @@ const GrantsSchema: Schema<IGrant> = new Schema(
     description: { type: String, required: true },
     awardingOrg: { type: String, required: true },
     orgURL: { type: String, required: true },
-    amount: { type: Number, required: true },
+    amount: { type: String, required: true },
     eligibility: { type: String, required: true },
     duration: { type: String, required: true },
     expiredingDate: { type: Date, required: true },
