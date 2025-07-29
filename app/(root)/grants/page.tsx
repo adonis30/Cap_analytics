@@ -56,7 +56,7 @@ export default function GrantsPage() {
               <p className="text-sm text-gray-700 line-clamp-3">{grant.description}</p>
               <div className="mt-4 text-xs text-gray-600 space-y-1">
                 <p><strong>Organization:</strong> {grant.awardingOrg}</p>
-                <p><strong>Amount:</strong> ${grant.amount}</p>
+                <p><strong>Amount:</strong> {grant.amount}</p>
                 <p><strong>Eligibility:</strong> {grant.eligibility}</p>
                 <p><strong>Expires On</strong> {grant.expiredingDate instanceof Date ? grant.expiredingDate.toLocaleDateString() : String(grant.expiredingDate)}</p>
               </div>
@@ -82,7 +82,7 @@ export default function GrantsPage() {
             <p className="text-gray-700 mb-4">{selectedGrant.description}</p>
             <div className="text-sm text-gray-600 space-y-2">
               <p><strong>Organization:</strong> {selectedGrant.awardingOrg}</p>
-              <p><strong>Amount:</strong> ${selectedGrant.amount}</p>
+              <p><strong>Amount:</strong> {selectedGrant.amount}</p>
               <p><strong>Expires On</strong> {selectedGrant.expiredingDate instanceof Date ? selectedGrant.expiredingDate.toLocaleDateString() : String(selectedGrant.expiredingDate)}</p>
               <p><strong>Eligibility:</strong> {selectedGrant.eligibility}</p>
               <p><strong>Grant Url:</strong>{selectedGrant.orgURL}</p>
