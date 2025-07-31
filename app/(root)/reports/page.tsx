@@ -189,37 +189,38 @@ const [availableCountries, setAvailableCountries] = useState<string[]>([]);
 
     const chartData = transformToChartJsData(meta, data);
      const baseOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      display: typeof window !== "undefined" ? window.innerWidth > 768 : true,
-      position: "top" as const,
-    },
-    title: {
-      display: true,
-      text: meta.name,
-    },
-  },
-  layout: {
-    padding: { top: 10, bottom: 10 },
-  },
-  elements: {
-    point: { radius: window.innerWidth > 768 ? 3 : 2 },
-  },
-  scales: {
-    x: {
-      ticks: {
-        maxRotation: 60,  // Tilt angle
-        minRotation: 60,  // Same as max to force rotation
-        autoSkip: false,  // Prevent skipping labels
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display:
+            typeof window !== "undefined" ? window.innerWidth > 768 : true,
+          position: "top" as const,
+        },
+        title: {
+          display: true,
+          text: meta.name,
+        },
       },
-    },
-    y: {
-      beginAtZero: true,
-    },
-  },
-};
+      layout: {
+        padding: { top: 10, bottom: 10 },
+      },
+      elements: {
+        point: { radius: window.innerWidth > 768 ? 3 : 2 },
+      },
+      scales: {
+        x: {
+          ticks: {
+            maxRotation: 60, // Tilt angle
+            minRotation: 60, // Same as max to force rotation
+            autoSkip: false, // Prevent skipping labels
+          },
+        },
+        y: {
+          beginAtZero: true,
+        },
+      },
+    };
     switch (meta.chartType) {
      case "bar": {
   // Check if labels are long
@@ -307,57 +308,57 @@ const comboData: ChartData<"bar" | "line", number[], string> = {
     })),
   };
 
-   const comboOptions: ChartOptions<"bar" | "line"> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    interaction: {
-      mode: "index",
-      intersect: false,
-    },
-    plugins: {
-      legend: { position: "top" },
-      title: {
-        display: true,
-        text: meta.name,
-      },
-    },
-    scales: {
-      x: {
-        ticks: {
-      maxRotation: 60,
-      minRotation: 60,
-      autoSkip: false,
-    },
-        title: {
-          display: true,
-          text: "Year",
-        },
-      },
-      y: {
-        type: "linear",
-        position: "left",
-        title: {
-          display: true,
-          text: chartData.datasets[0]?.label || "Left Axis",
-        },
-        ticks: {
-          callback: (val) => `${val}`,
-        },
-      },
-      y1: {
-        type: "linear",
-        position: "right",
-        grid: { drawOnChartArea: false },
-        title: {
-          display: true,
-          text: chartData.datasets[1]?.label || "Right Axis",
-        },
-        ticks: {
-          callback: (val) => `${val}`,
-        },
-      },
-    },
-  };
+    const comboOptions: ChartOptions<"bar" | "line"> = {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: "index",
+            intersect: false,
+          },
+          plugins: {
+            legend: { position: "top" },
+            title: {
+              display: true,
+              text: meta.name,
+            },
+          },
+          scales: {
+            x: {
+              ticks: {
+                maxRotation: 60,
+                minRotation: 60,
+                autoSkip: false,
+              },
+              title: {
+                display: true,
+                text: "Year",
+              },
+            },
+            y: {
+              type: "linear",
+              position: "left",
+              title: {
+                display: true,
+                text: chartData.datasets[0]?.label || "Left Axis",
+              },
+              ticks: {
+                callback: (val) => `${val}`,
+              },
+            },
+            y1: {
+              type: "linear",
+              position: "right",
+              grid: { drawOnChartArea: false },
+              title: {
+                display: true,
+                text: chartData.datasets[1]?.label || "Right Axis",
+              },
+              ticks: {
+                callback: (val) => `${val}`,
+              },
+            },
+          },
+        };
 
   return (
     <Chart
