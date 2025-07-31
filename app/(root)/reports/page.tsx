@@ -219,7 +219,11 @@ const [availableCountries, setAvailableCountries] = useState<string[]>([]);
     switch (meta.chartType) {
      case "bar": {
   // Check if labels are long
-  const hasLongLabels = chartData.labels.some((label) => label.toString().length > 20);
+  const safeLabels = (chartData.labels || []).map((l) => l ?? "");
+        const hasLongLabels = safeLabels.some(
+          (label) => label.toString().length > 20
+        );
+
 
   const options: ChartOptions<"bar"> = {
     responsive: true,
@@ -232,10 +236,11 @@ const [availableCountries, setAvailableCountries] = useState<string[]>([]);
     scales: {
       x: {
         ticks: {
-          callback: function (value) {
-            return this.getLabelForValue(value as number).toString().substring(0, 25); // prevent overflow
-          },
-        },
+                callback: function (value) {
+                  const label = this.getLabelForValue(value as number);
+                  return label ? label.toString().substring(0, 25) : "";
+                },
+              },
       },
     },
   };
