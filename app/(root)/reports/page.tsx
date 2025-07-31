@@ -149,33 +149,37 @@ const [availableCountries, setAvailableCountries] = useState<string[]>([]);
 
     const yKeys = keys.filter((k) => k !== xKey);
 
-    const labels = raw.map(
+   // Sort raw data by xKey if it's a year or date
+    const sortedData = [...raw].sort((a, b) => {
+      const valA = new Date(a[xKey]).getTime() || Number(a[xKey]);
+      const valB = new Date(b[xKey]).getTime() || Number(b[xKey]);
+      return valA - valB;
+    });
+
+    const labels = sortedData.map(
       (item) =>
         item.display_month ||
         (item.month_year ? formatMonthYear(item.month_year) : item[xKey])
     );
 
-    const datasets = yKeys.map((key, i) => {
-      const color = `hsl(${i * 60}, 70%, 50%)`;
-      const backgroundAlpha = `hsl(${i * 60}, 70%, 50%)`;
-
-      return {
-        label: key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
-        data: raw.map((item) => item[key]),
-        backgroundColor:
-          metadata.chartType === "area" ? backgroundAlpha : color,
-        borderColor: color,
-        pointBackgroundColor: color,
-        fill: metadata.chartType === "area",
-        tension: metadata.chartSubtype?.includes("spline") ? 0.4 : 0,
-        type:
-          metadata.chartType === "combo"
-            ? i % 2 === 0
-              ? "bar"
-              : "line"
-            : undefined,
-      };
-    });
+    const datasets = yKeys.map((key, i) => ({
+      label: key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+      data: sortedData.map((item) => item[key]),
+      backgroundColor:
+        metadata.chartType === "area"
+          ? `hsl(${i * 60}, 70%, 50%)`
+          : `hsl(${i * 60}, 70%, 50%)`,
+      borderColor: `hsl(${i * 60}, 70%, 50%)`,
+      pointBackgroundColor: `hsl(${i * 60}, 70%, 50%)`,
+      fill: metadata.chartType === "area",
+      tension: metadata.chartSubtype?.includes("spline") ? 0.4 : 0,
+      type:
+        metadata.chartType === "combo"
+          ? i % 2 === 0
+            ? "bar"
+            : "line"
+          : undefined,
+    }));
 
     return { labels, datasets };
   };
