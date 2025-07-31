@@ -184,41 +184,64 @@ const [availableCountries, setAvailableCountries] = useState<string[]>([]);
     if (!data || data.length === 0) return <p>No data available.</p>;
 
     const chartData = transformToChartJsData(meta, data);
-    const baseOptions = {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display:
-            typeof window !== "undefined" ? window.innerWidth > 768 : true,
-          position: "top" as const,
-        },
-        title: {
-          display: true,
-          text: meta.name,
-        },
+     const baseOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      display: typeof window !== "undefined" ? window.innerWidth > 768 : true,
+      position: "top" as const,
+    },
+    title: {
+      display: true,
+      text: meta.name,
+    },
+  },
+  layout: {
+    padding: { top: 10, bottom: 10 },
+  },
+  elements: {
+    point: { radius: window.innerWidth > 768 ? 3 : 2 },
+  },
+  scales: {
+    x: {
+      ticks: {
+        maxRotation: 60,  // Tilt angle
+        minRotation: 60,  // Same as max to force rotation
+        autoSkip: false,  // Prevent skipping labels
       },
-      layout: {
-        padding: {
-          top: 10,
-          bottom: 10,
-        },
-      },
-      elements: {
-        point: {
-          radius: window.innerWidth > 768 ? 3 : 2,
-        },
-      },
-    };
-
+    },
+    y: {
+      beginAtZero: true,
+    },
+  },
+};
     switch (meta.chartType) {
-      case "bar":
-        return (
-          <Bar
-            data={chartData as ChartData<"bar">}
-            options={baseOptions as ChartOptions<"bar">}
-          />
-        );
+     case "bar": {
+  // Check if labels are long
+  const hasLongLabels = chartData.labels.some((label) => label.toString().length > 20);
+
+  const options: ChartOptions<"bar"> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    indexAxis: hasLongLabels ? "y" : "x", // 🔹 Switch orientation dynamically
+    plugins: {
+      legend: { display: true, position: "top" },
+      title: { display: true, text: meta.name },
+    },
+    scales: {
+      x: {
+        ticks: {
+          callback: function (value) {
+            return this.getLabelForValue(value as number).toString().substring(0, 25); // prevent overflow
+          },
+        },
+      },
+    },
+  };
+
+  return <Bar data={chartData as ChartData<"bar">} options={options} />;
+}
       case "line":
         return (
           <Line
@@ -240,20 +263,25 @@ const [availableCountries, setAvailableCountries] = useState<string[]>([]);
         );
       }
       case "pie": {
-        const pieData: ChartData<"pie"> = {
-          labels: chartData.labels,
-          datasets: [
-            {
-              label: meta.name,
-              data: chartData.datasets[0]?.data || [],
-              backgroundColor: chartData.datasets.map((ds) => ds.borderColor),
-            },
-          ],
-        };
-        return (
-          <Pie data={pieData} options={baseOptions as ChartOptions<"pie">} />
-        );
-      }
+  const colors = chartData.labels.map(
+    (_, i) => `hsl(${(i * 360) / chartData.labels.length}, 70%, 50%)`
+  ); // Generate distinct colors
+
+  const pieData: ChartData<"pie"> = {
+    labels: chartData.labels,
+    datasets: [
+      {
+        label: meta.name,
+        data: chartData.datasets[0]?.data || [],
+        backgroundColor: colors, // 🔹 Each label gets its own color
+        borderColor: "#fff",
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  return <Pie data={pieData} options={baseOptions as ChartOptions<"pie">} />;
+}
       case "combo": {
     
 const comboData: ChartData<"bar" | "line", number[], string> = {
@@ -270,7 +298,7 @@ const comboData: ChartData<"bar" | "line", number[], string> = {
     })),
   };
 
-  const comboOptions: ChartOptions<"bar" | "line"> = {
+   const comboOptions: ChartOptions<"bar" | "line"> = {
     responsive: true,
     maintainAspectRatio: false,
     interaction: {
@@ -286,6 +314,11 @@ const comboData: ChartData<"bar" | "line", number[], string> = {
     },
     scales: {
       x: {
+        ticks: {
+      maxRotation: 60,
+      minRotation: 60,
+      autoSkip: false,
+    },
         title: {
           display: true,
           text: "Year",
