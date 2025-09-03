@@ -20,6 +20,7 @@ import { format } from "date-fns";
 
 import  ChoroplethChart  from "@/components/shared/ChoroplethChart";
 import { formatUSD } from "@/utils/formatUSD";
+import { COUNTRY_MAP } from "@/lib/countries";
 
 
 ChartJS.register(
@@ -42,24 +43,6 @@ const CATEGORIES = [
 ] as const;
 
 type SupportedChartType = "bar" | "line" | "pie" | "combo" | "area" | "choropleth";
-
- const COUNTRY_MAP: Record<string, string> = {
-  ZMB: "Zambia",
-  NGA: "Nigeria",
-  KEN: "Kenya",
-  GHA: "Ghana",
-  TZA: "Tanzania",
-  UGA: "Uganda",
-  RWA: "Rwanda",
-  ETH: "Ethiopia",
-  ZWE: "Zimbabwe",
-  BWA: "Botswana",
-  ZAF: "South Africa",
-  GMB: "Gambia",
-  GLB: "Global",
-  MWI: "Malawi",
-  "": "All Countries",
-};
 
 
 interface ChartMetadata {
@@ -85,10 +68,16 @@ const [availableCountries, setAvailableCountries] = useState<string[]>([]);
   const fetchCountries = async () => {
     const res = await fetch("/api/charts/distinct-countries");
     const { countries } = await res.json();
-    setAvailableCountries(["All", ...countries]);
-  };
-  fetchCountries();
-}, []);
+    const sorted = [...countries].sort((a, b) =>
+          (COUNTRY_MAP[a] ?? a).localeCompare(COUNTRY_MAP[b] ?? b)
+        );
+        setAvailableCountries(["", ...sorted]); // "" maps to "All Countries"
+      } catch (err) {
+        console.error("Failed to fetch countries:", err);
+      }
+    };
+    fetchCountries();
+  }, []);
 
 
   useEffect(() => {
