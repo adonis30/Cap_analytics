@@ -65,10 +65,11 @@ const [availableCountries, setAvailableCountries] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-  const fetchCountries = async () => {
-    const res = await fetch("/api/charts/distinct-countries");
-    const { countries } = await res.json();
-    const sorted = [...countries].sort((a, b) =>
+    const fetchCountries = async () => {
+      try {
+        const res = await fetch("/api/charts/distinct-countries");
+        const { countries } = await res.json();
+        const sorted = [...countries].sort((a, b) =>
           (COUNTRY_MAP[a] ?? a).localeCompare(COUNTRY_MAP[b] ?? b)
         );
         setAvailableCountries(["", ...sorted]); // "" maps to "All Countries"
